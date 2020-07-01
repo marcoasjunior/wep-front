@@ -2,7 +2,7 @@
   <div class="home">
     <vs-row>
       <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-      <img alt="Vue logo" src="../assets/logo.png">
+      <img alt="Vue logo" src="../../assets/logo.png">
       </vs-col>
     </vs-row>
     <vs-row>

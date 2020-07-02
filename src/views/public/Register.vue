@@ -1,26 +1,27 @@
 <template>
   <div>
-    <vs-button to="/" color="primary" type="border" icon="search">Voltar</vs-button>
+      <v-btn to="/" class="" text fab small color="primary">
+        <v-icon dark>mdi-arrow-left</v-icon>
+      </v-btn>
 
-    <vs-row>
-      <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-        <p>Preencha os dados abaixo:</p>
-      </vs-col>
-    </vs-row>
-    <v-form v-model="valid">
-      <v-container class="d-flex flex-column">
+    <v-form class="d-flex flex-column">
 
-        <v-text-field v-model="name" label="Nome Completo" required></v-text-field>
+        <v-file-input accept="image/*" label="Avatar"></v-file-input>
 
-        <v-text-field v-model="email" label="E-mail" required></v-text-field>
+        <v-text-field prepend-icon="account" v-model="name" label="Nome Completo" required></v-text-field>
 
-        <v-text-field v-model="password" label="Senha" required></v-text-field>
+        <v-text-field prepend-icon="email" v-model="email" label="E-mail" required></v-text-field>
 
-        <v-text-field v-model="password2" label="Confirmar senha" required></v-text-field>
+        <v-text-field prepend-icon="lock" v-model="password" label="Senha" required></v-text-field>
 
-        <v-file-input accept="image/*" label="File input"></v-file-input>
+        <v-text-field prepend-icon="lock" v-model="password2" label="Confirmar senha" required></v-text-field>
 
-      </v-container>
+        <v-text-field prepend-icon="whatsapp" v-model="whatsapp" label="Whatsapp" required></v-text-field>
+
+        <v-switch v-model="switch1" inset label="Concorda com os termos e condições do aplicativo."></v-switch>
+
+        <v-btn block>Cadastrar</v-btn>
+
     </v-form>
 
   </div>
@@ -30,8 +31,16 @@
 export default {
 
   name: 'Register',
+
   data () {
     return {
+
+      switch1: false,
+      name: null,
+      email: null,
+      password: null,
+      password2: null,
+      whatsapp: null
 
     }
   }
@@ -40,13 +49,5 @@ export default {
 </script>
 
 <style scoped>
-
-.input {
-
-  margin: 9px;
-  margin-left: auto;
-  margin-right: auto;
-
-}
 
 </style>

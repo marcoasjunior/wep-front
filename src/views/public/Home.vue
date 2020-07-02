@@ -1,21 +1,17 @@
 <template>
-  <div class="home">
-    <vs-row>
-      <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-      <img alt="Vue logo" src="../../assets/logo.png">
-      </vs-col>
-    </vs-row>
-    <vs-row>
-      <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-      <vs-button to="/Login" color="primary" class="button" type="gradient">Entrar</vs-button>
-      </vs-col>
-    </vs-row>
-    <vs-row>
-      <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-      <vs-button to="/Register" color="primary" class="button" type="gradient">Cadastre-se</vs-button>
-      </vs-col>
-    </vs-row>
-  </div>
+  <v-container class="d-flex flex-column justify-center align-center">
+
+    <img alt="Vue logo" src="../../assets/logo.png">
+
+    <v-container class="d-flex flex-column justify-center align-center">
+
+    <v-btn class="button" to="/Login" block>Entrar</v-btn>
+
+    <v-btn class="button" to="/Register" block>Cadastro</v-btn>
+
+    </v-container>
+
+  </v-container>
 </template>
 
 <script>
@@ -30,14 +26,9 @@ export default {
 <style scoped>
 
 .button {
-  width: 80%;
-  margin: 10px;
-  margin-left: auto;
-  margin-right: auto;
-}
 
-img {
-  margin-top: 20%;
+  margin-top: 10px;
+
 }
 
 </style>

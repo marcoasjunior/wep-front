@@ -7,7 +7,7 @@
     </vs-row>
     <vs-row>
       <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-      <vs-button color="primary" class="button" type="gradient">Entrar</vs-button>
+      <vs-button to="/Login" color="primary" class="button" type="gradient">Entrar</vs-button>
       </vs-col>
     </vs-row>
     <vs-row>

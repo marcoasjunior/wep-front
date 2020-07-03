@@ -52,12 +52,19 @@ export default {
 
     ...mapActions({
 
-        
-
     }),
 
-    register () {
+    async register () {
+      const formData = new FormData()
 
+      formData.append('name', this.name)
+      formData.append('email', this.email)
+      formData.append('password', this.password2)
+      formData.append('whatsapp', this.whatsapp)
+
+      const response = await this.axios.post(process.env.VUE_APP_URL + '/user', formData).catch((err) => alert(err))
+
+      console.log(response)
     }
   }
 

@@ -1,0 +1,28 @@
+.card-style-1{
+    display: block !important;
+    border-radius: 10px !important;
+    box-shadow: 7px 6px 15px rgba(110, 110, 110, 0.424) !important;
+}
+
+#map{
+    width: 80%;
+    height: 400px;
+    float: left;
+}
+
+li{
+    cursor: pointer;
+    -webkit-transition: background-color  1s ease-out;
+    -moz-transition: background-color  1s ease-out;
+    -o-transition: background-color  1s ease-out;
+    transition: background-color  1s ease-out;;
+
+    &:hover{
+        background-color: rgba(192, 192, 192, 1);
+        cursor: pointer;
+        -webkit-transition: background-color  1s ease-out;
+        -moz-transition: background-color  1s ease-out;
+        -o-transition: background-color  1s ease-out;
+        transition: background-color  1s ease-out;;
+    }
+}

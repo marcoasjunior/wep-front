@@ -9,6 +9,12 @@
 
     <v-btn class="button" to="/Register" block>Cadastro</v-btn>
 
+    <v-row align="center" class="ac">
+      <v-col class="text-center" cols="12" sm="4">
+        <v-btn class="button" to="/Event" block>Cadastrar evento</v-btn>
+      </v-col>
+    </v-row>
+
     </v-container>
 
   </v-container>

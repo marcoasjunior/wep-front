@@ -1,16 +1,25 @@
-import Vue from 'vue'
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
-import pt from 'vuetify/es5/locale/pt'
+import Vue from 'vue';
+import Vuetify from 'vuetify/lib';
+import pt from 'vuetify/es5/locale/pt';
 
-Vue.use(Vuetify)
+Vue.use(Vuetify);
 
 export default new Vuetify({
-  lang: {
-    locales: { pt },
-    current: 'pt'
+  theme: {
+    themes: {
+      light: {
+        primary: '#ee44aa',
+        secondary: '#424242',
+        accent: '#82B1FF',
+        error: '#FF5252',
+        info: '#2196F3',
+        success: '#4CAF50',
+        warning: '#FFC107'
+      },
+    },
   },
-  icons: {
-    iconfont: 'mdi' // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg'
-  }
-})
+    lang: {
+      locales: { pt },
+      current: 'pt',
+    },
+});

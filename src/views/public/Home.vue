@@ -5,15 +5,9 @@
 
     <v-container class="d-flex flex-column justify-center align-center">
 
-    <v-btn class="button" to="/Login" block>Entrar</v-btn>
+    <v-btn class="button" color="warning" to="/Login" block>Entrar</v-btn>
 
-    <v-btn class="button" to="/Register" block>Cadastro</v-btn>
-
-    <v-row align="center" class="ac">
-      <v-col class="text-center" cols="12" sm="4">
-        <v-btn class="button" to="/Event" block>Cadastrar evento</v-btn>
-      </v-col>
-    </v-row>
+    <v-btn class="button" color="warning" to="/Register" block>Cadastro</v-btn>
 
     </v-container>
 

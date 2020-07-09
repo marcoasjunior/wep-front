@@ -38,8 +38,7 @@ export default {
   }),
 
   methods: {
-    login() {
-
+    login () {
       if (this.password || this.email === null) return alert('Preencha os campos e-mail e senha.')
 
       this.authorizeLogin({
@@ -48,9 +47,8 @@ export default {
         email: this.email
 
       })
-
     }
-  },
+  }
 
 }
 </script>

@@ -1,18 +1,34 @@
 <template>
-  <div class="home">
+  <v-container class="d-flex flex-column justify-center align-center">
+
     <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+
+    <v-container class="d-flex flex-column justify-center align-center">
+
+    <v-btn class="button" color="warning" to="/Login" block>Entrar</v-btn>
+
+    <v-btn class="button" color="warning" to="/Register" block>Cadastro</v-btn>
+
+    </v-container>
+
+  </v-container>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
+
+  name: 'Home'
+
 }
 </script>
+
+<style scoped>
+
+.button {
+
+  margin-top: 10px;
+
+}
+
+</style>

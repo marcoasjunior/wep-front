@@ -1,12 +1,25 @@
 <template>
-  <div>
-    <v-text-field prepend-icon="email" v-model="email" label="E-mail" required></v-text-field>
+  <v-container class="d-flex flex-column box">
 
-    <v-text-field prepend-icon="lock" v-model="password" label="Senha" required></v-text-field>
-  </div>
+    <v-btn icon fab><v-icon>mdi-arrow-left</v-icon></v-btn>
+
+    <v-container class="d-flex flex-column justify-center align-center mt-14">
+
+    <p class="display-1">Entrar</p>
+
+    <v-text-field class="input" prepend-icon="mdi-email" v-model="email" label="E-mail" required></v-text-field>
+
+    <v-text-field class="input" prepend-icon="mdi-lock" v-model="password" label="Senha" required></v-text-field>
+
+    <v-btn to="/Home" color="warning" @click="login" class="mt-14 button"> Entrar </v-btn>
+
+    </v-container>
+
+  </v-container>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 
 export default {
 
@@ -17,11 +30,43 @@ export default {
       password: null,
       email: null
     }
-  }
+  },
+
+  ...mapActions({
+    authorizeLogin: 'RegisterVuex/authorizeLogin'
+
+  }),
+
+  methods: {
+    login() {
+
+      if (this.password || this.email === null) return alert('Preencha os campos e-mail e senha.')
+
+      this.authorizeLogin({
+
+        password: this.password,
+        email: this.email
+
+      })
+
+    }
+  },
 
 }
 </script>
 
 <style scoped>
+
+.input {
+  width: 90%;
+}
+
+.button {
+  width: 90%;
+}
+
+.box {
+  max-width: 550px;
+}
 
 </style>

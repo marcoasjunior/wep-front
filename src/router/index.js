@@ -9,7 +9,6 @@ const routes = [
     path: '/',
     redirect: '/Home'
   },
-
   {
     path: '/Public',
     component: () => import('../views/viewsPublic.vue'),
@@ -50,7 +49,7 @@ const routes = [
       }
 
     ]
-  }
+  },
 
 ]
 

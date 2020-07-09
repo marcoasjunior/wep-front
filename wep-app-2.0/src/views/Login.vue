@@ -33,7 +33,7 @@ export default {
   },
 
   ...mapActions({
-    authorizeLogin: 'RegisterVuex/authorizeLogin'
+    authLogin: 'RegisterVuex/authLogin'
 
   }),
 
@@ -41,17 +41,14 @@ export default {
     async login () {
       if (this.password === null || this.email === null) return alert('Preencha os campos e-mail e senha.')
 
-      const isAuth = this.authorizeLogin({
+      const isAuth = await this.$store.dispatch('RegisterVuex/authLogin', {
 
         password: this.password,
         email: this.email
 
       })
-
+      
       console.log(isAuth)
-
-
-
     }
   }
 

@@ -25,17 +25,16 @@ export default {
 
   actions: {
 
-    async authorizeLogin (context, newData) {
+    async authLogin (context, newData) {
       const formData = new FormData()
 
       formData.append('username', newData.username)
       formData.append('password', newData.password)
 
-      const autho = 'penis'
+      const autho = await axios.post('auth', formData)
 
-      context.commit('setAutho', autho.data)
+      return autho.data
 
-      return autho
     }
 
   }

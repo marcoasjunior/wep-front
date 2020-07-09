@@ -1,7 +1,7 @@
 <template>
-  <v-container class="d-flex flex-column box">
+  <v-container class="d-flex flex-column box justify-space-between">
 
-    <v-btn icon fab><v-icon>mdi-arrow-left</v-icon></v-btn>
+    <v-btn to="/Home" icon fab><v-icon>mdi-arrow-left</v-icon></v-btn>
 
     <v-container class="d-flex flex-column justify-center align-center mt-14">
 
@@ -11,7 +11,7 @@
 
     <v-text-field class="input" prepend-icon="mdi-lock" v-model="password" label="Senha" required></v-text-field>
 
-    <v-btn to="/Home" color="warning" @click="login" class="mt-14 button"> Entrar </v-btn>
+    <v-btn color="warning" @click="login" class="mt-14 button"> Entrar </v-btn>
 
     </v-container>
 
@@ -19,38 +19,44 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+
+import {
+  mapActions
+} from 'vuex'
 
 export default {
 
   name: 'Login',
 
-  data () {
+  data() {
     return {
       password: null,
       email: null
     }
   },
 
-  ...mapActions({
-    authorizeLogin: 'RegisterVuex/authorizeLogin'
 
-  }),
 
   methods: {
-    login() {
 
-      if (this.password || this.email === null) return alert('Preencha os campos e-mail e senha.')
+    ...mapActions({
+      authLogin: 'RegisterVuex/authLogin'
 
-      this.authorizeLogin({
+    }),
+
+    async login() {
+      if (this.password === null || this.email === null) return alert('Preencha os campos e-mail e senha.')
+
+      const isAuth = await this.authLogin({
 
         password: this.password,
         email: this.email
 
       })
 
+      console.log(isAuth)
     }
-  },
+  }
 
 }
 </script>

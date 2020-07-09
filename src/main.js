@@ -7,6 +7,8 @@ import vuetify from './plugins/vuetify';
 
 Vue.config.productionTip = false
 
+Vue.prototype.$url = process.env.VUE_APP_BASE_URL
+
 new Vue({
   router,
   store,

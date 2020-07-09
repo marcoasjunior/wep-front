@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../../util/axios'
 
 export default {
 
@@ -6,21 +6,34 @@ export default {
 
   state: {
 
+    authorized: false
+
   },
 
-  getters: {},
+  getters: {
+    authorized: state => state.authorized
+
+  },
 
   mutations: {
+
+    setAutho (state, newState) {
+      state.authorized = newState
+    }
 
   },
 
   actions: {
 
-    async authorizeLogin(context, newData) {
+    async authLogin (context, newData) {
+      const formData = new FormData()
 
-      const units = await axios.get(process.env.VUE_APP_PROD_URL + '/unit')
+      formData.append('username', newData.username)
+      formData.append('password', newData.password)
 
-      context.commit('setUnitData', units.data)
+      const autho = await axios.post(process.env.VUE_APP_BASE_URL + '/user/auth', formData)
+
+      return autho.data
 
     }
 

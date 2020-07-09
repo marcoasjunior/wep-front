@@ -26,9 +26,16 @@ export default {
   actions: {
 
     async authorizeLogin (context, newData) {
-      const autho = await axios.post(process.env.VUE_APP_PROD_URL + '/unit', newData)
+      const formData = new FormData()
+
+      formData.append('username', newData.username)
+      formData.append('password', newData.password)
+
+      const autho = 'penis'
 
       context.commit('setAutho', autho.data)
+
+      return autho
     }
 
   }

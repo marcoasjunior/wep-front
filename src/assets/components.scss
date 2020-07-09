@@ -26,3 +26,30 @@ li{
         transition: background-color  1s ease-out;;
     }
 }
+
+.toolBardiv{
+    header{
+        min-height: 65px;
+        padding: 5px !important;
+        border-radius:  0px 0px 20px 20px !important;
+        box-shadow: 7px 6px 15px rgba(117, 117, 117, 0.424) !important;
+
+        // div{
+            
+        //     @media screen and (max-width:700px) {
+        //         height: 45px;
+        //     }
+            
+        //     div{
+                
+        //         @media screen and (max-width:700px) {
+        //             height: 30px;
+        //         }
+        //     }
+        // }
+
+        // @media screen and (max-width:700px) {
+        //     min-height: 55px;
+        // }
+    }
+}

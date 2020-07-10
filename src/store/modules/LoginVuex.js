@@ -6,6 +6,8 @@ export default {
 
   state: {
 
+ 
+
   },
 
   getters: {
@@ -19,9 +21,9 @@ export default {
 
   actions: {
 
-    async register (context, newData) {
+    async authLogin (context, newData) {
 
-      const autho = await axios.post(process.env.VUE_APP_BASE_URL + '/user', newData)
+      const autho = await axios.post(process.env.VUE_APP_BASE_URL + '/user/auth', newData)
 
       return autho.data
 

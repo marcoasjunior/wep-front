@@ -1,5 +1,5 @@
 <template>
-  <v-container class="d-flex flex-column justify-center align-center">
+  <v-container class="d-flex flex-column justify-center align-center box">
 
     <img alt="Vue logo" src="../../assets/logo.png">
 
@@ -29,6 +29,10 @@ export default {
 
   margin-top: 10px;
 
+}
+
+.box {
+  max-width: 550px;
 }
 
 </style>

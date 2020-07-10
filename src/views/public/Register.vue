@@ -1,35 +1,41 @@
 <template>
-  <div>
-      <v-btn to="/" class="" text fab small color="primary">
+  <v-container class="box">
+    <v-row class="d-flex flex-column">
+
+      <v-btn to="/" class="" text fab small>
         <v-icon dark>mdi-arrow-left</v-icon>
       </v-btn>
+      <v-col class="d-flex justify-center align-center">
+        <v-avatar color="orange" size="62">
+          <v-icon dark>mdi-account-circle</v-icon>
+        </v-avatar>
+      </v-col>
+      <v-col>
+        <v-form ref="form" class="d-flex flex-column">
 
-    <v-form class="d-flex flex-column">
+          <v-file-input accept="image/*" label="Avatar" v-model="form.img"></v-file-input>
 
-        <v-file-input accept="image/*" label="Avatar"></v-file-input>
+          <v-text-field prepend-icon="mdi-account" v-model="form.name" label="Nome Completo" required></v-text-field>
 
-        <v-text-field prepend-icon="mdi-account" v-model="name" label="Nome Completo" required></v-text-field>
+          <v-text-field prepend-icon="mdi-email" v-model="form.email" label="E-mail" required></v-text-field>
 
-        <v-text-field prepend-icon="mdi-email" v-model="email" label="E-mail" required></v-text-field>
+          <v-text-field prepend-icon="mdi-lock" v-model="password" label="Senha" required></v-text-field>
 
-        <v-text-field prepend-icon="mdi-lock" v-model="password" label="Senha" required></v-text-field>
+          <v-text-field prepend-icon="mdi-lock" v-model="form.password2" label="Confirmar senha" required></v-text-field>
 
-        <v-text-field prepend-icon="mdi-lock" v-model="password2" label="Confirmar senha" required></v-text-field>
+          <v-text-field prepend-icon="mdi-whatsapp" v-model="form.whatsapp" label="Whatsapp" required></v-text-field>
 
-        <v-text-field prepend-icon="mdi-whatsapp" v-model="whatsapp" label="Whatsapp" required></v-text-field>
+          <v-switch v-model="switch1" inset label="Concorda com os termos e condições do aplicativo."></v-switch>
 
-        <v-switch v-model="switch1" inset label="Concorda com os termos e condições do aplicativo."></v-switch>
-
-        <v-btn block>Cadastrar</v-btn>
-
-    </v-form>
-
-  </div>
+          <v-btn block color="orange" @click="sendForm">Cadastrar</v-btn>
+        </v-form>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-
-import mapActions from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
 
@@ -39,11 +45,19 @@ export default {
     return {
 
       switch1: false,
+
+      form: {
+
       name: null,
       email: null,
-      password: null,
       password2: null,
-      whatsapp: null
+      whatsapp: null,
+      img: null
+
+      },
+      
+      password: null,
+      
 
     }
   },
@@ -52,19 +66,28 @@ export default {
 
     ...mapActions({
 
+      register: 'RegisterVuex/register'
+
     }),
 
-    async register () {
-      const formData = new FormData()
+    async sendForm () {
 
-      formData.append('name', this.name)
-      formData.append('email', this.email)
-      formData.append('password', this.password2)
-      formData.append('whatsapp', this.whatsapp)
+      if (!this.validation()) return alert('Todos os campos devem ser preenchidos')
 
-      const response = await this.axios.post(process.env.VUE_APP_URL + '/user', formData).catch((err) => alert(err))
+      const register = this.register(this.form)
 
-      console.log(response)
+      console.log(register)   
+       
+    },
+
+    validation() {
+
+      if (this.switch1 === false) return false
+      if (this.password !== this.form.password2) return false
+      if (!this.form.name || !this.password || !this.form.email || !this.form.whatsapp) return false
+
+      return true
+
     }
   }
 
@@ -72,5 +95,10 @@ export default {
 </script>
 
 <style scoped>
+
+.box {
+  max-width: 550px;
+}
+
 
 </style>

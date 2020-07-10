@@ -1,14 +1,14 @@
 <template>
     <div>
-        <h1>CRIAR EVENTO</h1>
+        <ToolBar/>
+
+        <h1 class="alg-txt-c">CRIAR EVENTO</h1>
 
 
         <div>
-            <v-btn to="/Feed">voltar</v-btn>
 
-            <span>CRIAR NOVO EVENTO</span>
 
-            <v-badge
+            <!-- <v-badge
                 bordered bottom
                 color="deep-purple accent-4"
                 dot offset-x="10" offset-y="10"
@@ -16,10 +16,10 @@
                 <v-avatar size="50">
                 <v-img src="https://cdn.vuetifyjs.com/images/lists/2.jpg"></v-img>
                 </v-avatar>
-            </v-badge>
+            </v-badge> -->
 
 
-         <v-card class="p10">
+         <v-card class="p10 ac" max-width="800">
             {{ EventData }}
             <div>
                 <v-file-input v-model="fileInput" multiple label="File input"></v-file-input>
@@ -100,6 +100,7 @@
     </div>
 </template>
 <script>
+import ToolBar from '@/components/cpmToolBar'
 import L from 'leaflet';
 import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
 
@@ -108,6 +109,7 @@ export default {
         LMap,
         LTileLayer,
         LMarker,
+        ToolBar,
     },
     data:() => ({
         fileInput:'',

@@ -1,6 +1,12 @@
 @import './_align.scss';
 @import './components.scss';
 
+.mw-w-100{
+    max-width: 100%;
+    width: 100%;
+}
+
+
 .bg-white{
     background-color: rgb(255, 255, 255) !important;
 }
@@ -61,4 +67,8 @@
     display: block;
     max-width: 100%;
     width: 100%;
+}
+
+.cp{
+    cursor: pointer;
 }

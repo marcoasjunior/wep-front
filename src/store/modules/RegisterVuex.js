@@ -28,10 +28,10 @@ export default {
     async authLogin (context, newData) {
       const formData = new FormData()
 
-      formData.append('username', newData.username)
+      formData.append('email', newData.email)
       formData.append('password', newData.password)
 
-      const autho = await axios.post(process.env.VUE_APP_BASE_URL + '/user/auth', formData)
+      const autho = await axios.post(process.env.VUE_APP_BASE_URL + '/user/auth', newData)
 
       return autho.data
 

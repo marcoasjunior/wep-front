@@ -1,7 +1,7 @@
 <template>
     <div>
         <ToolBar/>
-        <h1>Feed</h1>
+        <h1 class="alg-txt-c">Feed</h1>
 
         <div class="p15 mt-10" v-for="(item, i) in itens" :key="i">
             <v-card max-width="500" class="ac card-style-1">

@@ -5,11 +5,25 @@
   > -->
 <div class="toolBardiv">
     <v-app-bar color="deep-purple" dark max-width="800" class="ac">
-        <div class="d-flex flex-row justify-space-between">
+        <div class="d-flex flex-row justify-space-between mw-w-100">
 
         <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
-        <v-toolbar-title></v-toolbar-title>
+        <!-- <v-toolbar-title> -->
+                <div class="ml-a cp">
+                    <v-badge
+                        bordered bottom
+                        color="deep-purple accent-4"
+                        dot offset-x="10" offset-y="10"
+                    >
+                    
+                        <v-avatar size="50">
+                            <v-img src="https://cdn.vuetifyjs.com/images/lists/2.jpg"></v-img>
+                        </v-avatar>
+
+                    </v-badge>
+                </div>
+        <!-- </v-toolbar-title> -->
       
         </div>
     </v-app-bar>
@@ -27,18 +41,18 @@
           v-model="group"
           active-class="deep-purple--text text--accent-4"
         >
-          <v-list-item>
+          <v-list-item exact to="/Feed">
             <v-list-item-icon>
               <v-icon>mdi-home</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Home</v-list-item-title>
+            <v-list-item-title>Feed</v-list-item-title>
           </v-list-item>
 
-          <v-list-item>
+          <v-list-item exact to="/Event">
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Account</v-list-item-title>
+            <v-list-item-title>Eventos</v-list-item-title>
           </v-list-item>
 
         </v-list-item-group>
@@ -54,6 +68,7 @@
   export default {
     data: () => ({
       drawer: false,
+      group:null
     }),
   }
 </script>

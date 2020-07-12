@@ -7,8 +7,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    coordinateSelected:''
+  },
+  getters:{
+    coordinateSelected: state => state.coordinateSelected,
   },
   mutations: {
+    setCoordinateSelected(state, newSate){
+      state.coordinateSelected = newSate
+    },
   },
   actions: {
   },

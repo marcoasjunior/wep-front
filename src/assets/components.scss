@@ -53,3 +53,33 @@ li{
         // }
     }
 }
+
+.hiden-input{
+    display: none;
+}
+
+.drop-input{
+
+    display: block;
+    max-width: 100%;
+    width: 100%;
+    border-radius: 10px 10px 0px 0px;
+    background-color: rgb(240, 240, 240);
+    padding: 10px;
+    
+}
+
+.card-footer{
+    display: block;
+    background-color: rgb(255, 255, 255);
+    border-radius: 0px 0px 10px 10px;
+    padding: 10px;
+
+}
+
+.map-style{
+    display: block !important;
+    max-width: 50% !important;
+    width: 100% !important;
+    height: 200px !important;
+}

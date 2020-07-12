@@ -19,77 +19,118 @@
             </v-badge> -->
 
 
-         <v-card class="p10 ac" max-width="800">
+         <v-card class="p10 ac" max-width="600">
             {{ EventData }}
             <div>
-                <v-file-input v-model="fileInput" multiple label="File input"></v-file-input>
+                <div class="card-style-1">
+
+                  <span class="ac drop-input" align="center">
+                    <v-icon color="black" dark left>mdi-camera</v-icon>
+                    <p>Adicione uma imagem ao seu evento</p>
+                  </span>
+
+                  <span class="hiden-input">
+                    <input type="file">
+                  </span>
+
+                  <span class="card-footer">
+                    
+                    <v-text-field
+                      v-model="EventData.nameEvent"
+                      :rules="nameRules"
+                      :counter="10"
+                      label="Nome do evento"
+                    ></v-text-field>
+                  </span>
+
+                  <small class="p15">Criado por</small>
+
+                </div>
+
+                <!-- <v-file-input v-model="fileInput" multiple label="File input"></v-file-input> -->
             </div>
 
-            <v-form v-model="EventData">
+            <v-form class="mt-7 mb-3" v-model="EventData">
 
-                <v-text-field
-                    v-model="EventData.nameEvent"
-                    label="Name"
-                    :counter="10"
-                    :rules="nameRules"
-                    required
-                ></v-text-field>
+                <v-textarea
+                  v-model="EventData.description"
+                  solo
+                  name="input-7-4"
+                  label="Descrição do evento"
+                ></v-textarea>
 
-                <v-checkbox
-                    v-model="EventData.private"
-                    label="Evento privado?"
-                    color="primary"
-                    required
-                ></v-checkbox>
+                 <v-btn 
+                  class="ml-2"
+                  rounded
+                  color="primary"
+                  :outlined="active == 1"
+                  dark
+                  @click="active = 0"
+                >
+                  Público
+                </v-btn>
 
+                 <v-btn 
+                  class="ml-2" 
+                  rounded 
+                  color="primary" 
+                  :outlined="active == 0" 
+                  dark
+                  @click="active = 1"
+                >
+                  Privado
+                </v-btn>
+
+
+                <p class="p15" v-if="active == 0">
+                  Eventos públicos são visíveis para todos os usuários do wep app, é possível mudar as configurações do evento caso queira na seção de opções.
+                </p>
+
+                <p class="p15" v-if="active == 1">
+                  Eventos Privados aparecem no feed porem sua informações são reservadas para os convidados do evento, é possível mudar as configurações do evento caso queira.
+                </p>
+
+              <h2 class="p15">Local do evento:</h2>
+
+                <div class="p15">
+                    <SetMap/>
+                </div>
                 <!-- <l-map ref="myMap"> </l-map> -->
+
+                <div class="p15 ac mw-w-70">
+
+                  <h2 class="p15">Adicionar Tag para o evento:</h2>
+
+                  <v-select
+                    v-model="value"
+                    :items="items"
+                    chips
+                    color="purple"
+                    item-value="_id" item-text="name"
+                    label="Chips"
+                    multiple
+                    solo
+                  ></v-select>
+                </div>
+
+
+                  <v-row align="center">
+                      <v-col class="text-center" cols="1" sm="12">
+                            <v-btn
+                              align="center"
+                              class="ml-2" 
+                              rounded 
+                              color="orange" 
+                              outlined 
+                              dark
+                            >
+                              Criar evento
+                            </v-btn>
+                      </v-col>
+                  </v-row>
 
                 <!-- <v-date-picker v-model="EventData.date"></v-date-picker> -->
 
-
-                 <div class="text-center">
-    <v-dialog
-      v-model="dialog"
-      width="500"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="red lighten-2"
-          dark
-          v-bind="attrs"
-          v-on="on"
-        >
-          Click Me
-        </v-btn>
-      </template>
-
-      <v-card>
-        <v-card-title
-          class="headline grey lighten-2"
-          primary-title
-        >
-          Privacy Policy
-        </v-card-title>
-
-        <v-card-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="primary"
-            text
-            @click="dialog = false"
-          >
-            I accept
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
     
             </v-form>
         </v-card>
@@ -101,21 +142,17 @@
 </template>
 <script>
 import ToolBar from '@/components/cpmToolBar'
-import L from 'leaflet';
-import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
+import SetMap from '../../components/cpmSetMapPoints'
 
 export default {
     components: {
-        LMap,
-        LTileLayer,
-        LMarker,
         ToolBar,
+        SetMap
     },
     data:() => ({
         fileInput:'',
 
-        map:null,
-        markers:[],
+        active:0,
 
         valid: null,
         date: null,
@@ -125,6 +162,7 @@ export default {
             nameEvent:'',
             private:false,
             date:'',
+            description:'',
         },
 
         nameRules: 
@@ -132,16 +170,18 @@ export default {
             v => !!v || 'Obrigátorio preencher',
             v => (v && v.length <= 10) || 'Name must be less than 10 characters',
         ],
+
+        items:[
+          {_id:'0', name:'Fluxo'},
+          {_id:'1', name:'Rock'},
+          {_id:'2', name:'Baile'},
+          {_id:'3', name:'Luau'},
+          {_id:'4', name:'Eletrônica'},
+          {_id:'5', name:'Bar'},
+        ]
     }),
 
     mounted() {
-        this.map = L.map('map')
-        L.titleLayer('http://{s}.title.osm.org/{z}/{x}/{y}.png',{
-            attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(this.map);
-
-        //map google data
-        this.getGoogleData();
         
     },
 
@@ -150,19 +190,7 @@ export default {
         this.$refs.menu.save(date)
       },
     
-    getGoogleData(){
-        let spreadsheetID = '1ctHA5UmH9ZmrXugYFe_DHBOr9wJHRYkHCHim8nh1Tg8'
-        let worksheetID = 'od6';
-        let url = 'http://spreadsheets.google.com/feeds/list/' + spreadsheetID + '/' + worksheetID + '/public/values?alt=json'
-        console.log(url)
-        // axios.get(url).then(response => {
-        //     _.forEach(response.data.feed.entry, {
-        //         function(val, i){
-        //             var markeX
-        //         } 
-        //     });
-        // })
-    }
+
 
     },
 

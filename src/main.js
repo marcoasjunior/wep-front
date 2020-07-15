@@ -5,6 +5,11 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
+import VueIziToast from 'vue-izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
+import defaultOptionsObject from './util/iziToast'
+ 
+Vue.use(VueIziToast, defaultOptionsObject);
 
 import 'leaflet/dist/leaflet.css';
 

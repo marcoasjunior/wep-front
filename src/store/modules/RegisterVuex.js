@@ -29,9 +29,13 @@ export default {
       // formData.append('name', newData.name)
       // formData.append('whatssap', newData.whatssap)
 
-      const user = await axios.post(process.env.VUE_APP_BASE_URL + '/user', newData)
+      // APenas para teste
 
-      return user.data
+      newData.avatar = 'https://res.cloudinary.com/dxblalpv2/image/upload/v1590157243/clo_gac9pl.jpg'
+
+      const user = await axios.post(process.env.VUE_APP_BASE_URL + '/user', newData).catch((err) => console.log(err))
+
+      return user
 
     }
   }

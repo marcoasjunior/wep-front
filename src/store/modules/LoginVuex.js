@@ -23,9 +23,11 @@ export default {
 
     async authLogin (context, newData) {
 
+      console.log(newData)
+
       const autho = await axios.post(process.env.VUE_APP_BASE_URL + '/user/auth', newData)
 
-      return autho.data
+      return autho
 
     }
 

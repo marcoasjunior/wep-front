@@ -56,9 +56,11 @@ export default {
             position: "topCenter"
           }))
 
-      if (isAuth.data) this.$toast.success('Registro efetuado!', 'Hey', {
+      if (isAuth) { this.$toast.success('Logado!', 'Hey', {
             position: "topCenter"
-          })     
+          }) 
+          this.$router.push('/Feed')    
+      }
     }
   }
 }

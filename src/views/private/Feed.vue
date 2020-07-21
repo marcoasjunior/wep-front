@@ -3,6 +3,8 @@
         <ToolBar/>
         <h1 class="alg-txt-c">Feed</h1>
 
+        <Card />
+
         <div class="p15 mt-10" v-for="(item, i) in itens" :key="i">
             <v-card max-width="500" class="ac card-style-1">
                 <img :src='item.imageEvent' class="img-size">
@@ -18,6 +20,7 @@
 </template>
 <script>
 import ToolBar from '@/components/cpmToolBar'
+import Card from '@/components/cpmCard'
 
 export default {
     data:() => ({
@@ -34,7 +37,8 @@ export default {
 
 
     components:{
-        ToolBar
+        ToolBar,
+        Card
     }
 }
 </script>

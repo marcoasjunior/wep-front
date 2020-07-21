@@ -17,7 +17,7 @@
                         dot offset-x="10" offset-y="10"
                     >
                     
-                        <v-avatar size="50">
+                        <v-avatar size="50" @click="$router.push('/Profile')">
                             <v-img src="https://cdn.vuetifyjs.com/images/lists/2.jpg"></v-img>
                         </v-avatar>
 

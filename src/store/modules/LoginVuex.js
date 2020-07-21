@@ -29,7 +29,15 @@ export default {
 
       return autho
 
-    }
+    },
+
+    async authToken (context, newData) {
+
+      const autho = await axios.post(process.env.VUE_APP_BASE_URL + '/user/authToken', newData + 'a')
+
+      return autho
+
+    },
 
   }
 }

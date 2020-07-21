@@ -37,10 +37,20 @@ export default {
     }
   },
 
+  created() {
+    if (localStorage.token) {
+
+      this.checkToken().then(() => this.$router.push('/Feed'))
+
+
+    }
+  },
+
   methods: {
 
     ...mapActions({
-      authLogin: 'LoginVuex/authLogin'
+      authLogin: 'LoginVuex/authLogin',
+      authToken: 'LoginVuex/authToken',
 
     }),
 
@@ -53,13 +63,30 @@ export default {
         email: this.email
 
       }).catch(() => this.$toast.error('Problema com usuário e/ou senha', 'Putz', {
-            position: "topCenter"
-          }))
+        position: "topCenter"
+      }))
 
-      if (isAuth) { this.$toast.success('Logado!', 'Hey', {
-            position: "topCenter"
-          }) 
-          this.$router.push('/Feed')    
+      if (isAuth) {
+        this.$toast.success('Logado!', 'Hey', {
+          position: "topCenter"
+        })
+
+        localStorage.token = isAuth.data
+
+        this.$router.push('/Feed')
+      }
+    },
+
+    async checkToken() {
+
+      const isAuth = await this.authToken(localStorage.token)
+
+      if (isAuth) {
+        this.$toast.success('Logado!', 'Hey', {
+          position: "topCenter"
+        })
+
+        this.$router.push('/Feed')
       }
     }
   }

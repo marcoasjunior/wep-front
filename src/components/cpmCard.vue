@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <v-card max-height="900px" max-width="600px">
+        <v-card class="rounded-xl" max-height="900px" max-width="600px">
 
             <v-app-bar color="white" class="d-flex align-center" dense>
 
@@ -9,30 +9,30 @@
                     <v-img :src="avatar"></v-img>
                 </v-avatar>
 
-                <div class="ml-3">{{name}}</div>
+                <div class="ml-3">{{card.name}}</div>
 
-                <div class="ml-3">{{date}}</div>
+                <div class="ml-3">{{card.date}}</div>
 
             </v-app-bar>
 
             <v-img contain max-width="600px" max-height="600px" :src="img"></v-img>
 
             <v-card-title>
-                <h2>{{eventName}}</h2>
+                <h2>{{card.eventName}}</h2>
             </v-card-title>
 
             <v-card-text>
-                <p>{{description}}</p>
+                <p>{{card.description}}</p>
             </v-card-text>
 
             <v-card-subtitle>
-                <p>Criado em {{creationDate}}</p>
+                <p>Criado em {{card.creationDate}}</p>
             </v-card-subtitle>
 
             <v-expansion-panels>
                 <v-expansion-panel>
                     <v-expansion-panel-header>Comentários</v-expansion-panel-header>
-                        <v-expansion-panel-content v-for="(comment, i) in comments" :key="i">
+                        <v-expansion-panel-content v-for="(comment, i) in card.comments" :key="i">
                             {{comment.user}}: {{comment.comment}}
                         </v-expansion-panel-content>
                 </v-expansion-panel>
@@ -45,7 +45,13 @@
 
 <script>
 export default {
-    name: 'Card'
+    name: 'Card',
+    props: ['cardData'],
+    data() {
+        return {
+            card: this.cardData
+        }
+    },
 
 }
 </script>

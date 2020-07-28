@@ -8,12 +8,20 @@ import vuetify from './plugins/vuetify';
 import VueIziToast from 'vue-izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import defaultOptionsObject from './util/iziToast'
- 
+
 Vue.use(VueIziToast, defaultOptionsObject);
 
 import 'leaflet/dist/leaflet.css';
 
 import { Icon } from 'leaflet';
+
+import Cloudinary, { CldImage } from 'cloudinary-vue';
+
+Vue.use(Cloudinary, {
+    configuration: { cloudName: 'dxblalpv2' },
+    components: [ CldImage ]
+})
+
 
 delete Icon.Default.prototype._getIconUrl;
 Icon.Default.mergeOptions({

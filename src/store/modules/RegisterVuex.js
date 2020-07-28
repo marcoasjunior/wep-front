@@ -1,4 +1,5 @@
 import axios from '../../util/axios'
+import uploadCloudinary from '../../util/cloudinary'
 
 export default {
 
@@ -21,17 +22,9 @@ export default {
 
     async register (context, newData) {
 
-      // const formData = new FormData()
+      const cloudinary = await uploadCloudinary(newData.avatar)
 
-      // formData.append('avatar', newData.avatar)
-      // formData.append('email', newData.email)
-      // formData.append('password', newData.password)
-      // formData.append('name', newData.name)
-      // formData.append('whatssap', newData.whatssap)
-
-      // APenas para teste
-
-      newData.avatar = 'https://res.cloudinary.com/dxblalpv2/image/upload/v1590157243/clo_gac9pl.jpg'
+      newData.avatar = cloudinary.data.secure_url
 
       const user = await axios.post(process.env.VUE_APP_BASE_URL + '/user', newData).catch((err) => console.log(err))
 

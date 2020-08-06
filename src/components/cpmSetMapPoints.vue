@@ -43,7 +43,7 @@ export default {
     };
   },
   created() {
-    //   this.setMarker()
+      this.centerUpdated(this.center)
   },
       computed: {
 
@@ -59,6 +59,16 @@ export default {
     centerUpdated (center) {
       this.center = center;
       this.marker = center
+
+      console.log(center.lat)
+      console.log(center.lng)
+
+      let cpmMapParams = {
+        latitude: center.lat,
+        longitude: center.lng
+      }
+
+      this.$emit('callEmit', cpmMapParams)
     },
     // boundsUpdated (bounds) {
     //   this.bounds = bounds;

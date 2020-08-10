@@ -160,7 +160,9 @@
 
 <script>
 import SetMap from './cpmSetMapPoints'
-
+import {
+  mapActions
+} from 'vuex'
 export default {
 
     components:{
@@ -170,6 +172,9 @@ export default {
     data:() => ({
         fileInput:'',
         value:'',
+        
+        url:process.env.VUE_APP_BASE_URL,
+
 
         active:0,
 
@@ -184,7 +189,8 @@ export default {
             latitude:'',
             longitude:'',
             adress:'',
-            eventeDate:''
+            eventeDate:'',
+            img:''
         },
 
         name:'',
@@ -219,11 +225,15 @@ export default {
     }),
 
     methods: {
-      save (date) {
-        this.$refs.menu.save(date)
-      },
+        ...mapActions({
+            createEvent: 'createEvent'
+        }),
 
-      typeEvent(param){
+        save (date) {
+            this.$refs.menu.save(date)
+        },
+
+        typeEvent(param){
           if(param == 0){
               
               this.active = 0
@@ -235,22 +245,32 @@ export default {
               this.eventForm.private = true
           
           }
-      },
+        },
 
-      uploadPhoto(e){
-          console.log(e)
-      },
+        uploadPhoto(event){
+          console.log(event)
 
-      mapsParams(param){
+          let selectedFile = event.taget.files[0]
+
+          this.eventForm.img = URL.createObjectURL(selectedFile);
+        },
+
+        mapsParams(param){
           console.log(param)
 
           this.eventForm.latitude = param.latitude
           this.eventForm.longitude = param.longitude
-      },
+        },
 
-      createEvent(){
+        createEvent(){
           console.log(this.eventForm)
-      }
+
+          let body = this.eventForm
+
+          this.createEvent(body)
+
+        //   this.$http.post(this.url + '/event', body).then()
+        }
     
 
 

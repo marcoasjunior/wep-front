@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import postActionVuex from './modules/postActionVuex'
 import RegisterVuex from './modules/RegisterVuex'
 import LoginVuex from './modules/LoginVuex'
 
@@ -20,6 +21,7 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
+    postActionVuex,
     RegisterVuex,
     LoginVuex
   }

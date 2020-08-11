@@ -8,14 +8,28 @@ import vuetify from './plugins/vuetify';
 import VueIziToast from 'vue-izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import defaultOptionsObject from './util/iziToast'
+import firebase from 'firebase'
 
 Vue.use(VueIziToast, defaultOptionsObject);
+
+firebase.initializeApp({
+  apiKey: "AIzaSyClLsWBLQWwjE0xTiyMCVQZWoGCCu8Q3Gc",
+  authDomain: "eventyy-007.firebaseapp.com",
+  databaseURL: "https://eventyy-007.firebaseio.com",
+  projectId: "eventyy-007",
+  storageBucket: "eventyy-007.appspot.com",
+  messagingSenderId: "644960387013",
+  appId: "1:644960387013:web:0651bdf4a4efa5af6c55ac",
+  measurementId: "G-05D1TRXJLR"
+})
 
 import 'leaflet/dist/leaflet.css';
 
 import { Icon } from 'leaflet';
 
 import Cloudinary, { CldImage } from 'cloudinary-vue';
+
+// Vue.use(firebase)
 
 Vue.use(Cloudinary, {
     configuration: { cloudName: 'dxblalpv2' },

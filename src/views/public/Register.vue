@@ -81,6 +81,7 @@ export default {
     onFileChange(e) {
 
       this.src = URL.createObjectURL(this.form.avatar);
+      console.log(this.src)
     },
 
     async sendForm() {

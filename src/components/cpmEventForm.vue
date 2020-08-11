@@ -18,21 +18,19 @@
             <div>
                 <div class="card-style-1">
 
-                  <span class="ac drop-input" align="center">
-                    <v-icon color="black" dark left>mdi-camera</v-icon>
+                  <button class="ac drop-input" @click="onFileSelected" align="center">
+                    <img v-if="imageUrl" :src="imageUrl" alt="uploaded">
+                    <v-icon v-else color="black" dark left>mdi-camera</v-icon>
                     <p>Adicione uma imagem ao seu evento</p>
-                    <v-file-input @change="uploadPhoto" multiple label="File input"></v-file-input>
-                  </span>
-
+                    <!-- <v-file-input @change="onFileSelected" label="Foto do evento" ref="file-input"></v-file-input> -->
+                    <input @change="onFilePicked" type="file" class="hiden-input" ref="fileInput" accept="image/*">
+                  </button>
 
                   <!-- <span class="hiden-input">
                     <input type="file">
                   </span> -->
 
                   <span class="card-footer">
-                    
-            aqui: {{ eventForm.name }}
-
                     <v-text-field 
                         v-model="eventForm.name" 
                         label="Nome do evento" 
@@ -96,7 +94,7 @@
                     <SetMap @callEmit="mapsParams"/>
 
                     <v-text-field 
-                        v-model="eventForm.adress" 
+                        v-model="eventForm.address" 
                         label="Endereço"
                         :rules="nameRules"
                         :error="false"
@@ -159,7 +157,10 @@
 </template>
 
 <script>
-import SetMap from './cpmSetMapPoints'
+import SetMap from './cpmSetMapPoints';
+import axios from 'axios';
+import firebase, { storage } from 'firebase';
+
 import {
   mapActions
 } from 'vuex'
@@ -171,13 +172,17 @@ export default {
 
     data:() => ({
         fileInput:'',
+        currentFilePath:'',
         value:'',
+
+        selectedFile:'',
         
         url:process.env.VUE_APP_BASE_URL,
 
 
         active:0,
 
+        srcInputFile: null,
         valid: null,
         date: null,
         menu: false,
@@ -188,12 +193,14 @@ export default {
             private:'',
             latitude:'',
             longitude:'',
-            adress:'',
+            address:'',
             eventeDate:'',
-            img:''
+            img:'',
+            user:'1'
         },
 
         name:'',
+        inputFile:'',
 
         eventData:'',
 
@@ -221,7 +228,14 @@ export default {
           {_id:'3', name:'Luau'},
           {_id:'4', name:'Eletrônica'},
           {_id:'5', name:'Bar'},
-        ]
+        ],
+
+
+        imageData:'',
+        imageUrl:'',
+        image:'',
+        uploadedValue:'',
+        photo:'',
     }),
 
     methods: {
@@ -247,12 +261,54 @@ export default {
           }
         },
 
-        uploadPhoto(event){
+        onFileSelected(){
+          this.$refs.fileInput.click()
+          // console.log(e)
+          // console.log("AQUI AQUI")
+          // console.log(event.target.files[0])
+          // console.log(event.files.target)
+          // console.log(this.selectedFile)
+        },
+
+        onFilePicked(event){
+          const files = event.target.files
+          let fileName = files[0].filename
+          this.imageData = event.target.files[0]
+
+          const fileReader = new FileReader()
+          let uploadedFile = []
+          fileReader.addEventListener('load', () => {
+            this.imageUrl = fileReader.result
+          })
+          fileReader.readAsDataURL(files[0])
+
+        },
+
+        uploadPhoto(){
+          const storageImage = firebase.storage().ref(`${this.imageData.name}`).put(this.imageData)
+          storageImage.on(`state_changed`, snapshot => {
+            this.uploadedValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100
+            console.log(this.uploadedValue)
+          },  
+          error => {console.log(error.message)},
+          ()=> {this.uploadedValue=100;
+            storageImage.snapshot.ref.getDownloadURL().then((url) => {
+              this.photo = url
+              console.log("MANO... DEU TUDO CERTO, SÓ VAI")
+              console.log(url)
+              this.eventForm.img = url
+            })
+          })
+        },
+
+        onFileChange(event) {
+
           console.log(event)
+          // let selectedFile = event.taget.files[0]
 
-          let selectedFile = event.taget.files[0]
+          // this.srcInputFile = URL.createObjectURL(this.inputFile);
+          // console.log(this.srcInputFile)
 
-          this.eventForm.img = URL.createObjectURL(selectedFile);
         },
 
         mapsParams(param){
@@ -263,13 +319,33 @@ export default {
         },
 
         createEvent(){
+
+
+          
+          const fd = new FormData();
+          fd.append('title', this.eventForm.name);
+          fd.append('description', this.eventForm.description);
+          fd.append('adress', this.eventForm.address);
+          fd.append('img', this.eventForm.img);
+          fd.append('privated', this.eventForm.private);
+          fd.append('eventeDate', this.eventForm.eventeDate);
+          fd.append('latitude', this.eventForm.latitude);
+          fd.append('longitude', this.eventForm.longitude);
+          fd.append('user', this.eventForm.user);
+
           console.log(this.eventForm)
+          console.log(fd);
 
-          let body = this.eventForm
 
-          this.createEvent(body)
+          let body = fd
+          console.log(body)
+          // this.createEvent(body)
 
-        //   this.$http.post(this.url + '/event', body).then()
+          this.$http.post(this.url + '/event', fd)
+          .then(resp => {
+            console.log(resp)
+          })
+   
         }
     
 

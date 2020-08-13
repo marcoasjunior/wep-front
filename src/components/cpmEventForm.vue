@@ -160,6 +160,7 @@
 import SetMap from './cpmSetMapPoints';
 import axios from 'axios';
 import firebase, { storage } from 'firebase';
+import uploadImageToFirebase from '../util/firebase'
 
 import {
   mapActions
@@ -281,24 +282,26 @@ export default {
             this.imageUrl = fileReader.result
           })
           fileReader.readAsDataURL(files[0])
-
+          this.uploadPhoto()
         },
 
         uploadPhoto(){
-          const storageImage = firebase.storage().ref(`${this.imageData.name}`).put(this.imageData)
-          storageImage.on(`state_changed`, snapshot => {
-            this.uploadedValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100
-            console.log(this.uploadedValue)
-          },  
-          error => {console.log(error.message)},
-          ()=> {this.uploadedValue=100;
-            storageImage.snapshot.ref.getDownloadURL().then((url) => {
-              this.photo = url
-              console.log("MANO... DEU TUDO CERTO, SÓ VAI")
-              console.log(url)
-              this.eventForm.img = url
-            })
-          })
+
+          uploadImageToFirebase(this.imageData)
+          // const storageImage = firebase.storage().ref(`${this.imageData.name}`).put(this.imageData)
+          // storageImage.on(`state_changed`, snapshot => {
+          //   this.uploadedValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100
+          //   console.log(this.uploadedValue)
+          // },  
+          // error => {console.log(error.message)},
+          // ()=> {this.uploadedValue=100;
+          //   storageImage.snapshot.ref.getDownloadURL().then((url) => {
+          //     this.photo = url
+          //     console.log("MANO... DEU TUDO CERTO, SÓ VAI")
+          //     console.log(url)
+          //     this.eventForm.img = url
+          //   })
+          // })
         },
 
         onFileChange(event) {

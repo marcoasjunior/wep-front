@@ -43,6 +43,7 @@
 import {
   mapActions
 } from 'vuex'
+import uploadImageToFirebase from '../../util/firebase'
 
 export default {
 
@@ -92,7 +93,11 @@ export default {
 
       this.$toast.info('Estamos fazendo seu registo.', 'Hey', {
         position: "topCenter"
-      })
+      })     
+
+      const imgURL = await uploadImageToFirebase(this.form.avatar)
+
+      this.form.avatar = imgURL
 
       const register = await this.register(this.form)
 

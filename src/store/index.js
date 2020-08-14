@@ -9,14 +9,19 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    coordinateSelected:''
+    coordinateSelected:'',
+    uploadedFile:'',
   },
   getters:{
     coordinateSelected: state => state.coordinateSelected,
+    uploadedFile: state => state.uploadedFile,
   },
   mutations: {
     setCoordinateSelected(state, newSate){
       state.coordinateSelected = newSate
+    },
+    setUploadedFile(state, newSate){
+      state.uploadedFile = newSate
     },
   },
   actions: {

@@ -6,15 +6,16 @@
       </v-btn>
       <v-col class="d-flex justify-center align-center">
         <v-avatar color="orange" size="62">
-          <v-icon v-if="!src" dark>mdi-account-circle</v-icon>
+          <v-icon @click="onFileSelected" v-if="!src" dark>mdi-account-circle</v-icon>
           <img v-else :src="src" alt="avatar">
+          <input @change="onFilePicked" type="file" class="hiden-input" ref="fileInput" accept="image/*">
         </v-avatar>
       </v-col>
       <v-col>
         <v-form ref="form" class="d-flex flex-column">
 
-          <v-file-input accept="image/*" label="Avatar" @change="onFileChange($event)" v-model="form.avatar">
-          </v-file-input>
+          <!-- <v-file-input accept="image/*" label="Avatar" @change="onFileChange($event)" v-model="form.avatar">
+          </v-file-input> -->
 
           <v-text-field prepend-icon="mdi-account" v-model="form.name" label="Nome Completo" required></v-text-field>
 
@@ -43,6 +44,7 @@
 import {
   mapActions
 } from 'vuex'
+import uploadImageToFirebase from '../../util/firebase'
 
 export default {
 
@@ -77,9 +79,18 @@ export default {
       register: 'RegisterVuex/register'
 
     }),
+    onFileSelected(){
+      this.$refs.fileInput.click()
+    },
+
+    async onFilePicked(event){
+      this.onFileChange(event)
+      const files = event.target.files[0]
+      const imgURL = await uploadImageToFirebase(files)
+      console.log(imgURL)
+    },
 
     onFileChange(e) {
-
       this.src = URL.createObjectURL(this.form.avatar);
       console.log(this.src)
     },
@@ -92,7 +103,11 @@ export default {
 
       this.$toast.info('Estamos fazendo seu registo.', 'Hey', {
         position: "topCenter"
-      })
+      })     
+
+      const imgURL = await uploadImageToFirebase(this.form.avatar)
+
+      this.form.avatar = imgURL
 
       const register = await this.register(this.form)
 

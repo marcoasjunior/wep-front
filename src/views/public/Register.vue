@@ -66,6 +66,7 @@ export default {
       },
 
       src: null,
+      targetFile: null,
       loading: null,
       password2: null,
 
@@ -84,10 +85,19 @@ export default {
     },
 
     async onFilePicked(event){
-      this.onFileChange(event)
-      const files = event.target.files[0]
-      const imgURL = await uploadImageToFirebase(files)
-      console.log(imgURL)
+      // this.onFileChange(event)
+      const files = event.target.files
+      this.targetFile =  event.target.files[0]
+      
+      // const imgFirebaseURL = await uploadImageToFirebase(targetFile)
+      // console.log('uploadddddddddddddddddddddddddddddddd')
+      // console.log(imgFirebaseURL)
+
+      
+
+      const fileReader = new FileReader()
+      fileReader.addEventListener('load', () => { this.src = fileReader.result })
+      fileReader.readAsDataURL(files[0])
     },
 
     onFileChange(e) {
@@ -95,9 +105,15 @@ export default {
       console.log(this.src)
     },
 
+
     async sendForm() {
 
       this.validation()
+
+      const imgFirebaseURL = await uploadImageToFirebase(this.targetFile)
+      console.log('uploadddddddddddddddddddddddddddddddd')
+      console.log(imgFirebaseURL) // ESTÁ DANDO VAZIO POIS NÃO ESTÁ ESPERANDO O RETORNO DA URL DA FUNÇÃO "uploadImageToFirebase()"
+      this.form.avatar = imgFirebaseURL
 
       this.loading = true
 

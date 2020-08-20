@@ -40,35 +40,24 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-expansion-panels v-model="panel" :disabled="disabled" multiple>
+                <v-expansion-panels multiple>
                   <v-expansion-panel>
                     <v-expansion-panel-header>Alterar senha</v-expansion-panel-header>
                     <v-expansion-panel-content>
                       <v-col cols="12">
                         <v-text-field
-                          label="Senha antiga*"
-                          
-                          type="password"
-                          clearable
-                          required
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12">
-                        <v-text-field
                           label="Nova senha*"
-                         
+                          v-model="passwords.newPassword"
                           type="password"
                           clearable
-                          required
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12">
                         <v-text-field
                           label="Confirmar senha*"
-                          
+                          v-model="passwords.passwordConfirm"
                           type="password"
                           clearable
-                          required
                         ></v-text-field>
                       </v-col>
                     </v-expansion-panel-content>
@@ -90,14 +79,25 @@
 </template>
 
 <script>
+// import {mapActions} from 'vuex';
+
 export default {
-  props: ["user_data"],
+  props: ["user_data", "updateUser"],
 
   data: () => ({
     dialog: false,
+   
+    passwords: {
+      newPassword: '',
+      passwordConfirm: ''
+    }  
   }),
 
   methods: {
+    // ...mapActions({
+    //   updateUser: 'ProfileVuex/updateUser'
+    // }),
+
     async pickAvatar() {
       this.$refs.fileInput.click();
     },
@@ -113,9 +113,37 @@ export default {
       this.image = files[0];
     },
 
-    async update() {
-        
-    },
+    //TODO fazer update no avatar do user
+    async update(){
+   
+      let newUser =  {
+        avatar: this.user_data.avatar,
+        name: this.user_data.name,
+        email: this.user_data.email,
+        password: "",
+        whatsapp: this.user_data.whatsapp
+      };
+
+      if(this.passwords.newPassword !== '' && this.passwords.passwordConfirm !== ''){
+        if(this.passwords.newPassword === this.passwords.passwordConfirm){
+          newUser.password = this.passwords.newPassword;
+        }else{
+          this.$toast.error('Confirme a senha corretamente.', 'Atenção!', {position: 'topCenter'})
+          return;
+        };
+      };
+
+      const retorno = await this.updateUser(newUser);
+
+      if(retorno){
+        this.$toast.success('Informações atualizadas com sucesso!', 'Yeah',  {position: 'topCenter'});
+        this.dialog = false
+      }else{
+        this.$toast.error('Aconteceu um erro.', 'Error!', {position: 'topCenter'})
+      }
+    
+      console.log(newUser)
+    }
   },
 };
 </script>

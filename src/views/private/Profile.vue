@@ -6,7 +6,7 @@
 
     <div>
       <v-card class="p10 ac" max-width="600">
-        <v-card class="mx-auto" max-width="500">
+        <v-card class="mx-auto" max-width="600">
           <v-list-item three-line>
             <v-list-item-content>
               <!-- <div class="overline mb-4">OVERLINE</div> -->
@@ -23,9 +23,19 @@
           <v-card-actions>
             <!-- <v-btn text>Editar</v-btn> -->
             <!-- <v-btn text></v-btn> -->
-            <Dialog :user_data="user_data"/>
+            <Dialog 
+              :user_data="user_data"
+              :updateUser="updateUser"
+              />
           </v-card-actions>
         </v-card>
+
+        <h2 class="alg-txt-s mt-5">SEUS EVENTOS</h2>
+
+        <div v-for="event in events" :key="event.id">
+          <EventCard class="mt-4" :cardData="event" :user_avatar="user_data.avatar"/>
+        </div>
+        
 
         <div>
           <v-col class="text-center mt-7" cols="1" sm="12">
@@ -41,6 +51,7 @@
 import Toolbar from "@/components/cpmToolBar";
 import SetMap from "../../components/cpmSetMapPoints";
 import Dialog from '@/components/cpmDialogProfile';
+import EventCard from '@/components/cpmCard';
 
 import {mapActions} from 'vuex';
 
@@ -48,7 +59,8 @@ export default {
   components: {
     Toolbar,
     SetMap,
-    Dialog
+    Dialog,
+    EventCard
   },
 
   data: () => ({
@@ -58,12 +70,16 @@ export default {
           email: '',
           password: '',
           whatsapp: ''
-      }
+      },
+      
+      events: []
   }),
 
   methods: {
       ...mapActions({
-          getUser: 'ProfileVuex/getUser'
+          getUser: 'ProfileVuex/getUser',
+          updateUser: 'ProfileVuex/updateUser',
+          getMyEvents: 'ProfileVuex/getMyEvents'
       }),
 
       async loadUser(){
@@ -74,11 +90,18 @@ export default {
           this.user_data.email = user.email;
           this.user_data.password = user.password;
           this.user_data.whatsapp = user.whatsapp;
+      },
+
+      async loadEvents(){
+        const events = await this.getMyEvents();
+      
+        this.events = events;
       }
   },
 
   created(){
-      this.loadUser()
+      this.loadUser();
+      this.loadEvents()
   }
 };
 </script>

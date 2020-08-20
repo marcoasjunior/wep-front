@@ -55,6 +55,19 @@
             <v-list-item-title>Eventos</v-list-item-title>
           </v-list-item>
 
+          <v-list-item exact to="/Profile">
+            <v-list-item-icon>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Perfil</v-list-item-title>
+          </v-list-item>
+
+          <div>
+            <v-col>
+              <v-btn to="/Login" await @click="logOff" color="red" dark>SAIR</v-btn>
+            </v-col>
+          </div>
+
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
@@ -70,5 +83,10 @@
       drawer: false,
       group:null
     }),
+    methods: {
+      async logOff(){
+        await localStorage.removeItem('token')
+      }
+    }
   }
 </script>

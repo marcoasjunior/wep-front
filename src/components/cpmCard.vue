@@ -6,19 +6,19 @@
             <v-app-bar color="white" class="d-flex align-center" dense>
 
                 <v-avatar size="36">
-                    <v-img :src="avatar"></v-img>
+                    <v-img :src="user_avatar"></v-img>
                 </v-avatar>
 
                 <div class="ml-3">{{card.name}}</div>
 
-                <div class="ml-3">{{card.date}}</div>
+                <div class="ml-3">{{card.eventDate}}</div>
 
             </v-app-bar>
 
-            <v-img contain max-width="600px" max-height="600px" :src="img"></v-img>
+            <v-img contain max-width="600px" max-height="600px" :src="card.img"></v-img>
 
             <v-card-title>
-                <h2>{{card.eventName}}</h2>
+                <h2>{{card.title}}</h2>
             </v-card-title>
 
             <v-card-text>
@@ -26,7 +26,7 @@
             </v-card-text>
 
             <v-card-subtitle>
-                <p>Criado em {{card.creationDate}}</p>
+                <p>Criado em {{card.createdAt}}</p>
             </v-card-subtitle>
 
             <v-expansion-panels>
@@ -46,7 +46,7 @@
 <script>
 export default {
     name: 'Card',
-    props: ['cardData'],
+    props: ['cardData', 'user_avatar'],
     data() {
         return {
             card: this.cardData

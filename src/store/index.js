@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import postActionVuex from './modules/postActionVuex'
+import FeedVuex from './modules/FeedVuex'
 import RegisterVuex from './modules/RegisterVuex'
 import LoginVuex from './modules/LoginVuex'
 import ProfileVuex from './modules/ProfileVuex'
@@ -8,6 +8,7 @@ import ProfileVuex from './modules/ProfileVuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+
   state: {
     coordinateSelected:'',
     uploadedFile:'',
@@ -27,8 +28,8 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-    postActionVuex,
     RegisterVuex,
+    FeedVuex,
     LoginVuex,
     ProfileVuex
   }

@@ -103,7 +103,7 @@
                     ></v-text-field>
 
                     <v-text-field 
-                        v-model="eventForm.eventeDate" 
+                        v-model="eventForm.eventDate" 
                         label="Data do evento"
                         :rules="dateRules"
                         :error="false"
@@ -168,7 +168,7 @@ import {
 export default {
 
     components:{
-            SetMap
+        SetMap
     },
 
     data:() => ({
@@ -179,6 +179,7 @@ export default {
         selectedFile:'',
         
         url:process.env.VUE_APP_BASE_URL,
+        uploadUrl:process.env.VUE_APP_UPLOAD_URL,
 
 
         active:0,
@@ -195,7 +196,7 @@ export default {
             latitude:'',
             longitude:'',
             address:'',
-            eventeDate:'',
+            eventDate:'',
             img:'',
             user:'1'
         },
@@ -238,6 +239,10 @@ export default {
         uploadedValue:'',
         photo:'',
     }),
+
+    created(){
+      this.eventForm.private = false
+    },
 
     methods: {
         ...mapActions({
@@ -282,26 +287,19 @@ export default {
             this.imageUrl = fileReader.result
           })
           fileReader.readAsDataURL(files[0])
-          this.uploadPhoto()
         },
 
         uploadPhoto(){
+          
+            const fd = new FormData();
+            console.log(this.imageData)
+            fd.append('photo', this.imageData)
 
-          uploadImageToFirebase(this.imageData)
-          // const storageImage = firebase.storage().ref(`${this.imageData.name}`).put(this.imageData)
-          // storageImage.on(`state_changed`, snapshot => {
-          //   this.uploadedValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100
-          //   console.log(this.uploadedValue)
-          // },  
-          // error => {console.log(error.message)},
-          // ()=> {this.uploadedValue=100;
-          //   storageImage.snapshot.ref.getDownloadURL().then((url) => {
-          //     this.photo = url
-          //     console.log("MANO... DEU TUDO CERTO, SÓ VAI")
-          //     console.log(url)
-          //     this.eventForm.img = url
-          //   })
-          // })
+            this.$http.post(this.uploadUrl + '/upload/image', fd)
+            .then(resp => {
+              console.log(resp)
+              this.eventForm.img = resp.data
+            })
         },
 
         onFileChange(event) {
@@ -321,33 +319,41 @@ export default {
           this.eventForm.longitude = param.longitude
         },
 
-        createEvent(){
+          async createEvent(){
+
+          try{
+            const fd = new FormData();
+            console.log(this.imageData)
+            fd.append('photo', this.imageData);
+            await axios.post(this.uploadUrl + '/upload/image', fd).then(resp => {
+              this.eventForm.img = resp.data
+            })
 
 
-          
-          const fd = new FormData();
-          fd.append('title', this.eventForm.name);
-          fd.append('description', this.eventForm.description);
-          fd.append('adress', this.eventForm.address);
-          fd.append('img', this.eventForm.img);
-          fd.append('privated', this.eventForm.private);
-          fd.append('eventeDate', this.eventForm.eventeDate);
-          fd.append('latitude', this.eventForm.latitude);
-          fd.append('longitude', this.eventForm.longitude);
-          fd.append('user', this.eventForm.user);
+          let body = {
+            title:this.eventForm.name,
+            description:this.eventForm.description,
+            address:this.eventForm.address,
+            img:this.eventForm.img,
+            privated:this.eventForm.private,
+            eventDate:this.eventForm.eventDate,
+            latitude:this.eventForm.latitude,
+            longitude:this.eventForm.longitude,
+            user:{user: this.eventForm.user},
+          }
 
-          console.log(this.eventForm)
-          console.log(fd);
-
-
-          let body = fd
           console.log(body)
-          // this.createEvent(body)
 
-          this.$http.post(this.url + '/event', fd)
-          .then(resp => {
-            console.log(resp)
-          })
+            axios.post(this.url + '/event/create', body)
+            .then(resp => {
+              console.log(resp)
+            })
+
+          }
+
+          catch(e){
+            throw e
+          }
    
         }
     

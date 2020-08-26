@@ -3,14 +3,14 @@
         <ToolBar/>
         <h1 class="alg-txt-c">Feed</h1>
 
-        <Card />
+        <!-- <Card /> -->
 
-        <div class="p15 mt-10" v-for="(item, i) in itens" :key="i">
+        <div class="p15 mt-10" v-for="(item, i) in cardsEventData" :key="i">
             <v-card max-width="500" class="ac card-style-1">
-                <img :src='item.imageEvent' class="img-size">
+                <img :src='item.img' class="img-size">
                 
                 <div class="p10 alg-txt-s">
-                    <h4 class="clr-red">{{ item.date }}</h4>
+                    <h4 class="clr-red">{{ item.eventDate }}</h4>
                     <h1 class="mt-1">{{ item.title }}</h1>
                     <span class="mt-2 display-b">Criado por <strong>{{ item.user }}</strong> </span>
                 </div>
@@ -21,6 +21,9 @@
 <script>
 import ToolBar from '@/components/cpmToolBar'
 import Card from '@/components/cpmCard'
+import {
+  mapActions, mapGetters
+} from 'vuex'
 
 export default {
     data:() => ({
@@ -39,6 +42,26 @@ export default {
     components:{
         ToolBar,
         Card
+    },
+
+    computed: {
+
+        ...mapGetters({
+
+            cardsEventData: 'FeedVuex/cardsEventData',
+
+        }),
+
+    },
+
+    created(){
+        this.getEvents()
+    },
+
+    methods:{
+        ...mapActions({
+            getEvents: 'FeedVuex/getEvents'
+        }),
     }
 }
 </script>

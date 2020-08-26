@@ -6,7 +6,7 @@
       </v-btn>
       <v-col class="d-flex justify-center align-center">
         <v-avatar color="orange" size="62">
-          <v-icon @click="onFileSelected" v-if="!src" dark>mdi-account-circle</v-icon>
+          <v-icon class="cp" @click="onFileSelected" v-if="!src" dark>mdi-account-circle</v-icon>
           <img v-else :src="src" alt="avatar">
           <input @change="onFilePicked" type="file" class="hiden-input" ref="fileInput" accept="image/*">
         </v-avatar>
@@ -45,6 +45,7 @@ import {
   mapActions
 } from 'vuex'
 import uploadImageToFirebase from '../../util/firebase'
+import axios from 'axios';
 
 export default {
 
@@ -54,6 +55,9 @@ export default {
     return {
 
       switch1: false,
+
+      uploadUrl:process.env.VUE_APP_UPLOAD_URL,
+
 
       form: {
 
@@ -89,12 +93,6 @@ export default {
       const files = event.target.files
       this.targetFile =  event.target.files[0]
       
-      // const imgFirebaseURL = await uploadImageToFirebase(targetFile)
-      // console.log('uploadddddddddddddddddddddddddddddddd')
-      // console.log(imgFirebaseURL)
-
-      
-
       const fileReader = new FileReader()
       fileReader.addEventListener('load', () => { this.src = fileReader.result })
       fileReader.readAsDataURL(files[0])
@@ -110,20 +108,18 @@ export default {
 
       this.validation()
 
-      const imgFirebaseURL = await uploadImageToFirebase(this.targetFile)
-      console.log('uploadddddddddddddddddddddddddddddddd')
-      console.log(imgFirebaseURL) // ESTÁ DANDO VAZIO POIS NÃO ESTÁ ESPERANDO O RETORNO DA URL DA FUNÇÃO "uploadImageToFirebase()"
-      this.form.avatar = imgFirebaseURL
-
-      this.loading = true
+      const fd = new FormData();
+      fd.append('photo', this.targetFile);
+      
+      const uploadedFile = await axios.post(this.uploadUrl + '/upload/image', fd).then(resp => { this.form.avatar = resp.data })
+      this.form.avatar = uploadedFile
+      // this.loading = true
 
       this.$toast.info('Estamos fazendo seu registo.', 'Hey', {
         position: "topCenter"
-      })     
+      })
 
-      const imgURL = await uploadImageToFirebase(this.form.avatar)
-
-      this.form.avatar = imgURL
+      console.log(this.form)
 
       const register = await this.register(this.form)
 

@@ -2,7 +2,7 @@
   <div>
     <Toolbar />
 
-    <h1 class="alg-txt-c">EDITAR INFORMAÇÔES</h1>
+    <h1 class="alg-txt-c">SUAS INFORMAÇÔES</h1>
 
     <div>
       <v-card class="p10 ac" max-width="600">
@@ -11,6 +11,7 @@
             <v-list-item-content>
               <!-- <div class="overline mb-4">OVERLINE</div> -->
               <v-list-item-title class="headline mb-1">{{user_data.name}}</v-list-item-title>
+              <hr>
               <v-list-item-subtitle>{{user_data.email}}</v-list-item-subtitle>
               <v-list-item-subtitle>{{user_data.whatsapp}}</v-list-item-subtitle>
             </v-list-item-content>
@@ -33,7 +34,7 @@
         <h2 class="alg-txt-s mt-5">SEUS EVENTOS</h2>
 
         <div v-for="event in events" :key="event.id">
-          <EventCard class="mt-4" :cardData="event" :user_avatar="user_data.avatar"/>
+          <EventCard class="mt-4" :cardData="event"/>
         </div>
         
 

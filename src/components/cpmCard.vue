@@ -6,10 +6,15 @@
             <v-app-bar color="white" class="d-flex align-center" dense>
 
                 <v-avatar size="36">
-                    <v-img :src="user_avatar"></v-img>
+                    <v-img :src="card.user.avatar"></v-img>
                 </v-avatar>
 
                 <div class="ml-3">{{card.name}}</div>
+                
+                |
+
+                <div class="ml-3">{{card.user.name}}</div>
+
 
                 <div class="ml-3">{{card.eventDate}}</div>
 
@@ -25,15 +30,19 @@
                 <p>{{card.description}}</p>
             </v-card-text>
 
-            <v-card-subtitle>
+            <!-- <v-card-subtitle>
                 <p>Criado em {{card.createdAt}}</p>
-            </v-card-subtitle>
+            </v-card-subtitle> -->
 
             <v-expansion-panels>
                 <v-expansion-panel>
                     <v-expansion-panel-header>Comentários</v-expansion-panel-header>
                         <v-expansion-panel-content v-for="(comment, i) in card.comments" :key="i">
-                            {{comment.user}}: {{comment.comment}}
+                            <!-- {{comment.user}}: {{comment.comment}} -->
+                        <!-- <v-avatar size="35">
+                            <v-img :src="user.avatar"></v-img>
+                        </v-avatar> -->
+                            {{comment.user.name}}: {{comment.comment}}
                         </v-expansion-panel-content>
                 </v-expansion-panel>
             </v-expansion-panels>
@@ -46,7 +55,7 @@
 <script>
 export default {
     name: 'Card',
-    props: ['cardData', 'user_avatar'],
+    props: ['cardData'],
     data() {
         return {
             card: this.cardData

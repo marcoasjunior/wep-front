@@ -198,7 +198,7 @@ export default {
             address:'',
             eventDate:'',
             img:'',
-            user:'1'
+            user:5
         },
 
         name:'',
@@ -346,7 +346,21 @@ export default {
 
             axios.post(this.url + '/event/create', body)
             .then(resp => {
-              console.log(resp)
+
+              if(resp.status == 200){
+                
+                this.$toast.success('Registro efetuado!', 'Hey', {
+                  position: "topCenter"
+                })
+              
+              }
+            })
+            .catch(err => {
+              
+              this.$toast.error('Erro no registro!', 'Putz', {
+                position: "topCenter"
+              })
+            
             })
 
           }

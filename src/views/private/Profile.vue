@@ -16,9 +16,16 @@
               <v-list-item-subtitle>{{user_data.whatsapp}}</v-list-item-subtitle>
             </v-list-item-content>
 
-            <v-avatar title size="80" color="grey">
-              <img :src="user_data.avatar" alt="avatar" />
+            <v-avatar class="cp" @click="onFileSelected" color="orange" size="62">
+              <v-icon v-if="!src" dark>mdi-account-circle</v-icon>
+              <img v-else :src="src" alt="avatar">
+              <input @change="onFilePicked" type="file" class="hiden-input" ref="fileInput" accept="image/*">
             </v-avatar>
+
+            <v-btn @click="sendForm">
+              Mandar formulario
+            </v-btn>
+
           </v-list-item>
 
           <v-card-actions>
@@ -65,6 +72,12 @@ export default {
   },
 
   data: () => ({
+      src:'',
+      imageData:'',
+
+      uploadUrl:process.env.VUE_APP_UPLOAD_URL,
+
+
       user_data: {
           avatar: '',
           name: '',
@@ -83,6 +96,40 @@ export default {
           getMyEvents: 'ProfileVuex/getMyEvents'
       }),
 
+        onFileSelected(){
+          this.$refs.fileInput.click()
+        },
+
+        onFilePicked(event){
+          const files = event.target.files
+          let fileName = files[0].filename
+          this.imageData = event.target.files[0]
+
+          const fileReader = new FileReader()
+          fileReader.addEventListener('load', () => { this.src = fileReader.result })
+          fileReader.readAsDataURL(files[0])
+        },
+        
+        async uploadPhoto(){
+          
+            const fd = new FormData();
+            console.log(this.imageData)
+            fd.append('photo', this.imageData)
+
+            await this.$http.post(process.env.VUE_APP_UPLOAD_URL + '/upload/image', fd)
+            .then(resp => {
+              let result = resp.data
+              console.log(result) // URL DA IMAGEM AQUI
+              return result
+            })
+        },
+
+      async sendForm(){
+        let imageuploaded = await this.uploadPhoto()
+        console.log(imageuploaded)
+      },
+
+
       async loadUser(){
           const user = await this.getUser();
 
@@ -97,7 +144,8 @@ export default {
         const events = await this.getMyEvents();
       
         this.events = events;
-      }
+      },
+
   },
 
   created(){

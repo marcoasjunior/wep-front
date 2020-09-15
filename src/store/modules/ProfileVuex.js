@@ -38,6 +38,12 @@ export default {
       const events = await axios.get(process.env.VUE_APP_BASE_URL+'/event/user');
 
       return events.data;
+    },
+
+    async updateAvatar(context, newAvatar){
+      const retorno = await axios.post(process.env.VUE_APP_UPLOAD_URL+'/upload/image', newAvatar);
+
+      return retorno.data;
     }
         
   }

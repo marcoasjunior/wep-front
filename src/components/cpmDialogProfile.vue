@@ -66,7 +66,6 @@
               </v-col>
             </v-row>
           </v-container>
-          <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -82,15 +81,17 @@
 // import {mapActions} from 'vuex';
 
 export default {
-  props: ["user_data", "updateUser"],
+  props: ["user_data", "updateUser", "updateAvatar"],
 
   data: () => ({
     dialog: false,
-   
+
+    newAvatar: '',
+
     passwords: {
-      newPassword: '',
-      passwordConfirm: ''
-    }  
+      newPassword: "",
+      passwordConfirm: "",
+    },
   }),
 
   methods: {
@@ -98,52 +99,92 @@ export default {
     //   updateUser: 'ProfileVuex/updateUser'
     // }),
 
+    formValidation(){
+      if(this.user_data.name == "" || this.user_data.email == "" || this.user_data.whatsapp == ""){
+        return false;
+      };
+
+      return true;
+    },
+
     async pickAvatar() {
       this.$refs.fileInput.click();
     },
-    async onFilePicked(event) {
+
+    onFilePicked(event) {
       const files = event.target.files;
       let fileName = files[0].filename;
+      this.imageData = event.target.files[0];
 
       const fileReader = new FileReader();
       fileReader.addEventListener("load", () => {
         this.user_data.avatar = fileReader.result;
+        this.newAvatar = fileReader.result;
       });
       fileReader.readAsDataURL(files[0]);
-      this.image = files[0];
     },
 
-    //TODO fazer update no avatar do user
-    async update(){
-   
-      let newUser =  {
-        avatar: this.user_data.avatar,
+    async uploadPhoto() {
+      const fd = new FormData();
+      fd.append("photo", this.imageData);
+
+      const url = await this.updateAvatar(fd);
+
+      return url;
+    },
+
+    async update() {
+
+      if(!this.formValidation()){
+        this.$toast.error("Verifique se existe algum campo vazio", "Atenção!", {
+            position: "topCenter",
+        });
+
+        return;
+      }
+
+      let newUser = {
+        avatar: this.newAvatar,
         name: this.user_data.name,
         email: this.user_data.email,
         password: "",
         whatsapp: this.user_data.whatsapp
       };
 
-      if(this.passwords.newPassword !== '' && this.passwords.passwordConfirm !== ''){
-        if(this.passwords.newPassword === this.passwords.passwordConfirm){
+      if(newUser.avatar != ""){
+        const url = await this.uploadPhoto();
+        console.log('a')
+        newUser.avatar = url;
+      }
+
+      if (
+        this.passwords.newPassword !== "" &&
+        this.passwords.passwordConfirm !== ""
+      ) {
+        if (this.passwords.newPassword === this.passwords.passwordConfirm) {
           newUser.password = this.passwords.newPassword;
-        }else{
-          this.$toast.error('Confirme a senha corretamente.', 'Atenção!', {position: 'topCenter'})
+        } else {
+          this.$toast.error("Confirme a senha corretamente.", "Atenção!", {
+            position: "topCenter",
+          });
           return;
-        };
-      };
+        }
+      }
 
       const retorno = await this.updateUser(newUser);
 
-      if(retorno){
-        this.$toast.success('Informações atualizadas com sucesso!', 'Yeah',  {position: 'topCenter'});
-        this.dialog = false
-      }else{
-        this.$toast.error('Aconteceu um erro.', 'Error!', {position: 'topCenter'})
+      if (retorno) {
+        this.$toast.success("Informações atualizadas com sucesso!", "Yeah", {
+          position: "topCenter",
+        });
+        this.dialog = false;
+        localStorage.token = retorno;
+      } else  {
+        this.$toast.error("Aconteceu um erro.", "Error!", {
+          position: "topCenter",
+        });
       }
-    
-      console.log(newUser)
-    }
+    },
   },
 };
 </script>

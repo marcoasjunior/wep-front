@@ -50,7 +50,7 @@
 
           <v-list-item exact to="/Event">
             <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
+              <v-icon>mdi-book-plus</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Eventos</v-list-item-title>
           </v-list-item>
@@ -64,7 +64,7 @@
 
           <div>
             <v-col>
-              <v-btn to="/Login" await @click="logOff" color="red" dark>SAIR</v-btn>
+              <v-btn to="/Login" await @click="logOff()" color="red" dark>SAIR</v-btn>
             </v-col>
           </div>
 
@@ -85,7 +85,9 @@
     }),
     methods: {
       async logOff(){
-        await localStorage.removeItem('token')
+        localStorage.removeItem('token')
+
+        await this.$router.push('/')
       }
     }
   }

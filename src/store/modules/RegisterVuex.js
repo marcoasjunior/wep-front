@@ -26,6 +26,12 @@ export default {
 
       return user
 
+    },
+
+    async updateAvatar(context, newAvatar){
+      const retorno = await axios.post(process.env.VUE_APP_UPLOAD_URL+'/upload/image', newAvatar);
+
+      return retorno.data;
     }
 
  

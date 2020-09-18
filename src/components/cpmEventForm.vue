@@ -114,7 +114,7 @@
                 </div>
                 <!-- <l-map ref="myMap"> </l-map> -->
 
-                <div class="p15 ac mw-w-70">
+                <!-- <div class="p15 ac mw-w-70">
 
                   <h2 class="p15">Adicionar Tag para o evento:</h2>
 
@@ -128,7 +128,7 @@
                     multiple
                     solo
                   ></v-select>
-                </div>
+                </div> -->
 
 
                   <v-row align="center">
@@ -348,10 +348,11 @@ export default {
             .then(resp => {
 
               if(resp.status == 200){
-                
                 this.$toast.success('Registro efetuado!', 'Hey', {
                   position: "topCenter"
                 })
+                this.$router.push('/Feed')
+                this.eventForm = ''
               
               }
             })

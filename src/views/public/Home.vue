@@ -5,9 +5,11 @@
 
     <v-container class="d-flex flex-column justify-center align-center">
 
-    <v-btn class="button" color="warning" to="/Login" block>Entrar</v-btn>
+      <div class="mw-80">
+        <v-btn class="button" color="warning" to="/Login" block>Entrar</v-btn>
 
-    <v-btn class="button" color="warning" to="/Register" block>Cadastro</v-btn>
+        <v-btn class="button" color="warning" to="/Register" block>Cadastro</v-btn>
+      </div>
 
     </v-container>
 

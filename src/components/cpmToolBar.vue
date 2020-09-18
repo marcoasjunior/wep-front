@@ -63,7 +63,7 @@
           </v-list-item>
 
           <div>
-            <v-col>
+            <v-col align="center" class="mt-10">
               <v-btn to="/Login" await @click="logOff()" color="red" dark>SAIR</v-btn>
             </v-col>
           </div>

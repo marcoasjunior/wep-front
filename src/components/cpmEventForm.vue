@@ -12,9 +12,9 @@
                 <v-img src="https://cdn.vuetifyjs.com/images/lists/2.jpg"></v-img>
                 </v-avatar>
             </v-badge> -->
+        <!-- {{ test }} -->
 
-
-         <v-card class="p10 ac" max-width="600">
+         <v-card class="p10 ac mt-10" max-width="600">
             <div>
                 <div class="card-style-1">
 
@@ -163,7 +163,7 @@ import firebase, { storage } from 'firebase';
 import uploadImageToFirebase from '../util/firebase'
 
 import {
-  mapActions
+  mapActions, mapGetters
 } from 'vuex'
 export default {
 
@@ -172,6 +172,7 @@ export default {
     },
 
     data:() => ({
+        userId: localStorage.getItem('id'),
         fileInput:'',
         currentFilePath:'',
         value:'',
@@ -198,7 +199,6 @@ export default {
             address:'',
             eventDate:'',
             img:'',
-            user:5
         },
 
         name:'',
@@ -244,10 +244,25 @@ export default {
       this.eventForm.private = false
     },
 
+        computed: {
+        ...mapGetters({
+            test: 'test',
+        })
+    },
+
     methods: {
         ...mapActions({
             createEvent: 'createEvent'
         }),
+
+        testVuex(){
+          let obj = {
+            nome:'sei la',
+            record:'21321083218'
+          }
+
+          this.$store.commit('test', obj)
+        },
 
         save (date) {
             this.$refs.menu.save(date)
@@ -339,7 +354,7 @@ export default {
             eventDate:this.eventForm.eventDate,
             latitude:this.eventForm.latitude,
             longitude:this.eventForm.longitude,
-            user:{user: this.eventForm.user},
+            user:{id: this.userId},
           }
 
           console.log(body)

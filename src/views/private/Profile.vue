@@ -98,6 +98,7 @@ export default {
 
   methods: {
     ...mapActions({
+      getEvents: "FeedVuex/getEvents",
       getUser: "ProfileVuex/getUser",
       updateUser: "ProfileVuex/updateUser",
       getMyEvents: "ProfileVuex/getMyEvents",
@@ -126,6 +127,7 @@ export default {
   },
 
   created() {
+    this.getEvents();
     this.loadUser();
     this.loadEvents();
   },

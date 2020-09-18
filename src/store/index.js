@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import EventVuex from './modules/EventVuex'
 import FeedVuex from './modules/FeedVuex'
 import RegisterVuex from './modules/RegisterVuex'
 import LoginVuex from './modules/LoginVuex'
@@ -28,6 +29,7 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
+    EventVuex,
     RegisterVuex,
     FeedVuex,
     LoginVuex,

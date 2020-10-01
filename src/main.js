@@ -8,7 +8,6 @@ import vuetify from './plugins/vuetify';
 import VueIziToast from 'vue-izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import defaultOptionsObject from './util/iziToast'
-import firebase from 'firebase'
 
 Vue.use(VueIziToast, defaultOptionsObject);
 
@@ -19,7 +18,6 @@ import { Icon } from 'leaflet';
 
 import Cloudinary, { CldImage } from 'cloudinary-vue';
 
-// Vue.use(firebase)
 
 Vue.use(Cloudinary, {
     configuration: { cloudName: 'dxblalpv2' },

@@ -159,8 +159,6 @@
 <script>
 import SetMap from './cpmSetMapPoints';
 import axios from 'axios';
-import firebase, { storage } from 'firebase';
-import uploadImageToFirebase from '../util/firebase'
 
 import {
   mapActions, mapGetters

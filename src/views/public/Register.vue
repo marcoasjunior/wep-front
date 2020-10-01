@@ -25,9 +25,9 @@
           ref="fileInput"
           accept="image/*"
         />
-        <v-avatar @click="pickAvatar" class="mt-1 mb-5 cp" size="80"> 
           <v-icon class="cp" v-if="!form.avatar" dark>mdi-account-circle</v-icon>
-          <img v-else :src="form.avatar" alt="avatar"/>
+        <v-avatar @click="pickAvatar" class="mt-1 mb-5 cp" size="80"> 
+          <img :src="form.avatar" alt="avatar"/>
         </v-avatar>
       </div>
 
@@ -79,8 +79,6 @@
 
 <script>
 import { mapActions } from "vuex";
-import uploadImageToFirebase from "../../util/firebase";
-import axios from "axios";
 
 export default {
   name: "Register",

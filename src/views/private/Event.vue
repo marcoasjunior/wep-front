@@ -1,11 +1,9 @@
 <template>
     <div>
-        <ToolBar/>
+        <ToolBar />
 
-        <!-- <h1 class="alg-txt-c">CRIAR EVENTO</h1> -->
-        <EventForm/>
+        <EventForm />
 
-      <div class="mx-3"></div>
     </div>
 </template>
 <script>

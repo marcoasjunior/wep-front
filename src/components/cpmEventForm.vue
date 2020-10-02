@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex flex-column">    
-            <v-card flat class="p10 ac mt-10" max-width="800">
+            <v-card flat class="p10 ac mt-10" max-width="90%" width="800px">
                 <div>
                     <div class="card-style-1">
 
@@ -18,7 +18,7 @@
                     </div>
                 </div>
 
-                <div class="mt-7 mb-3 d-flex flex-column align-center" >
+                <v-card flat class="mt-7 mb-3 mr-auto ml-auto d-flex flex-column align-center" max-width="90%" width="800px" >
 
                     <div>
                     <v-btn class="ml-2" rounded color="primary" :outlined="active == 1" dark @click="typeEvent(0)">
@@ -58,7 +58,7 @@
                             </v-btn>
                         </v-col>
                     </v-row>
-                </div>
+                </v-card>
             </v-card>     
     </div>
 </template>
@@ -318,6 +318,7 @@ export default {
 .map {
 
     width: 800px;
+    max-width: 100%;
     height: 500px;
 
 }

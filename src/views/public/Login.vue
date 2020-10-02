@@ -71,7 +71,11 @@ export default {
           position: "topCenter"
         })
 
-        localStorage.token = isAuth.data
+        // localStorage.token = isAuth.data[0]
+
+        const token = isAuth.data[0];
+
+        localStorage.token = isAuth.data[0];
 
         this.$router.push('/Feed')
       }

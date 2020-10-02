@@ -6,7 +6,7 @@
             <v-app-bar color="white" class="d-flex align-center" dense>
 
                 <v-avatar size="36" color="orange">
-                   <v-icon v-if="!card.user.avatar" dark>mdi-account-circle</v-icon>
+                    <v-icon v-if="!card.user.avatar" dark>mdi-account-circle</v-icon>
                     <img v-else :src="card.user.avatar" alt="avatar">
                 </v-avatar>
 

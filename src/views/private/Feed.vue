@@ -6,9 +6,14 @@
         <section v-else>
             <h1 class="alg-txt-c headline mt-3">Feed</h1>
 
-            <div class="p15 mt-10" v-for="(item, i) in cardsEventData" :key="i">
 
-                <v-card max-width="600" class="ac cp card-style-1">
+            <div class="p15 mt-10 ac" v-for="(item, i) in cardsEventData" :key="i">
+
+
+                <FeedCard :cardData="cardsEventData[i]"/>
+
+
+                <!-- <v-card max-width="600" class="ac cp card-style-1">
 
                     <img :src='item.img' class="img-size">
 
@@ -18,7 +23,7 @@
                         <span class="mt-2 display-b">Criado por <strong>{{ item.user.name }}</strong> </span>
                     </div>
 
-                </v-card>
+                </v-card> -->
 
             </div>
         </section>
@@ -29,13 +34,18 @@
 <script>
 
 import ToolBar from '@/components/cpmToolBar'
-import Card from '@/components/cpmCard'
+import FeedCard from '../../components/cpmCard'
 import {
     mapActions,
     mapGetters
 } from 'vuex'
 
 export default {
+    components: {
+        ToolBar,
+        FeedCard
+    },
+
     data: () => ({
         imageURL: './img-card-0.png',
         loading: null,
@@ -77,12 +87,6 @@ export default {
             },
         ]
     }),
-
-    components: {
-        ToolBar,
-        Card
-    },
-
     computed: {
 
         ...mapGetters({

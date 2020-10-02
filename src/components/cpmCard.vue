@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <v-card v-if="cardData" class="rounded-xl" max-height="900px" max-width="600px">
+        <v-card v-if="cardData" class="rounded-xl ac" max-height="900px" max-width="600px">
 
             <v-app-bar color="white" class="d-flex align-center" dense>
 

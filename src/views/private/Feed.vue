@@ -1,49 +1,84 @@
 <template>
     <div>
-        <ToolBar/>
-        <h1 class="alg-txt-c">Feed</h1>
+        <ToolBar />
+        <v-progress-linear v-if="loading" class="progress mx-auto" indeterminate color="purple"></v-progress-linear>
 
-        <!-- <Card /> -->
+        <section v-else>
+            <h1 class="alg-txt-c headline mt-3">Feed</h1>
 
-        <div class="p15 mt-10" v-for="(item, i) in cardsEventData" :key="i">
+            <div class="p15 mt-10" v-for="(item, i) in cardsEventData" :key="i">
 
-            <v-card max-width="500" class="ac cp card-style-1">
-                
-                <img :src='item.img' class="img-size">
-                
-                <div class="p10 alg-txt-s">
-                    <h4 class="clr-red">{{ item.eventDate }}</h4>
-                    <h1 class="mt-1">{{ item.title }}</h1>
-                    <span class="mt-2 display-b">Criado por <strong>{{ item.user.name }}</strong> </span>
-                </div>
+                <v-card max-width="600" class="ac cp card-style-1">
 
-            </v-card>
+                    <img :src='item.img' class="img-size">
 
-        </div>
+                    <div class="p10 alg-txt-s">
+                        <h4 class="clr-red">{{ item.eventDate }}</h4>
+                        <h1 class="mt-1">{{ item.title }}</h1>
+                        <span class="mt-2 display-b">Criado por <strong>{{ item.user.name }}</strong> </span>
+                    </div>
+
+                </v-card>
+
+            </div>
+        </section>
+
     </div>
 </template>
+
 <script>
+
 import ToolBar from '@/components/cpmToolBar'
 import Card from '@/components/cpmCard'
 import {
-  mapActions, mapGetters
+    mapActions,
+    mapGetters
 } from 'vuex'
 
 export default {
-    data:() => ({
-        imageURL:'./img-card-0.png',
+    data: () => ({
+        imageURL: './img-card-0.png',
+        loading: null,
 
-        itens:[
-            {id:'1',date:'SEX, 07 FEV - 20:00 ás --:--', title:'Design Party', user:'Pedro Lopes', imageEvent:'./img-card-0.png'},
-            {id:'2',date:'SEG, 12 JAN - 19:40 ás --:--', title:'Design Party', user:'Marco Antônio', imageEvent:'./img-card-0.png'},
-            {id:'3',date:'TER, 23 DEZ - 21:30 ás 23:30', title:'Design Party', user:'Liam Cabral', imageEvent:'./img-card-0.png'},
-            {id:'4',date:'SEX, 07 FEV - 20:00 ás 23:30', title:'Design Party', user:'Pedro Lopes', imageEvent:'./img-card-0.png'},
-            {id:'5',date:'SEX, 07 FEV - 20:00 ás 23:30', title:'Design Party', user:'Pedro Lopes', imageEvent:'./img-card-0.png'},
+        itens: [{
+                id: '1',
+                date: 'SEX, 07 FEV - 20:00 ás --:--',
+                title: 'Design Party',
+                user: 'Pedro Lopes',
+                imageEvent: './img-card-0.png'
+            },
+            {
+                id: '2',
+                date: 'SEG, 12 JAN - 19:40 ás --:--',
+                title: 'Design Party',
+                user: 'Marco Antônio',
+                imageEvent: './img-card-0.png'
+            },
+            {
+                id: '3',
+                date: 'TER, 23 DEZ - 21:30 ás 23:30',
+                title: 'Design Party',
+                user: 'Liam Cabral',
+                imageEvent: './img-card-0.png'
+            },
+            {
+                id: '4',
+                date: 'SEX, 07 FEV - 20:00 ás 23:30',
+                title: 'Design Party',
+                user: 'Pedro Lopes',
+                imageEvent: './img-card-0.png'
+            },
+            {
+                id: '5',
+                date: 'SEX, 07 FEV - 20:00 ás 23:30',
+                title: 'Design Party',
+                user: 'Pedro Lopes',
+                imageEvent: './img-card-0.png'
+            },
         ]
     }),
 
-
-    components:{
+    components: {
         ToolBar,
         Card
     },
@@ -58,14 +93,42 @@ export default {
 
     },
 
-    created(){
-        this.getEvents()
+    async created() {
+
+        this.loading = true
+
+        try {
+
+            await this.getEvents()
+
+        } catch (error) {
+
+            console.log(error)
+
+        } finally {
+
+            this.loading = false
+
+        }
+
+
     },
 
-    methods:{
+    methods: {
         ...mapActions({
             getEvents: 'FeedVuex/getEvents'
         }),
     }
 }
 </script>
+
+<style scoped>
+
+.progress {
+
+    width: 700px;
+
+
+}
+
+</style>

@@ -29,25 +29,36 @@
                 <p>{{cardData.description}}</p>
             </v-card-text>
 
-            <v-expansion-panels v-if="cardDataArray.comments">
+            <v-expansion-panels v-if="cardDataArray[0].comments != '' ">
                 <v-expansion-panel>
                     <v-expansion-panel-header>Comentários</v-expansion-panel-header>
-                        <v-expansion-panel-content v-for="(item, i) in cardDataArray" :key="i">
+                        <v-expansion-panel-content>
 
-                            <div class="d-flex">
+                            <div class="d-flex" v-for="(item, i) in cardDataArray" :key="i">
 
                                 <v-avatar size="36" color="orange">
                                     <v-icon v-if="!item.comments[i].user.avatar" dark>mdi-account-circle</v-icon>
                                     <img v-else :src="item.comments[i].user.avatar" alt="avatar">
                                 </v-avatar>
 
-                                <div class="ml-2 mt-1">
-                                    <p>{{ item.comments[0].user.name }}:</p> 
+                                    <strong class="ml-2 mt-1">{{ item.comments[0].user.name }}:</strong> 
 
-                                    <p>{{ item.comments[0].comment }}</p>
-                                </div>
+                                    <p class="ml-2 mt-1">{{ item.comments[0].comment }}</p>
                             </div>
-                            <!-- {{comment.user.name}}: {{comment.comment}} -->
+                            
+                            <v-card>
+                                <v-textarea
+                                    outlined
+                                    v-model="newComent"
+                                    color="black"
+                                    label="Comentário"
+                                    :counter="500"
+                                ></v-textarea>
+
+                                <v-btn class="ml-a">
+                                    Enviar
+                                </v-btn>
+                            </v-card>
                         </v-expansion-panel-content>
                 </v-expansion-panel>
             </v-expansion-panels>
@@ -62,7 +73,8 @@ export default {
     name: 'Card',
     props: ['cardData'],
     data:() => ({
-        cardDataArray: []
+        cardDataArray: [],
+        newComent:''
     }),
 
     created(){

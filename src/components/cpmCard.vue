@@ -29,11 +29,25 @@
                 <p>{{cardData.description}}</p>
             </v-card-text>
 
-            <v-expansion-panels>
+            <v-expansion-panels v-if="cardDataArray.comments">
                 <v-expansion-panel>
                     <v-expansion-panel-header>Comentários</v-expansion-panel-header>
-                        <v-expansion-panel-content v-for="(comment, i) in cardData.comments" :key="i">
-                            {{comment.user.name}}: {{comment.comment}}
+                        <v-expansion-panel-content v-for="(item, i) in cardDataArray" :key="i">
+
+                            <div class="d-flex">
+
+                                <v-avatar size="36" color="orange">
+                                    <v-icon v-if="!item.comments[i].user.avatar" dark>mdi-account-circle</v-icon>
+                                    <img v-else :src="item.comments[i].user.avatar" alt="avatar">
+                                </v-avatar>
+
+                                <div class="ml-2 mt-1">
+                                    <p>{{ item.comments[0].user.name }}:</p> 
+
+                                    <p>{{ item.comments[0].comment }}</p>
+                                </div>
+                            </div>
+                            <!-- {{comment.user.name}}: {{comment.comment}} -->
                         </v-expansion-panel-content>
                 </v-expansion-panel>
             </v-expansion-panels>
@@ -47,11 +61,13 @@
 export default {
     name: 'Card',
     props: ['cardData'],
-    data() {
-        return {
-            
-        }
-    },
+    data:() => ({
+        cardDataArray: []
+    }),
+
+    created(){
+        this.cardDataArray.push(this.cardData)
+    }
 
 }
 </script>

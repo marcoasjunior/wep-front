@@ -1,7 +1,17 @@
 <template>
     <div>
         <ToolBar />
-        <v-progress-linear v-if="loading" class="progress mx-auto" indeterminate color="purple"></v-progress-linear>
+
+        <v-container v-if="loading" style="height: 400px;">
+            <v-row class="fill-height" align-content="center" justify="center">
+                <v-col class="subtitle-1 text-center" cols="12">
+                    Carregando eventos...
+                </v-col>
+                <v-col cols="6">
+                    <v-progress-linear color="deep-purple accent-4" indeterminate rounded height="6"></v-progress-linear>
+                </v-col>
+            </v-row>
+        </v-container>
 
         <section v-else>
             <h1 class="alg-txt-c headline mt-3">Feed</h1>
@@ -19,10 +29,8 @@
                     </div>
 
                 </v-card>
-
             </div>
         </section>
-
     </div>
 </template>
 

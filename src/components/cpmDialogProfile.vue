@@ -1,8 +1,10 @@
 <template>
   <v-row class="ac">
     <v-dialog v-model="dialog" persistent max-width="600px">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn v-bind="attrs" v-on="on">EDITAR</v-btn>
+      <template class="d-flex align-center" v-slot:activator="{ on, attrs }">
+        
+        <v-btn class="mr-auto ml-auto" v-bind="attrs" v-on="on">EDITAR</v-btn>
+      
       </template>
       <v-card>
         <v-card-title>

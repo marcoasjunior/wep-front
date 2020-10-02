@@ -1,14 +1,14 @@
 <template>
-  <div>
+  <div class="mx-auto d-flex flex-column">
     <Toolbar />
 
-    <h1 class="alg-txt-c">SUAS INFORMAÇÔES</h1>
+    <h1 class="alg-txt-c headline ma-4">Perfil</h1>
 
-    <div>
-      <v-card class="p10 ac" max-width="600">
-        <v-card class="mx-auto" max-width="600">
+    <v-card flat class="mx-auto">
+      <v-card max-width="600" class="d-flex flex-column">
+        <v-card flat class="mx-auto d-flex flex-column" max-width="600">
           <v-list-item three-line>
-            <v-list-item-content>
+            <v-list-item-content class="mt-3">
               <!-- <div class="overline mb-4">OVERLINE</div> -->
               <v-list-item-title class="headline mb-1">{{user_data.name}}</v-list-item-title>
               <hr />
@@ -29,7 +29,7 @@
           </v-card-actions>
         </v-card>
 
-        <h2 class="alg-txt-s mt-5">SEUS EVENTOS</h2>
+        <h2 class="alg-txt-s mt-5 headline mx-auto">Meus Eventos</h2>
 
         <div class="mt-5" v-if="events == false">
           <h5 class="alg-txt-c">Você não tem eventos cadastrados</h5>
@@ -49,17 +49,18 @@
           </v-row>
         </div>
 
-        <div v-else v-for="event in events" :key="event.id">
-          <EventCard class="mt-4" :cardData="event" />
+        <div class="mb-6" v-else v-for="event in events" :key="event.id">
+          <EventCard class="mt-4 card" :cardData="event" />
         </div>
 
         <div>
-          <v-col class="text-center mt-7" cols="1" sm="12">
-            <v-btn align="center" class="ml-2" color="red" dark>SAIR</v-btn>
-          </v-col>
+
         </div>
       </v-card>
-    </div>
+                <v-col class="text-center mt-7" cols="1" sm="12">
+            <v-btn align="center" class="ml-2" color="red" dark>SAIR</v-btn>
+          </v-col>
+    </v-card>
   </div>
 </template>
 
@@ -133,3 +134,17 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+
+.card {
+
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+
+
+}
+
+</style>

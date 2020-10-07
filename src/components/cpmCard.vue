@@ -29,11 +29,36 @@
                 <p>{{cardData.description}}</p>
             </v-card-text>
 
-            <v-expansion-panels>
+            <v-expansion-panels v-if="cardDataArray[0].comments != '' ">
                 <v-expansion-panel>
                     <v-expansion-panel-header>Comentários</v-expansion-panel-header>
-                        <v-expansion-panel-content v-for="(comment, i) in cardData.comments" :key="i">
-                            {{comment.user.name}}: {{comment.comment}}
+                        <v-expansion-panel-content>
+
+                            <div class="d-flex" v-for="(item, i) in cardDataArray" :key="i">
+
+                                <v-avatar size="36" color="orange">
+                                    <v-icon v-if="!item.comments[i].user.avatar" dark>mdi-account-circle</v-icon>
+                                    <img v-else :src="item.comments[i].user.avatar" alt="avatar">
+                                </v-avatar>
+
+                                    <strong class="ml-2 mt-1">{{ item.comments[0].user.name }}:</strong> 
+
+                                    <p class="ml-2 mt-1">{{ item.comments[0].comment }}</p>
+                            </div>
+                            
+                            <v-card>
+                                <v-textarea
+                                    outlined
+                                    v-model="newComent"
+                                    color="black"
+                                    label="Comentário"
+                                    :counter="500"
+                                ></v-textarea>
+
+                                <v-btn class="ml-a">
+                                    Enviar
+                                </v-btn>
+                            </v-card>
                         </v-expansion-panel-content>
                 </v-expansion-panel>
             </v-expansion-panels>
@@ -47,11 +72,14 @@
 export default {
     name: 'Card',
     props: ['cardData'],
-    data() {
-        return {
-            
-        }
-    },
+    data:() => ({
+        cardDataArray: [],
+        newComent:''
+    }),
+
+    created(){
+        this.cardDataArray.push(this.cardData)
+    }
 
 }
 </script>

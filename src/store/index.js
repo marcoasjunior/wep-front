@@ -11,12 +11,14 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 
   state: {
+    apiLoading: false,
     coordinateSelected:'',
     uploadedFile:'',
   },
   getters:{
     coordinateSelected: state => state.coordinateSelected,
     uploadedFile: state => state.uploadedFile,
+    apiLoading: state => state.apiLoading,
   },
   mutations: {
     setCoordinateSelected(state, newSate){
@@ -24,6 +26,9 @@ export default new Vuex.Store({
     },
     setUploadedFile(state, newSate){
       state.uploadedFile = newSate
+    },
+    setApiLoading(state, newSate){
+      state.apiLoading = newSate
     },
   },
   actions: {

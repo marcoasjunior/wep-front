@@ -49,6 +49,7 @@ export default {
   methods: {
 
     ...mapActions({
+
       authLogin: 'LoginVuex/authLogin',
       authToken: 'LoginVuex/authToken',
 

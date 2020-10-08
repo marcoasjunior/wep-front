@@ -71,8 +71,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">Cancelar</v-btn>
-          <v-btn color="blue darken-1" @click="update" text>Salvar</v-btn>
+          <v-btn color="error darken-1" text @click="dialog = false">Cancelar</v-btn>
+          <v-btn :loading="apiLoading" color="blue darken-1" @click="updateUserData" text>Salvar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -80,7 +80,7 @@
 </template>
 
 <script>
-// import {mapActions} from 'vuex';
+import {mapGetters} from 'vuex';
 
 export default {
   props: ["user_data", "updateUser", "updateAvatar"],
@@ -95,6 +95,12 @@ export default {
       passwordConfirm: "",
     },
   }),
+
+  computed:{
+    ...mapGetters({
+      apiLoading: 'apiLoading'
+    })
+  },
 
   methods: {
     // ...mapActions({
@@ -135,7 +141,7 @@ export default {
       return url;
     },
 
-    async update() {
+    async updateUserData() {
 
       if(!this.formValidation()){
         this.$toast.error("Verifique se existe algum campo vazio", "Atenção!", {
@@ -154,8 +160,8 @@ export default {
       };
 
       if(newUser.avatar != ""){
+        this.$store.commit('setApiLoading', true)
         const url = await this.uploadPhoto();
-        console.log('a')
         newUser.avatar = url;
       }
 
@@ -179,9 +185,13 @@ export default {
         this.$toast.success("Informações atualizadas com sucesso!", "Yeah", {
           position: "topCenter",
         });
+        this.$store.commit('setApiLoading', false)
         this.dialog = false;
         localStorage.token = retorno;
+
       } else  {
+        this.$store.commit('setApiLoading', false)
+
         this.$toast.error("Aconteceu um erro.", "Error!", {
           position: "topCenter",
         });

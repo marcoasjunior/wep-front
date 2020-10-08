@@ -5,18 +5,17 @@ export default {
   namespaced: true,
 
   state: {
-
- 
-
+    userData:''
   },
 
   getters: {
-
-
+    userData: state=> state.userData
   },
 
   mutations: {
-
+    setUserData(state, newState){
+      state.userData = newState
+    }
   },
 
   actions: {
@@ -25,6 +24,7 @@ export default {
 
       const autho = await axios.post(process.env.VUE_APP_BASE_URL + '/user/auth', newData)
       localStorage.setItem('id', autho.data[1])
+      context.commit('setUserData', autho)
       return autho
 
     },

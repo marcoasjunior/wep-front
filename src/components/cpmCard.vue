@@ -33,7 +33,6 @@
                 <v-expansion-panel>
                     <v-expansion-panel-header>Comentários</v-expansion-panel-header>
                         <v-expansion-panel-content>
-
                             <div v-if="cardDataArray[0].comments != '' ">
                                 <div class="d-flex" v-for="(item, i) in cardDataArray" :key="i">
 
@@ -50,26 +49,30 @@
 
                             <div>
 
-                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Rerum, magni dicta. Dignissimos doloribus cum, similique corrupti consequatur quod! Deserunt, sequi!
-                                <!-- {{ userData }} -->
-                                <!-- <v-avatar size="36" color="orange">
-                                    <v-icon v-if="!item.comments[i].user.avatar" dark>mdi-account-circle</v-icon>
-                                    <img v-else :src="item.comments[i].user.avatar" alt="avatar">
-                                </v-avatar>
+                                <div class="d-flex">
+                                    <v-avatar size="36" color="orange" class="mr-4">
+                                        <v-icon v-if="!userData.avatar" dark>mdi-account-circle</v-icon>
+                                        <img v-else :src="userData.avatar" alt="avatar">
+                                    </v-avatar>
 
-                                <v-textarea
-                                    outlined
-                                    v-model="newComent"
-                                    color="black"
-                                    label="Comentário"
-                                    :counter="500"
-                                ></v-textarea>
+                                    <v-textarea
+                                        outlined
+                                        v-model="newComent"
+                                        class="text-area-coment"
+                                        :counter="500"
+                                        auto-grow
+                                        filled
+                                        color="black"
+                                        label="Comente no evento 🗯"
+                                        rows="1"
+                                    ></v-textarea>
+                                </div>
 
                                 <div class="d-flex justify-space-between">           
-                                    <v-btn color="orange" dark class="ml-a" @click="createComent">
+                                    <v-btn color="orange" dark class="ml-a" @click="createComent(cardData)">
                                         Enviar
                                     </v-btn>
-                                </div> -->
+                                </div>
 
                             </div>
                         </v-expansion-panel-content>
@@ -88,20 +91,43 @@ export default {
     props: ['cardData'],
     data:() => ({
         cardDataArray: [],
-        newComent:''
+        newComent:'',
+        url: process.env.VUE_APP_BASE_URL,
+
     }),
 
     computed:{
         ...mapGetters({
-            userData: 'userData'
+            userData: 'FeedVuex/userData'
         })
     },
 
     methods:{
 
+        createComent(param){
+            if(!this.newComent){
+                this.$toast.error("Verifique se existe algum campo vazio", "Atenção!", {
+                    position: "topCenter",
+                });
+            }
 
-        createComent(){
-            
+            else{
+                let body = {
+                    comment:this.newComent
+                }
+                let eventId = param.id
+                console.log(this.url + `/comment/${eventId}`, body)
+
+                this.$http.post(this.url + `/comment/${eventId}`, body).then(resp => {
+                    console.log(resp)
+                })
+
+                this.$http.post(this.uploadUrl + '/upload/image', fd)
+                .then(resp => {
+                    console.log(resp)
+                    this.eventForm.img = resp.data
+                })
+            }
         }
     },
 
@@ -112,10 +138,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.text-area-coment{
 
-
-
-
-
+}
 </style>

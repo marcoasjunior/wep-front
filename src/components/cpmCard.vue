@@ -85,6 +85,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { mapActions, mapGetters } from 'vuex'
 export default {
     name: 'Card',
@@ -116,17 +117,23 @@ export default {
                     comment:this.newComent
                 }
                 let eventId = param.id
-                console.log(this.url + `/comment/${eventId}`, body)
 
-                this.$http.post(this.url + `/comment/${eventId}`, body).then(resp => {
-                    console.log(resp)
-                })
+                // this.$http.post(this.url + `/comment/${eventId}`, body).then(resp => {
+                //     console.log(resp)
+                // })
 
-                this.$http.post(this.uploadUrl + '/upload/image', fd)
+                axios.post(this.url + `/comment/${eventId}`, body)
                 .then(resp => {
                     console.log(resp)
-                    this.eventForm.img = resp.data
                 })
+                .catch(err => {
+
+                    this.$toast.error('Erro no registro!', 'Putz', {
+                        position: "topCenter"
+                    })
+
+                })
+
             }
         }
     },

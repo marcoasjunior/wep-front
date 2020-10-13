@@ -34,16 +34,21 @@
                     <v-expansion-panel-header>Comentários</v-expansion-panel-header>
                         <v-expansion-panel-content>
                             <div v-if="cardDataArray[0].comments != '' ">
-                                <div class="d-flex" v-for="(item, i) in cardDataArray" :key="i">
+                                <div class="d-flex" v-for="(item, index) in cardDataArray" :key="index">
+                                    
+                                    <!-- {{ item.comments }} -->
+                                    {{ index }}
+                                        <!-- <v-avatar size="36" color="orange">
+                                            <v-icon v-if="!item[index].user.avatar" dark>mdi-account-circle</v-icon>
+                                            <img v-else :src="item[index].user.avatar" alt="avatar">
+                                        </v-avatar> -->
 
-                                    <v-avatar size="36" color="orange">
-                                        <v-icon v-if="!item.comments[i].user.avatar" dark>mdi-account-circle</v-icon>
-                                        <img v-else :src="item.comments[i].user.avatar" alt="avatar">
-                                    </v-avatar>
+                                    <!-- {{ item.comments[item] }} -->
+                                    <!-- {{ item.comments[1] }} -->
 
-                                        <strong class="ml-2 mt-1">{{ item.comments[0].user.name }}:</strong> 
+                                        <!-- <strong class="ml-2 mt-1">{{ item.comments[i].user.name }}:</strong> 
 
-                                        <p class="ml-2 mt-1">{{ item.comments[0].comment }}</p>
+                                        <p class="ml-2 mt-1">{{ item.comments[i].comment }}</p> -->
                                 </div>
                             </div>
 

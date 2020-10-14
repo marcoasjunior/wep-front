@@ -2,7 +2,7 @@
   <div>
     <v-card
       v-if="cardData"
-      class="rounded-xl ac"
+      class="rounded-xl ac mb-5"
       max-height="900px"
       max-width="600px"
     >
@@ -53,6 +53,7 @@
                 </v-avatar>
 
                 {{ comment.user.name }} - {{ comment.comment }}
+                
               </div>
 
             </div>
@@ -116,37 +117,50 @@ export default {
   },
 
   methods: {
-    createComent(param) {
-      if (!this.newComent) {
-        this.$toast.error("Verifique se existe algum campo vazio", "Atenção!", {
-          position: "topCenter",
-        });
-      } else {
-        let body = {
-          comment: this.newComent,
-        };
-        let eventId = param.id;
+        ...mapActions({
+            getEvents: 'FeedVuex/getEvents'
+        }),
 
-        // this.$http.post(this.url + `/comment/${eventId}`, body).then(resp => {
-        //     console.log(resp)
-        // })
-
-        axios
-          .post(this.url + `/comment/${eventId}`, body)
-          .then((resp) => {
-            // console.log(resp)
-          })
-          .catch((err) => {
-            this.$toast.error("Erro no registro!", "Putz", {
-              position: "topCenter",
+        createComent(param) {
+        if (!this.newComent) {
+            this.$toast.error("Verifique se existe algum campo vazio", "Atenção!", {
+            position: "topCenter",
             });
-          });
-      }
-    },
+        } else {
+            let body = {
+            comment: this.newComent,
+            };
+            let eventId = param.id;
+
+            // this.$http.post(this.url + `/comment/${eventId}`, body).then(resp => {
+            //     console.log(resp)
+            // })
+
+            axios
+            .post(this.url + `/comment/${eventId}`, body)
+            .then((resp) => {
+
+                if(resp.data != ''){
+                    this.getEvents()
+                    this.newComent = ''
+
+                    this.$toast.success("evento comentado!", "💥", {
+                        position: "topCenter",
+                    });
+                }
+            })
+            .catch((err) => {
+                this.$toast.error("Erro no registro!", "Putz", {
+                position: "topCenter",
+                });
+            });
+        }
+        },
   },
 
   created() {
     // this.cardDataArray.push(this.cardData)
+    console.log("odsadiosaiodjsioajdiosajdiosa");
     console.log(this.cardData.comments);
   },
 };

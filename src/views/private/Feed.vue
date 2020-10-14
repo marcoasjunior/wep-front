@@ -22,19 +22,6 @@
 
                 <FeedCard :cardData="cardsEventData[i]"/>
 
-
-                <!-- <v-card max-width="600" class="ac cp card-style-1">
-
-                    <img :src='item.img' class="img-size">
-
-                    <div class="p10 alg-txt-s">
-                        <h4 class="clr-red">{{ item.eventDate }}</h4>
-                        <h1 class="mt-1">{{ item.title }}</h1>
-                        <span class="mt-2 display-b">Criado por <strong>{{ item.user.name }}</strong> </span>
-                    </div>
-
-                </v-card> -->
-
             </div>
         </section>
     </div>

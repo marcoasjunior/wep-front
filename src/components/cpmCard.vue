@@ -52,7 +52,67 @@
                   <img v-else :src="comment.user.avatar" alt="avatar" />
                 </v-avatar>
 
-                {{ comment.user.name }} - {{ comment.comment }}
+                {{ comment.user.name }} - 
+
+                <span class="ml-2" v-if="selectedCommentId != comment.id">
+                    {{ comment.comment }}
+                </span>
+
+                <span class="ml-2" v-if="selectedCommentId == comment.id && !setUpdateinput">
+                    {{ comment.comment }}
+                </span>
+
+                <div class="d-flex" v-if="setUpdateinput">
+                    
+                    <v-text-field
+                        class="ml-3"
+                        v-if="selectedCommentId == comment.id"
+                        v-model="updateInputComment"
+                        :counter="500"
+                        label="First name"
+                        outlined
+                    ></v-text-field>
+
+                        <div>
+                            <v-icon v-if="selectedCommentId == comment.id" color="error" class="d-block" @click="setUpdateinput = false">
+                                mdi-close
+                            </v-icon>
+        
+                            <v-icon v-if="selectedCommentId == comment.id" color="primary" @click="sendUpdateComment(comment)">
+                                mdi-send-circle-outline
+                            </v-icon>
+                        </div>
+
+                </div>
+                
+                <v-menu
+                    v-if="comment.user.id == userData.id"
+                    offset-x
+                >
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                        color="primary"
+                        dark
+                        class="ml-a"
+                        text
+                        v-bind="attrs"
+                        v-on="on"
+                        >
+                            <v-icon>mdi-buffer</v-icon>
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item
+                        v-for="(item, index) in commentOptions"
+                        :key="index"
+                        link
+                        >
+                        <v-list-item-title @click="commentAction(item, comment)">
+                            {{ item.name }} <v-icon dark :color="item.color">{{ item.icon }}</v-icon>
+                        </v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
                 
               </div>
 
@@ -107,7 +167,14 @@ export default {
   data: () => ({
     // cardDataArray: [],
     newComent: "",
+    updateInputComment: "",
+    selectedCommentId: "",
+    setUpdateinput: false,
     url: process.env.VUE_APP_BASE_URL,
+    commentOptions: [
+        {name: "Editar", icon:"mdi-pencil", color:"orange"}, 
+        {name: "Deletar", icon:"mdi-trash-can", color:"error"}
+    ]
   }),
 
   computed: {
@@ -150,18 +217,74 @@ export default {
                 }
             })
             .catch((err) => {
-                this.$toast.error("Erro no registro!", "Putz", {
+                this.$toast.error("Erro ao tentar comentar no evento!", "Putz", {
                 position: "topCenter",
                 });
             });
         }
         },
+
+        sendUpdateComment(comentData){
+
+            let comentId = comentData.id
+            let body = {
+                comment:this.updateInputComment
+            }
+            axios.put(this.url + `/comment/${comentId}`, body)
+            .then(resp => {
+                console.log(resp)
+                if(resp.data != ''){
+                    this.getEvents()
+                    this.setUpdateinput = false
+                    this.$toast.success("Comentário alterado", "💥", {
+                        position: "topCenter",
+                    });
+                }
+            })
+            .catch((err) => {
+                this.$toast.error("Erro ao tentar alterar comentário!", "Putz", {
+                position: "topCenter",
+                });
+            });
+        },
+
+        commentAction(param, comentID){
+            console.log(param)
+            if(param.name == "Editar"){
+                this.updateComment(comentID)
+            }else if(param.name == "Deletar"){
+                this.deleteComment(comentID)
+            }
+        },
+        updateComment(comentParam){
+            console.log(comentParam.id)
+            this.selectedCommentId = comentParam.id
+            this.setUpdateinput = true
+        },
+        deleteComment(comentParam){
+
+            let comentId = comentParam.id
+            axios.delete(this.url + `/comment/${comentId}`)
+            .then(resp => {
+                console.log(resp)
+                if(resp.data != ''){
+                    this.getEvents()
+
+                    this.$toast.success("Comentário deletado", "💥", {
+                        position: "topCenter",
+                    });
+                }
+            })
+            .catch((err) => {
+                this.$toast.error("Erro ao tentar deletar comentário!", "Putz", {
+                position: "topCenter",
+                });
+            });
+
+        },
   },
 
   created() {
-    // this.cardDataArray.push(this.cardData)
-    console.log("odsadiosaiodjsioajdiosajdiosa");
-    console.log(this.cardData.comments);
   },
 };
 </script>

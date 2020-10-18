@@ -40,8 +40,7 @@ export default {
   created() {
     if (localStorage.token) {
 
-      this.checkToken().then(() => this.$router.push('/Feed'))
-
+      this.checkToken();
 
     }
   },
@@ -84,15 +83,17 @@ export default {
 
     async checkToken() {
 
-      const isAuth = await this.authToken(localStorage.token)
+      const isAuth = await this.authToken();
 
-      if (isAuth) {
+      if (isAuth != false) {
         this.$toast.success('Logado!', 'Hey', {
           position: "topCenter"
         })
 
         this.$router.push('/Feed')
       }
+
+      console.log(isAuth)
     }
   }
 }

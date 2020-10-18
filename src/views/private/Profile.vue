@@ -49,7 +49,7 @@
           </v-row>
         </div>
 
-        <div class="mb-6" v-else v-for="event in events" :key="event.id">
+        <div class="mb-6 p10" v-else v-for="event in events" :key="event.id">
           <EventCard class="mt-4 card" :cardData="event" />
         </div>
 
@@ -58,7 +58,7 @@
         </div>
       </v-card>
                 <v-col class="text-center mt-7" cols="1" sm="12">
-            <v-btn align="center" class="ml-2" color="red" dark>SAIR</v-btn>
+            <v-btn align="center" class="ml-2" color="red" @click="logOut()" dark>SAIR</v-btn>
           </v-col>
     </v-card>
   </div>
@@ -105,7 +105,12 @@ export default {
       getMyEvents: "ProfileVuex/getMyEvents",
       updateAvatar: "ProfileVuex/updateAvatar",
     }),
+    logOut(){
+      localStorage.removeItem('token');
+      localStorage.removeItem('id');
 
+      this.$router.push('/Home');
+    },
     async loadUser() {
       const user = await this.getUser();
 

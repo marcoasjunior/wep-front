@@ -20,12 +20,8 @@ export default {
 
   actions: {
     async getUser(context){
-      const token = localStorage.getItem('token');
-      const decodedToken = await axios.post(process.env.VUE_APP_BASE_URL+'/user/authToken', token);
-
-      console.log(decodedToken)
-
-      const user = await axios.get(process.env.VUE_APP_BASE_URL+`/user/mail/${decodedToken.data}`);
+     
+      const user = await axios.get(process.env.VUE_APP_BASE_URL+`/user/this`);
       return user.data;
     },
 

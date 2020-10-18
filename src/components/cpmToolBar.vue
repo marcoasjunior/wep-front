@@ -64,7 +64,7 @@
 
           <div>
             <v-col align="center" class="mt-10">
-              <v-btn to="/Login" await @click="logOff()" color="red" dark>SAIR</v-btn>
+              <v-btn @click="logOff" color="red" dark>SAIR</v-btn>
             </v-col>
           </div>
 
@@ -85,7 +85,8 @@
     }),
     methods: {
       async logOff(){
-        localStorage.removeItem('token')
+        await localStorage.removeItem('token');
+        await localStorage.removeItem('id');
 
         await this.$router.push('/')
       }

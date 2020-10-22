@@ -56,6 +56,11 @@ const routes = [
         path: '/Coment/1',
         name: 'Coment',
         component: () => import('../views/private/Coment.vue')
+      },
+      {
+        path: '/Follow',
+        name: 'FollowIndex',
+        component: () => import('../views/private/FollowIndex.vue')
       }
 
     ]

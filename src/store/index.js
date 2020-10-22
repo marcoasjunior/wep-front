@@ -5,6 +5,7 @@ import FeedVuex from './modules/FeedVuex'
 import RegisterVuex from './modules/RegisterVuex'
 import LoginVuex from './modules/LoginVuex'
 import ProfileVuex from './modules/ProfileVuex'
+import FollowVuex from './modules/FollowVuex'
 
 Vue.use(Vuex)
 
@@ -38,6 +39,7 @@ export default new Vuex.Store({
     RegisterVuex,
     FeedVuex,
     LoginVuex,
-    ProfileVuex
+    ProfileVuex,
+    FollowVuex
   }
 })

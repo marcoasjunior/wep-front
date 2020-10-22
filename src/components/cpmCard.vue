@@ -44,7 +44,6 @@
                 v-for="comment in cardData.comments"
                 :key="comment.id"
               >
-
                 <v-avatar size="33" color="orange" class="mr-4">
                   <v-icon v-if="!comment.user.avatar" dark
                     >mdi-account-circle</v-icon

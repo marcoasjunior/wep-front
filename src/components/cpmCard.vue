@@ -29,7 +29,8 @@
             <v-card-text class="d-flex justify-space-between">
                 <p>
                     <v-btn @click="thumbAction(cardData)" icon>
-                        <v-icon>mdi-thumb-up-outline</v-icon>
+                        <v-icon v-if="liked === false">mdi-thumb-up-outline</v-icon>
+                        <v-icon v-else>mdi-thumb-up</v-icon>
                     </v-btn>
                     <v-chip outlined>{{ cardData.likes }}</v-chip>
                 </p>
@@ -206,6 +207,12 @@ export default {
 
         },
 
+        checkLike() {
+
+            this.cardData.liked.some(event => event.id === localStorage.getItem('id')) ? this.liked = true : this.liked = false
+
+        },
+
         sendUpdateComment(comentData){
 
             let comentId = comentData.id
@@ -267,6 +274,9 @@ export default {
   },
 
   created() {
+
+      this.checkLike()
+
   },
 };
 </script>

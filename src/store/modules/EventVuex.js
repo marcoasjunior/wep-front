@@ -43,7 +43,7 @@ export default {
 
       try {
 
-        const result = await axios.put(process.env.VUE_APP_BASE_URL + `/event/like/${newData.userId}/${newData.eventId}`)
+        const result = await axios.post(process.env.VUE_APP_BASE_URL + `/like/${newData.userId}/${newData.eventId}`)
 
         return result.data
 
@@ -59,7 +59,7 @@ export default {
 
       try {
 
-        const result = await axios.put(process.env.VUE_APP_BASE_URL + `/event/like/${newData.userId}/${newData.eventId}`)
+        const result = await axios.delete(process.env.VUE_APP_BASE_URL + `/like/${newData.userId}/${newData.eventId}`)
 
         return result.data
 

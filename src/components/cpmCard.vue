@@ -29,14 +29,14 @@
             <v-card-text class="d-flex justify-space-between">
                 <p>
                     <v-btn @click="thumbAction(cardData)" icon>
-                        <v-icon v-if="liked === false">mdi-thumb-up-outline</v-icon>
+                        <v-icon v-if="!checkLike">mdi-thumb-up-outline</v-icon>
                         <v-icon v-else>mdi-thumb-up</v-icon>
                     </v-btn>
                     <v-chip outlined>{{ cardData.likes }}</v-chip>
                 </p>
                 <p>
                     <v-icon>mdi-comment</v-icon>
-                    <v-chip outlined>{{ cardData.comments || 0 }}</v-chip>
+                    <!-- <v-chip outlined>{{ cardData.comments || 0 }}</v-chip> -->
                 </p>
             </v-card-text>
 
@@ -129,7 +129,6 @@ export default {
   data: () => ({
     // cardDataArray: [],
     newComent: "",
-    liked: false,
     updateInputComment: "",
     selectedCommentId: "",
     setUpdateinput: false,
@@ -144,6 +143,24 @@ export default {
     ...mapGetters({
       userData: "FeedVuex/userData",
     }),
+
+    getId() {
+
+        return parseInt(localStorage.getItem('id')) 
+
+    },
+
+    checkLike() {
+
+        const setTocheck = new Set()
+        
+        this.cardData.liked.forEach(user => setTocheck.add(user.id));
+
+        if (setTocheck.has(this.getId)) return true 
+        
+        return false
+
+    },
   },
 
   methods: {
@@ -193,9 +210,9 @@ export default {
 
             try {
          
-                !this.liked ? await this.likeEvent({ eventId: cardData.id, userId: localStorage.getItem('id') }) : await this.unlikeEvent({ eventId: cardData.id, userId: localStorage.getItem('id') })
+                !this.checkLike ? await this.likeEvent({ eventId: cardData.id, userId: this.getId }) : await this.unlikeEvent({ eventId: cardData.id, userId: this.getId })
 
-                this.getEvents()
+                await this.getEvents()
                 
             } catch (error) {
 
@@ -204,12 +221,6 @@ export default {
                 this.$toast.error("Erro ao curtir", "Putz", { position: "topCenter" });
                 
             }
-
-        },
-
-        checkLike() {
-
-            this.cardData.liked.some(event => event.id === localStorage.getItem('id')) ? this.liked = true : this.liked = false
 
         },
 
@@ -273,11 +284,6 @@ export default {
         },
   },
 
-  created() {
-
-      this.checkLike()
-
-  },
 };
 </script>
 

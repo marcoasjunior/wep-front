@@ -1,5 +1,37 @@
 <template>
-  <v-card max-width="550">
+  <div>
+    <v-list-item>
+      <v-list-item-avatar color="orange">
+        <v-icon v-if="userData.avatar == null">mdi-account-circle</v-icon>
+        <v-img v-else :src="userData.avatar"></v-img>
+      </v-list-item-avatar>
+
+      <v-list-item-content>
+        <v-list-item-title v-text="userData.name"></v-list-item-title>
+      </v-list-item-content>
+
+      
+      <v-list-item-action v-if="userData.following">
+        <v-btn v-if="!loading" depressed small color="#00CA9D">
+          Seguindo
+        </v-btn>
+        <v-btn v-else loading depressed small color="#00CA9D"> Seguindo </v-btn>
+      </v-list-item-action>
+      <v-list-item-action v-else>
+        <v-btn
+          v-if="!loading"
+          depressed
+          small
+          color="#00CA9D"
+          @click="follow(userData)"
+        >
+          Seguir
+        </v-btn>
+        <v-btn v-else loading depressed small color="#00CA9D"> Seguir </v-btn>
+      </v-list-item-action>
+    </v-list-item>
+  </div>
+  <!-- <v-card max-width="550">
     <v-virtual-scroll :items="usersData" :item-height="70" height="350">
       <template v-slot:default="{ item }">
         <v-list-item>
@@ -44,31 +76,21 @@
         <hr />
       </template>
     </v-virtual-scroll>
-  </v-card>
+  </v-card> -->
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
 
 export default {
+  props: ["userData"],
   data: () => ({
     following: false,
     loading: false,
   }),
 
-  computed: {
-    usersData() {
-      let users = this.$store.state.FollowVuex.users;
-
-
-      return users;
-    },
-  },
-
   methods: {
     ...mapActions({
-      getUsers: "FollowVuex/getUsers",
-      getFollowing: "FollowVuex/getFollowing",
       doFollow: "FollowVuex/doFollow",
     }),
 
@@ -79,18 +101,17 @@ export default {
 
       this.loading = false;
 
-      this.following = true;
+      user.following = true
     },
 
     teste() {
-
+      console.log();
     },
   },
 
-  async created() {
-    await this.getUsers();
-    await this.getFollowing();
+  created() {
     // this.teste();
+    // this.index();
   },
 };
 </script>

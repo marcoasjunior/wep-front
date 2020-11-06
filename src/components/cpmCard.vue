@@ -32,7 +32,7 @@
                         <v-icon v-if="!checkLike">mdi-thumb-up-outline</v-icon>
                         <v-icon v-else>mdi-thumb-up</v-icon>
                     </v-btn>
-                    <v-chip outlined>{{ cardData.likes }}</v-chip>
+                    <v-chip outlined>{{ cardData.liked.length }}</v-chip>
                 </p>
                 <p>
                     <v-icon>mdi-comment</v-icon>

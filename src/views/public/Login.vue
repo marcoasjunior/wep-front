@@ -38,11 +38,9 @@ export default {
   },
 
   created() {
-    if (localStorage.token) {
-
-      this.checkToken();
-
-    }
+    // if (localStorage.token) {
+    //   this.checkToken();
+    // }
   },
 
   methods: {

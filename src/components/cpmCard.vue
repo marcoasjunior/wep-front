@@ -35,14 +35,20 @@
                     <v-chip outlined>{{ cardData.liked.length }}</v-chip>
                 </p>
                 <p>
-                    <v-icon>mdi-comment</v-icon>
                     <!-- <v-chip outlined>{{ cardData.comments || 0 }}</v-chip> -->
                 </p>
+                
+                <v-btn @click="confirmEvent(cardData)" color="primary">
+                    Confirmar presença!
+                </v-btn>
+
             </v-card-text>
 
             <v-expansion-panels>
                 <v-expansion-panel>
-                    <v-expansion-panel-header>Comentários</v-expansion-panel-header>
+                    <v-expansion-panel-header>Comentários 
+                        <span class="ml-2"><v-icon>mdi-comment</v-icon></span>
+                    </v-expansion-panel-header>
                     <v-expansion-panel-content>
                         <div>
                             <div class="d-flex mt-4" v-for="comment in cardData.comments" :key="comment.id">
@@ -282,6 +288,17 @@ export default {
             });
 
         },
+
+        confirmEvent(param){
+            console.log("eu vou hein");
+
+            let eventId = param.id
+            console.log(eventId);
+            let body = {
+                
+            }
+            axios.post(this.url + `/event/confirm/${eventId}`, body)
+        }
   },
 
 };

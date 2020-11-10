@@ -38,9 +38,6 @@
                     <!-- <v-chip outlined>{{ cardData.comments || 0 }}</v-chip> -->
                 </p>
                 
-                <v-btn @click="confirmEvent(cardData)" color="primary">
-                    Confirmar presença!
-                </v-btn>
 
             </v-card-text>
 
@@ -289,16 +286,6 @@ export default {
 
         },
 
-        confirmEvent(param){
-            console.log("eu vou hein");
-
-            let eventId = param.id
-            console.log(eventId);
-            let body = {
-                
-            }
-            axios.post(this.url + `/event/confirm/${eventId}`, body)
-        }
   },
 
 };

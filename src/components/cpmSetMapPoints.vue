@@ -60,8 +60,8 @@ export default {
       this.center = center;
       this.marker = center
 
-      console.log(center.lat)
-      console.log(center.lng)
+      // console.log(center.lat)
+      // console.log(center.lng)
 
       let cpmMapParams = {
         latitude: center.lat,

@@ -11,17 +11,10 @@
 
         <!-- <v-toolbar-title> -->
                 <div class="ml-a cp">
-                    <v-badge
-                        bordered bottom
-                        color="deep-purple accent-4"
-                        dot offset-x="10" offset-y="10"
-                    >
-                    
-                        <v-avatar size="50" @click="$router.push('/Profile')">
-                            <v-img src="https://cdn.vuetifyjs.com/images/lists/2.jpg"></v-img>
-                        </v-avatar>
-
-                    </v-badge>
+                  <v-avatar size="50" @click="$router.push('/Profile')">
+                      <v-img v-if="userData.avatar" :src="userData.avatar"></v-img>
+                      <v-icon v-else dark>mdi-account-circle</v-icon>
+                  </v-avatar>
                 </div>
         <!-- </v-toolbar-title> -->
       
@@ -78,11 +71,18 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
   export default {
     data: () => ({
       drawer: false,
       group:null
     }),
+    computed: {
+        ...mapGetters({
+            userData: 'FeedVuex/userData',
+        })
+    },
     methods: {
       async logOff(){
         await localStorage.removeItem('token');

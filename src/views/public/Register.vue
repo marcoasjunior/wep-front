@@ -17,6 +17,7 @@
           />
         </v-avatar>
       </v-col>-->
+      
       <div class="d-flex ac justify-center">
         <input
           @change="onFilePicked"
@@ -25,10 +26,31 @@
           ref="fileInput"
           accept="image/*"
         />
-          <v-icon class="cp" v-if="!form.avatar" dark>mdi-account-circle</v-icon>
+          
         <v-avatar @click="pickAvatar" class="mt-1 mb-5 cp" size="80"> 
-          <img :src="form.avatar" alt="avatar"/>
+          <!-- <v-icon class="cp" v-if="!form.avatar" dark>mdi-account-circle</v-icon> -->
+          <!-- <v-icon v-if="!form.avatar" dark>mdi-account-circle</v-icon> -->
+          
+          <img v-if="form.avatar" :src="form.avatar" alt="avatar"/>
         </v-avatar>
+
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              @click="pickAvatar"
+              v-if="!form.avatar"
+              rounded
+              color="primary"
+              dark
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon class="cp" dark>mdi-account-circle</v-icon>
+            </v-btn>
+          </template>
+          <span>Clique para escolher a foto de perfil</span>
+        </v-tooltip>
+
       </div>
 
       <v-col>

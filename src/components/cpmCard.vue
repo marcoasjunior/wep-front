@@ -37,7 +37,6 @@
                 <p>
                     <!-- <v-chip outlined>{{ cardData.comments || 0 }}</v-chip> -->
                 </p>
-                
 
             </v-card-text>
 
@@ -111,7 +110,7 @@
                             </div>
 
                             <div class="d-flex justify-space-between">
-                                <v-btn color="orange" dark class="ml-a" @click="createComent(cardData)">
+                                <v-btn color="orange" dark class="ml-a" :loading="apiLoading" @click="createComent(cardData)">
                                     Enviar
                                 </v-btn>
                             </div>
@@ -144,7 +143,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      userData: "FeedVuex/userData",
+        apiLoading: 'apiLoading',
+        userData: "FeedVuex/userData",
     }),
 
     getId() {
@@ -174,6 +174,7 @@ export default {
         }),
 
         createComent(param) {
+        this.$store.commit('setApiLoading', true)
         if (!this.newComent) {
             this.$toast.error("Verifique se existe algum campo vazio", "Atenção!", {
             position: "topCenter",
@@ -191,7 +192,7 @@ export default {
             axios
             .post(this.url + `/comment/${eventId}`, body)
             .then((resp) => {
-
+                this.$store.commit('setApiLoading', false)
                 if(resp.data != ''){
                     this.getEvents()
                     this.newComent = ''
@@ -202,6 +203,7 @@ export default {
                 }
             })
             .catch((err) => {
+                this.$store.commit('setApiLoading', false)
                 this.$toast.error("Erro ao tentar comentar no evento!", "Putz", {
                 position: "topCenter",
                 });

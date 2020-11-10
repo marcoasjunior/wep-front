@@ -59,7 +59,15 @@
                         </v-col>
                     </v-row>
                 </v-card>
-            </v-card>     
+            </v-card>
+
+
+                <v-overlay :value="overlay">
+                    <v-progress-circular
+                        indeterminate
+                        size="64"
+                    ></v-progress-circular>
+                </v-overlay>
     </div>
 </template>
 
@@ -78,6 +86,7 @@ export default {
     },
 
     data: () => ({
+        overlay: false,
         userId: localStorage.getItem('id'),
         fileInput: '',
         currentFilePath: '',
@@ -240,25 +249,13 @@ export default {
                 })
         },
 
-        onFileChange(event) {
-
-            console.log(event)
-            // let selectedFile = event.taget.files[0]
-
-            // this.srcInputFile = URL.createObjectURL(this.inputFile);
-            // console.log(this.srcInputFile)
-
-        },
-
         mapsParams(param) {
-            console.log(param)
-
             this.eventForm.latitude = param.latitude
             this.eventForm.longitude = param.longitude
         },
 
         async createEvent() {
-
+            this.overlay = true
             try {
                 const fd = new FormData();
                 console.log(this.imageData)
@@ -282,11 +279,9 @@ export default {
                     },
                 }
 
-                console.log(body)
-
                 axios.post(this.url + '/event/create', body)
                     .then(resp => {
-
+                        this.overlay = false
                         if (resp.status == 200) {
                             this.$toast.success('Registro efetuado!', 'Hey', {
                                 position: "topCenter"
@@ -297,7 +292,7 @@ export default {
                         }
                     })
                     .catch(err => {
-
+                        this.overlay = false
                         this.$toast.error('Erro no registro!', 'Putz', {
                             position: "topCenter"
                         })

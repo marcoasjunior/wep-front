@@ -49,17 +49,21 @@
           </v-row>
         </div>
 
-        <div class="mb-6 p10" v-else v-for="event in events" :key="event.id">
-          <EventCard class="mt-4 card" :cardData="event" />
-        </div>
-
         <div>
 
         </div>
       </v-card>
-                <v-col class="text-center mt-7" cols="1" sm="12">
-            <v-btn align="center" class="ml-2" color="red" @click="logOut()" dark>SAIR</v-btn>
-          </v-col>
+
+        <section v-if="events != false">
+          <div class="mb-6 p10" v-for="event in events" :key="event.id">
+            <EventCard class="mt-4 card" :cardData="event" />
+          </div>
+        </section>
+            <!-- <v-col class="text-center mt-7" cols="1" sm="12"> -->
+            <div align="center">
+              <v-btn class="ac mt-4 mb-6" color="red" @click="logOut()" dark>SAIR</v-btn>
+            </div>
+          <!-- </v-col> -->
     </v-card>
   </div>
 </template>

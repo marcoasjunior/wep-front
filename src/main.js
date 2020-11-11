@@ -8,9 +8,9 @@ import vuetify from './plugins/vuetify';
 import VueIziToast from 'vue-izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import defaultOptionsObject from './util/iziToast'
-
+import VueTheMask from 'vue-the-mask'
 Vue.use(VueIziToast, defaultOptionsObject);
-
+Vue.use(VueTheMask)
 
 import 'leaflet/dist/leaflet.css';
 

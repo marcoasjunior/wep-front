@@ -17,6 +17,7 @@
           />
         </v-avatar>
       </v-col>-->
+      
       <div class="d-flex ac justify-center">
         <input
           @change="onFilePicked"
@@ -25,10 +26,31 @@
           ref="fileInput"
           accept="image/*"
         />
-        <v-icon class="cp" v-if="!form.avatar" dark>mdi-account-circle</v-icon>
-        <v-avatar @click="pickAvatar" class="mt-1 mb-5 cp" size="80">
-          <img :src="form.avatar" alt="avatar" />
+          
+        <v-avatar @click="pickAvatar" class="mt-1 mb-5 cp" size="80"> 
+          <!-- <v-icon class="cp" v-if="!form.avatar" dark>mdi-account-circle</v-icon> -->
+          <!-- <v-icon v-if="!form.avatar" dark>mdi-account-circle</v-icon> -->
+          
+          <img v-if="form.avatar" :src="form.avatar" alt="avatar"/>
         </v-avatar>
+
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              @click="pickAvatar"
+              v-if="!form.avatar"
+              rounded
+              color="primary"
+              dark
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon class="cp" dark>mdi-account-circle</v-icon>
+            </v-btn>
+          </template>
+          <span>Clique para escolher a foto de perfil</span>
+        </v-tooltip>
+
       </div>
 
       <v-col>
@@ -43,19 +65,9 @@
             required
           ></v-text-field>
 
-          <v-text-field
-            prepend-icon="mdi-email"
-            v-model="form.email"
-            label="E-mail"
-            required
-          ></v-text-field>
+          <v-text-field prepend-icon="mdi-email" v-model="form.email" label="E-mail" required></v-text-field>
 
-          <v-text-field
-            prepend-icon="mdi-lock"
-            v-model="password2"
-            label="Senha"
-            required
-          ></v-text-field>
+          <v-text-field prepend-icon="mdi-lock" v-model="password2" label="Senha" required></v-text-field>
 
           <v-text-field
             prepend-icon="mdi-lock"
@@ -78,14 +90,8 @@
           ></v-switch>
 
           <div class="d-flex justify-center align-center">
-            <v-btn v-if="!loading" block color="orange" @click="sendForm"
-              >Cadastrar</v-btn
-            >
-            <v-progress-circular
-              v-else
-              indeterminate
-              color="primary"
-            ></v-progress-circular>
+            <v-btn v-if="!loading" block color="orange" @click="sendForm">Cadastrar</v-btn>
+            <v-progress-circular v-else indeterminate color="primary"></v-progress-circular>
           </div>
         </v-form>
       </v-col>
@@ -154,50 +160,40 @@ export default {
     },
 
     async sendForm() {
-      this.loading = true;
+      this.loading = true
 
-      if (this.form.avatar !== null) {
+      if(this.form.avatar !== null){
         const url = await this.uploadPhoto();
-        console.log("a");
+        console.log('a')
         this.form.avatar = url;
       }
 
-      this.$toast.info("Estamos fazendo seu registo.", "Hey", {
-        position: "topCenter",
-      });
+      this.$toast.info('Estamos fazendo seu registo.', 'Hey', {
+        position: "topCenter"
+      })
 
-      console.log(this.form);
+      console.log(this.form)
 
-      const register = await this.register(this.form);
+      const register = await this.register(this.form)
 
       if (register) {
-        this.$toast.success("Registro efetuado!", "Hey", {
-          position: "topCenter",
-        });
 
-        // this.$router.push('/Follow')
+        this.$toast.success('Registro efetuado!', 'Hey', {
+          position: "topCenter"
+        })
 
-        if (register.data) {
-          localStorage.setItem("token", register.data[0]);
-          localStorage.setItem("id", register.data[1]);
-        } else {
-          this.$toast.error("Erro no registro!", "Putz", {
-            position: "topCenter",
-          });
+        this.$router.push('/')
 
-          return;
-        }
-
-        this.$router.push("/Follow");
       } else {
-        this.$toast.error("Erro no registro!", "Putz", {
-          position: "topCenter",
-        });
+
+        this.$toast.error('Erro no registro!', 'Putz', {
+          position: "topCenter"
+        })
       }
 
-      this.loading = false;
+      this.loading = false
 
-      this.clearData();
+      this.clearData()
     },
 
     validation() {

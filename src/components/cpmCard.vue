@@ -1,161 +1,125 @@
 <template>
-  <div>
-    <v-card
-      v-if="cardData"
-      class="rounded-xl ac mb-5"
-      max-height="900px"
-      max-width="600px"
-    >
-      <v-app-bar color="white" class="d-flex align-center" dense>
-        <v-avatar size="36" color="orange" class="mr-3">
-          <v-icon v-if="!cardData.user.avatar" dark>mdi-account-circle</v-icon>
-          <img v-else :src="cardData.user.avatar" alt="avatar" />
-        </v-avatar>
-
-        |
-
-        <div class="ml-3">{{ cardData.user.name }}</div>
-
-        <div class="ml-3">{{ cardData.eventDate }}</div>
-      </v-app-bar>
-
-      <v-img
-        contain
-        max-width="600px"
-        max-height="600px"
-        :src="cardData.img"
-      ></v-img>
-
-      <v-card-title>
-        <h2>{{ cardData.title }}</h2>
-      </v-card-title>
-
-      <v-card-text>
-        <p>{{ cardData.description }}</p>
-      </v-card-text>
-
-      <v-expansion-panels>
-        <v-expansion-panel>
-          <v-expansion-panel-header>Comentários</v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <div>
-              <div
-                class="d-flex mt-4"
-                v-for="comment in cardData.comments"
-                :key="comment.id"
-              >
-
-                <v-avatar size="33" color="orange" class="mr-4">
-                  <v-icon v-if="!comment.user.avatar" dark
-                    >mdi-account-circle</v-icon
-                  >
-                  <img v-else :src="comment.user.avatar" alt="avatar" />
+    <div>
+        <v-card v-if="cardData" class="rounded-xl ac mb-5" max-height="900px" max-width="600px">
+            <v-app-bar color="white" class="d-flex align-center" dense>
+                <v-avatar size="36" color="orange" class="mr-3">
+                    <v-icon v-if="!cardData.user.avatar" dark>mdi-account-circle</v-icon>
+                    <img v-else :src="cardData.user.avatar" alt="avatar" />
                 </v-avatar>
 
-                {{ comment.user.name }} - 
+                <v-divider vertical></v-divider>
 
-                <span class="ml-2" v-if="selectedCommentId != comment.id">
-                    {{ comment.comment }}
-                </span>
+                <div class="ml-3">{{ cardData.user.name }}</div>
 
-                <span class="ml-2" v-if="selectedCommentId == comment.id && !setUpdateinput">
-                    {{ comment.comment }}
-                </span>
+                <div class="ml-3">{{ cardData.eventDate }}</div>
+            </v-app-bar>
 
-                <div class="d-flex" v-if="setUpdateinput">
-                    
-                    <v-text-field
-                        class="ml-3"
-                        v-if="selectedCommentId == comment.id"
-                        v-model="updateInputComment"
-                        :counter="500"
-                        label="First name"
-                        outlined
-                    ></v-text-field>
+            <v-img contain max-width="600px" max-height="600px" :src="cardData.img"></v-img>
 
+            <v-card-title>
+                <h2>{{ cardData.title }}</h2>
+            </v-card-title>
+
+            <v-card-text>
+                <p>{{ cardData.description }}</p>
+            </v-card-text>
+
+            <v-divider></v-divider>
+
+            <v-card-text class="d-flex justify-space-between">
+                <p>
+                    <v-btn @click="thumbAction(cardData)" icon>
+                        <v-icon v-if="!checkLike">mdi-thumb-up-outline</v-icon>
+                        <v-icon v-else>mdi-thumb-up</v-icon>
+                    </v-btn>
+                    <v-chip outlined>{{ cardData.liked.length }}</v-chip>
+                </p>
+                <p>
+                    <!-- <v-chip outlined>{{ cardData.comments || 0 }}</v-chip> -->
+                </p>
+
+            </v-card-text>
+
+            <v-expansion-panels>
+                <v-expansion-panel>
+                    <v-expansion-panel-header>Comentários 
+                        <span class="ml-2"><v-icon>mdi-comment</v-icon></span>
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content>
                         <div>
-                            <v-icon v-if="selectedCommentId == comment.id" color="error" class="d-block" @click="setUpdateinput = false">
-                                mdi-close
-                            </v-icon>
-        
-                            <v-icon v-if="selectedCommentId == comment.id" color="primary" @click="sendUpdateComment(comment)">
-                                mdi-send-circle-outline
-                            </v-icon>
+                            <div class="d-flex mt-4" v-for="comment in cardData.comments" :key="comment.id">
+                                <v-avatar size="33" color="orange" class="mr-4">
+                                    <v-icon v-if="!comment.user.avatar" dark>mdi-account-circle</v-icon>
+                                    <img v-else :src="comment.user.avatar" alt="avatar" />
+                                </v-avatar>
+
+                                {{ comment.user.name }} -
+
+                                <span class="ml-2" v-if="selectedCommentId != comment.id">
+                                    {{ comment.comment }}
+                                </span>
+
+                                <span class="ml-2" v-if="selectedCommentId == comment.id && !setUpdateinput">
+                                    {{ comment.comment }}
+                                </span>
+
+                                <div class="d-flex" v-if="setUpdateinput">
+
+                                    <v-text-field class="ml-3" v-if="selectedCommentId == comment.id" v-model="updateInputComment" :counter="500" label="First name" outlined></v-text-field>
+
+                                    <div>
+                                        <v-icon v-if="selectedCommentId == comment.id" color="error" class="d-block" @click="setUpdateinput = false">
+                                            mdi-close
+                                        </v-icon>
+
+                                        <v-icon v-if="selectedCommentId == comment.id" color="primary" @click="sendUpdateComment(comment)">
+                                            mdi-send-circle-outline
+                                        </v-icon>
+                                    </div>
+
+                                </div>
+
+                                <v-menu v-if="comment.user.id == userData.id" offset-x>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn color="primary" dark class="ml-a" text v-bind="attrs" v-on="on">
+                                            <v-icon>mdi-buffer</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <v-list>
+                                        <v-list-item v-for="(item, index) in commentOptions" :key="index" link>
+                                            <v-list-item-title @click="commentAction(item, comment)">
+                                                {{ item.name }}
+                                                <v-icon dark :color="item.color">{{ item.icon }}</v-icon>
+                                            </v-list-item-title>
+                                        </v-list-item>
+                                    </v-list>
+                                </v-menu>
+
+                            </div>
+
                         </div>
 
-                </div>
-                
-                <v-menu
-                    v-if="comment.user.id == userData.id"
-                    offset-x
-                >
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                        color="primary"
-                        dark
-                        class="ml-a"
-                        text
-                        v-bind="attrs"
-                        v-on="on"
-                        >
-                            <v-icon>mdi-buffer</v-icon>
-                        </v-btn>
-                    </template>
-                    <v-list>
-                        <v-list-item
-                        v-for="(item, index) in commentOptions"
-                        :key="index"
-                        link
-                        >
-                        <v-list-item-title @click="commentAction(item, comment)">
-                            {{ item.name }} <v-icon dark :color="item.color">{{ item.icon }}</v-icon>
-                        </v-list-item-title>
-                        </v-list-item>
-                    </v-list>
-                </v-menu>
-                
-              </div>
+                        <div class="mt-5">
+                            <div class="d-flex">
+                                <v-avatar size="47" color="orange" class="mr-4">
+                                    <v-icon v-if="!userData.avatar" dark>mdi-account-circle</v-icon>
+                                    <img v-else :src="userData.avatar" alt="avatar" />
+                                </v-avatar>
 
-            </div>
+                                <v-textarea outlined v-model="newComent" class="text-area-coment" :counter="500" auto-grow filled color="black" label="Comente no evento 🗯" rows="1"></v-textarea>
+                            </div>
 
-            <div class="mt-5">
-              <div class="d-flex">
-                <v-avatar size="47" color="orange" class="mr-4">
-                  <v-icon v-if="!userData.avatar" dark
-                    >mdi-account-circle</v-icon
-                  >
-                  <img v-else :src="userData.avatar" alt="avatar" />
-                </v-avatar>
-
-                <v-textarea
-                  outlined
-                  v-model="newComent"
-                  class="text-area-coment"
-                  :counter="500"
-                  auto-grow
-                  filled
-                  color="black"
-                  label="Comente no evento 🗯"
-                  rows="1"
-                ></v-textarea>
-              </div>
-
-              <div class="d-flex justify-space-between">
-                <v-btn
-                  color="orange"
-                  dark
-                  class="ml-a"
-                  @click="createComent(cardData)"
-                >
-                  Enviar
-                </v-btn>
-              </div>
-            </div>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
-    </v-card>
-  </div>
+                            <div class="d-flex justify-space-between">
+                                <v-btn color="orange" dark class="ml-a" :loading="apiLoading" @click="createComent(cardData)">
+                                    Enviar
+                                </v-btn>
+                            </div>
+                        </div>
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+            </v-expansion-panels>
+        </v-card>
+    </div>
 </template>
 
 <script>
@@ -179,16 +143,38 @@ export default {
 
   computed: {
     ...mapGetters({
-      userData: "FeedVuex/userData",
+        apiLoading: 'apiLoading',
+        userData: "FeedVuex/userData",
     }),
+
+    getId() {
+
+        return parseInt(localStorage.getItem('id')) 
+
+    },
+
+    checkLike() {
+
+        const setTocheck = new Set()
+        
+        this.cardData.liked.forEach(user => setTocheck.add(user.id));
+
+        if (setTocheck.has(this.getId)) return true 
+        
+        return false
+
+    },
   },
 
   methods: {
         ...mapActions({
-            getEvents: 'FeedVuex/getEvents'
+            getEvents: 'FeedVuex/getEvents',
+            likeEvent: 'EventVuex/likeEvent',
+            unlikeEvent: 'EventVuex/unlikeEvent',
         }),
 
         createComent(param) {
+        this.$store.commit('setApiLoading', true)
         if (!this.newComent) {
             this.$toast.error("Verifique se existe algum campo vazio", "Atenção!", {
             position: "topCenter",
@@ -206,7 +192,7 @@ export default {
             axios
             .post(this.url + `/comment/${eventId}`, body)
             .then((resp) => {
-
+                this.$store.commit('setApiLoading', false)
                 if(resp.data != ''){
                     this.getEvents()
                     this.newComent = ''
@@ -217,11 +203,30 @@ export default {
                 }
             })
             .catch((err) => {
+                this.$store.commit('setApiLoading', false)
                 this.$toast.error("Erro ao tentar comentar no evento!", "Putz", {
                 position: "topCenter",
                 });
             });
         }
+        },
+
+        async thumbAction(cardData) {
+
+            try {
+         
+                !this.checkLike ? await this.likeEvent({ eventId: cardData.id, userId: this.getId }) : await this.unlikeEvent({ eventId: cardData.id, userId: this.getId })
+
+                await this.getEvents()
+                
+            } catch (error) {
+
+                console.log(error)
+
+                this.$toast.error("Erro ao curtir", "Putz", { position: "topCenter" });
+                
+            }
+
         },
 
         sendUpdateComment(comentData){
@@ -282,10 +287,9 @@ export default {
             });
 
         },
+
   },
 
-  created() {
-  },
 };
 </script>
 

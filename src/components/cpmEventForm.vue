@@ -1,5 +1,6 @@
 <template>
-    <div class="d-flex flex-column">    
+    <div class="d-flex flex-column">
+            <h1 class="alg-txt-c mb-1 mt-7">Cadastro de evento</h1>
             <v-card flat class="p10 ac mt-10" max-width="90%" width="800px">
                 <div>
                     <div class="card-style-1">
@@ -11,21 +12,26 @@
                             <input @change="onFilePicked" type="file" class="hiden-input" ref="fileInput" accept="image/*">
                         </button>
                         <span class="card-footer">
-                            <v-text-field class="mx-5" v-model="eventForm.name" label="Nome do evento" :rules="nameRules" :error="false" color="purple" :counter="40"></v-text-field>
-                        <v-textarea class="mx-5" v-model="eventForm.description" name="input-7-4" label="Descrição do evento"></v-textarea>
+                            <v-text-field class="mx-5" v-model="eventForm.name" label="Nome do evento" :rules="nameRules" :error="false" color="orange" :counter="40"></v-text-field>
+                        <v-textarea 
+                            color="orange" 
+                            class="mx-5" 
+                            v-model="eventForm.description" 
+                            name="input-7-4" 
+                            label="Informações do evento"></v-textarea>
                          </span>
 
                     </div>
                 </div>
 
-                <v-card flat class="mt-7 mb-3 mr-auto ml-auto d-flex flex-column align-center" max-width="90%" width="800px" >
+                <v-card flat class="mt-7 mb-3 mr-auto ml-auto d-flex flex-column align-center p15" max-width="90%" width="800px" >
 
                     <div>
-                    <v-btn class="ml-2" rounded color="primary" :outlined="active == 1" dark @click="typeEvent(0)">
+                    <v-btn class="ml-2" rounded color="orange" :outlined="active == 1" dark @click="typeEvent(0)">
                         Público
                     </v-btn>
 
-                    <v-btn class="ml-2" rounded color="primary" :outlined="active == 0" dark @click="typeEvent(1)">
+                    <v-btn class="ml-2" rounded color="orange" :outlined="active == 0" dark @click="typeEvent(1)">
                         Privado
                     </v-btn>
                     </div>
@@ -41,31 +47,97 @@
                     </p>
 
                     <h2 class="p15 headline mt-n4">Local do evento:</h2>
+                    <p class="clr-red">*Caso não consiga selecionar seu endereço no mapa clique na opção "TEXTO"</p>
 
-                    <div class="p15 map">
+                    <v-tabs v-model="tab" fixed-tabs color="orange">
+                        <v-tab v-for="(item, i) in tabItems" :key="i" class="orange--text">
+                        {{ item }}
+                        </v-tab>
+                    </v-tabs>
 
-                        <SetMap @callEmit="mapsParams" />
+                    <v-tabs-items v-model="tab">
+                        <v-tab-item>
+                            <p class="alg-txt-c mt-4">*Selecione no mapa o local do evento</p>
+                            <div class="p15 map">
 
-                        <v-text-field v-model="eventForm.address" label="Endereço" :rules="nameRules" :error="false" color="purple" :counter="40"></v-text-field>
+                                <SetMap @callEmit="mapsParams" />
 
-                        <v-text-field v-model="eventForm.eventDate" label="Data do evento" :rules="dateRules" :error="false" color="purple" :counter="10" type="date"></v-text-field>
+                                <strong>
+                                    Endereço: <br/>
+                                    <v-icon v-if="addressClassState != ''" color="success">mdi-check-bold</v-icon>
+                                    <span :class="addressClassState">{{ possibleAddress }}</span>
+                                 </strong>
+
+                                <div class="d-block mt-4" align="center">
+                                    <span>o Endereço está correto?</span>
+                                    <v-btn color="success" class="ml-2" @click="correctAddress">correto</v-btn>
+                                </div>
+
+
+                            </div>
+                        </v-tab-item>
+
+                        <v-tab-item>
+                            <div class="container-fields">
+                            <v-text-field v-model="eventAddress.query" label="CEP" :rules="nameRules" :error="false" color="orange"></v-text-field>
+                            <v-text-field v-model="eventAddress.state" label="Estado" color="orange"></v-text-field>
+                            <v-text-field v-model="eventAddress.city" label="Cidade" color="orange"></v-text-field>
+                            <v-text-field v-model="eventAddress.district" label="Bairro" color="orange"></v-text-field>
+                            <v-text-field v-model="eventAddress.streat" label="Rua" color="orange"></v-text-field>
+                            <v-text-field v-model="eventAddress.moreInfo" label="Complemento" color="orange"></v-text-field>
+                            <v-text-field v-model="eventAddress.reference" label="Ponto de referência" color="orange"></v-text-field>
+                            </div>
+                        </v-tab-item>
+                    </v-tabs-items>
+
+                    <div class="container-fields">
+                        <v-text-field
+                            type="tel"
+                            v-mask="'##/##/####'"
+                            v-model="eventForm.eventDate" 
+                            label="Data do evento" 
+                            :rules="dateRules" 
+                            :error="false"
+                            color="orange"
+                            :counter="10" 
+                        ></v-text-field>
                     </div>
 
-                    <v-row align="center">
+                    <!-- <v-row align="center">
                         <v-col class="text-center" cols="1" sm="12">
                             <v-btn @click="createEvent" align="center" class="ml-2" rounded color="orange" outlined dark>
                                 Criar evento
                             </v-btn>
                         </v-col>
-                    </v-row>
+                    </v-row> -->
+
+                    <div align="center">
+                        <v-btn 
+                            class="ac mt-4" 
+                            color="orange" 
+                            outlined rounded 
+                            @click="createEvent()" 
+                            dark
+                        >Criar evento</v-btn>
+                    </div>
+
                 </v-card>
-            </v-card>     
+            </v-card>
+
+
+                <v-overlay :value="overlay">
+                    <v-progress-circular
+                        indeterminate
+                        size="64"
+                    ></v-progress-circular>
+                </v-overlay>
     </div>
 </template>
 
 <script>
 import SetMap from './cpmSetMapPoints';
 import axios from 'axios';
+import { TheMask } from 'vue-the-mask';
 
 import {
     mapActions,
@@ -74,10 +146,12 @@ import {
 export default {
 
     components: {
-        SetMap
+        SetMap,
+        TheMask
     },
 
     data: () => ({
+        overlay: false,
         userId: localStorage.getItem('id'),
         fileInput: '',
         currentFilePath: '',
@@ -96,6 +170,17 @@ export default {
         date: null,
         menu: false,
 
+
+        eventAddress:{
+            query:'',
+            country:'',
+            state:'',
+            city:'',
+            streat:'',
+            moreInfo:'',
+            reference:'',
+        },
+
         eventForm: {
             name: '',
             description: '',
@@ -111,6 +196,9 @@ export default {
         inputFile: '',
 
         eventData: '',
+
+        tabItems: ['Mapa', 'Texto'],
+        tab: '',
 
         // eventData:{
         //     nameEvent:'',
@@ -155,12 +243,14 @@ export default {
             },
         ],
 
+        addressClassState: '',
 
         imageData: '',
         imageUrl: '',
         image: '',
         uploadedValue: '',
         photo: '',
+        possibleAddress: '',
     }),
 
     created() {
@@ -240,25 +330,40 @@ export default {
                 })
         },
 
-        onFileChange(event) {
-
-            console.log(event)
-            // let selectedFile = event.taget.files[0]
-
-            // this.srcInputFile = URL.createObjectURL(this.inputFile);
-            // console.log(this.srcInputFile)
-
-        },
+        
 
         mapsParams(param) {
-            console.log(param)
-
             this.eventForm.latitude = param.latitude
             this.eventForm.longitude = param.longitude
+
+            let lat = param.latitude
+            let lng = param.longitude
+
+            fetch(
+                
+                `https://discover.search.hereapi.com/v1/discover?at=${lat},${lng}&lang=BRL&apikey=Slch3iP_Q9gFWYa1UugeC5n5cqehI9zhr836TdXOWRw&q=restaurant`
+                
+                )
+                    .then(result => result.json())
+                    .then(result => {
+                        console.log(result.items[0].address)
+
+                        this.possibleAddress = result.items[0].address.label
+                    })
+        },
+
+        correctAddress(){
+            this.eventAddress.streat = this.possibleAddress
+
+            this.$toast.success('Endereço preenchido', 'uhul!', {
+                position: "topCenter"
+            })
+
+            this.addressClassState = 'clr-sucess'
         },
 
         async createEvent() {
-
+            this.overlay = true
             try {
                 const fd = new FormData();
                 console.log(this.imageData)
@@ -271,7 +376,7 @@ export default {
                 let body = {
                     title: this.eventForm.name,
                     description: this.eventForm.description,
-                    address: this.eventForm.address,
+                    address: this.eventAddress.streat,
                     img: this.eventForm.img,
                     privated: this.eventForm.private,
                     eventDate: this.eventForm.eventDate,
@@ -282,11 +387,9 @@ export default {
                     },
                 }
 
-                console.log(body)
-
                 axios.post(this.url + '/event/create', body)
                     .then(resp => {
-
+                        this.overlay = false
                         if (resp.status == 200) {
                             this.$toast.success('Registro efetuado!', 'Hey', {
                                 position: "topCenter"
@@ -297,7 +400,7 @@ export default {
                         }
                     })
                     .catch(err => {
-
+                        this.overlay = false
                         this.$toast.error('Erro no registro!', 'Putz', {
                             position: "topCenter"
                         })
@@ -310,6 +413,80 @@ export default {
 
         }
     },
+
+    watch: {
+
+            eventAddress(value){
+                console.log(value)
+
+                fetch(`https://autocomplete.geocoder.api.here.com/6.2/suggest.json?app_id=g4qzn6OUOLYfn2OFO6Z8&app_code=pAi1rwxOkCnBaQHm4CbURg&maxresults=1&language=pt&query=${value}&country=BRA`)
+                    .then(result => result.json())
+                    .then(result => {
+                        
+                        console.log(result)
+
+                        // if (result.suggestions && result.suggestions.length > 0) {
+                        //     if (result.suggestions[0].address.houseNumber && result.suggestions[0].address.street) {
+                        //         this.street = result.suggestions[0].address.street + ", " + result.suggestions[0].address.houseNumber
+                        //     } else {
+                        //         this.street = "";
+                        //     }
+                        //     this.city = result.suggestions[0].address.city ? result.suggestions[0].address.city : "";
+                        //     this.state = result.suggestions[0].address.state ? result.suggestions[0].address.state : "";
+                        //     this.postcode = result.suggestions[0].address.postalCode ? result.suggestions[0].address.postalCode : "";
+                        //     this.district = result.suggestions[0].address.district ? result.suggestions[0].address.district : "";
+                        //     this.country = result.suggestions[0].address.country ? result.suggestions[0].address.country : "";
+                        // } else {
+                        //     this.street = "";
+                        //     this.city = "";
+                        //     this.state = "";
+                        //     this.postalCode = "";
+                        //     this.country = "";
+                        // }
+                    })
+            },
+
+            eventAddress:{
+                deep:true,
+                handler: function(value) {
+                    console.log(value.query)
+                    fetch(`https://autocomplete.geocoder.api.here.com/6.2/suggest.json?app_id=g4qzn6OUOLYfn2OFO6Z8&app_code=pAi1rwxOkCnBaQHm4CbURg&maxresults=1&language=pt&query=${value.query}&country=BRA`)
+                    .then(result => result.json())
+                    .then(result => {
+                        console.log(result.suggestions[0].address)
+                        this.eventAddress.country = result.suggestions[0].address.country
+                        this.eventAddress.state = result.suggestions[0].address.state
+                        this.eventAddress.city = result.suggestions[0].address.city
+                        this.eventAddress.district = result.suggestions[0].address.district
+                    })
+                }
+            },
+
+            query: function (value) {
+                fetch(`https://autocomplete.geocoder.api.here.com/6.2/suggest.json?app_id=g4qzn6OUOLYfn2OFO6Z8&app_code=pAi1rwxOkCnBaQHm4CbURg&maxresults=1&language=pt&query=${value}&country=BRA`)
+                    .then(result => result.json())
+                    .then(result => {
+                        if (result.suggestions && result.suggestions.length > 0) {
+                            if (result.suggestions[0].address.houseNumber && result.suggestions[0].address.street) {
+                                this.street = result.suggestions[0].address.street + ", " + result.suggestions[0].address.houseNumber
+                            } else {
+                                this.street = "";
+                            }
+                            this.city = result.suggestions[0].address.city ? result.suggestions[0].address.city : "";
+                            this.state = result.suggestions[0].address.state ? result.suggestions[0].address.state : "";
+                            this.postcode = result.suggestions[0].address.postalCode ? result.suggestions[0].address.postalCode : "";
+                            this.district = result.suggestions[0].address.district ? result.suggestions[0].address.district : "";
+                            this.country = result.suggestions[0].address.country ? result.suggestions[0].address.country : "";
+                        } else {
+                            this.street = "";
+                            this.city = "";
+                            this.state = "";
+                            this.postalCode = "";
+                            this.country = "";
+                        }
+                    })
+            }
+        }
 }
 </script>
 
@@ -321,6 +498,11 @@ export default {
     max-width: 100%;
     height: 500px;
 
+}
+
+.container-fields{
+    width: 800px;
+    max-width: 100%;
 }
 
 </style>

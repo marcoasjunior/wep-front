@@ -21,18 +21,55 @@ export default {
   },
 
   actions: {
-    async getEventById(context, newData){
+
+    async getEventById(context, newData) {
 
       const eventResult = await axios.get(process.env.VUE_APP_BASE_URL + `/event/${newData}`)
+
       try {
+
         context.commit('setEventDataId', eventResult.data)
         return eventResult.data
+
+      } catch (error){
+
+        console.log(error)
+
       }
 
-      catch{
-        console.log(eventResult)
+    },
+
+    async likeEvent(context, newData) {
+
+      try {
+
+        const result = await axios.post(process.env.VUE_APP_BASE_URL + `/like/${newData.userId}/${newData.eventId}`)
+
+        return result.data
+
+      } catch (error){
+
+        console.log(error)
+
       }
 
-    }
+    },
+
+    async unlikeEvent(context, newData) {
+
+      try {
+
+        const result = await axios.delete(process.env.VUE_APP_BASE_URL + `/like/${newData.userId}/${newData.eventId}`)
+
+        return result.data
+
+      } catch (error){
+
+        console.log(error)
+
+      }
+
+    },
+
   }
 }

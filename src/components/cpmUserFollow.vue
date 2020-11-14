@@ -8,11 +8,11 @@
 
       <v-list-item-content>
         <v-list-item-title v-text="userData.name"></v-list-item-title>
+        <v-list-item-title v-text="userData.id"></v-list-item-title>
       </v-list-item-content>
 
-      
-      <v-list-item-action v-if="userData.following">
-        <v-btn v-if="!loading" depressed small color="#00CA9D">
+      <v-list-item-action v-if="userData.following == true">
+        <v-btn v-if="!loading" depressed small color="#00CA9D" @click="unfollow(userData)">
           Seguindo
         </v-btn>
         <v-btn v-else loading depressed small color="#00CA9D"> Seguindo </v-btn>
@@ -31,52 +31,6 @@
       </v-list-item-action>
     </v-list-item>
   </div>
-  <!-- <v-card max-width="550">
-    <v-virtual-scroll :items="usersData" :item-height="70" height="350">
-      <template v-slot:default="{ item }">
-        <v-list-item>
-          <v-list-item-avatar>
-            <v-avatar color="orange" size="62">
-              <v-icon v-if="!item.avatar" dark>mdi-account-circle</v-icon>
-              <img v-else :src="item.avatar" alt="avatar" />
-            </v-avatar>
-          </v-list-item-avatar>
-
-          <v-list-item-content>
-            <v-list-item-title>{{ item.name }}</v-list-item-title>
-          </v-list-item-content>
-
-          <v-list-item-action>
-            <v-btn
-              v-if="!item.following"
-              class="ma-2"
-              :loading="loading"
-              :disabled="loading"
-              color="#00CA9D"
-              @click="follow(item)"
-              depressed
-              small
-            >
-              Seguir
-            </v-btn>
-
-            <v-btn
-              v-else
-              class="ma-2"
-              :loading="loading"
-              :disabled="loading"
-              color="#00CA9D"
-              depressed
-              small
-            >
-              Seguindo
-            </v-btn>
-          </v-list-item-action>
-        </v-list-item>
-        <hr />
-      </template>
-    </v-virtual-scroll>
-  </v-card> -->
 </template>
 
 <script>
@@ -92,6 +46,7 @@ export default {
   methods: {
     ...mapActions({
       doFollow: "FollowVuex/doFollow",
+      doUnFollow: "FollowVuex/doUnFollow",
     }),
 
     async follow(user) {
@@ -101,7 +56,17 @@ export default {
 
       this.loading = false;
 
-      user.following = true
+      user.following = true;
+    },
+
+    async unfollow(user){
+      this.loading = true;
+
+      const unfollow = await this.doUnFollow(user.id);
+
+      this.loading = false;
+
+      user.following = false;
     },
 
     teste() {

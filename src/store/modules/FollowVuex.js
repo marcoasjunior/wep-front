@@ -18,44 +18,50 @@ export default {
   },
 
   mutations: {
- 
-    setUsers(state, newState){
-        state.users = newState
+
+    setUsers(state, newState) {
+      state.users = newState
     },
 
-    setFollowing(state, newState){
-        state.following = newState
+    setFollowing(state, newState) {
+      state.following = newState
     }
 
   },
 
   actions: {
 
-    async getUsers(context){
-        const users = await axios.get(process.env.VUE_APP_BASE_URL+'/user');
+    async getUsers(context) {
+      const users = await axios.get(process.env.VUE_APP_BASE_URL + '/user');
 
-        const [thisUser] = users.data.filter(item => localStorage.id == item.id);
+      const [thisUser] = users.data.filter(item => localStorage.id == item.id);
 
-        users.data.splice(users.data.indexOf(thisUser), 1)
+      users.data.splice(users.data.indexOf(thisUser), 1)
 
-        await context.commit('setUsers', users.data);
+      await context.commit('setUsers', users.data);
 
-        return users.data;
+      return users.data;
     },
 
-    async doFollow(context, new_follow_id){
-        const follow = await axios.put(process.env.VUE_APP_BASE_URL+`/user/${new_follow_id}/follow`);
+    async doFollow(context, new_follow_id) {
+      const follow = await axios.post(process.env.VUE_APP_BASE_URL + `/user/${new_follow_id}/follow`);
 
-        return follow.data;
+      return follow.data;
     },
 
-    async getFollowing(context){
-        const following = await axios.get(process.env.VUE_APP_BASE_URL+`/user/${localStorage.id}/following`);
+    async doUnFollow(context, unfollow_id) {
+      const unfollow = await axios.delete(process.env.VUE_APP_BASE_URL + `/user/${unfollow_id}/unfollow`);
 
-        await context.commit('setFollowing', following.data);
+      return unfollow.data;
+    },
 
-        return following.data;
+    async getFollowing(context) {
+      const following = await axios.get(process.env.VUE_APP_BASE_URL + `/user/${localStorage.id}/following`);
+
+      await context.commit('setFollowing', following.data);
+
+      return following.data;
     }
-        
+
   }
 }

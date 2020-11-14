@@ -174,7 +174,9 @@ export default {
 
       console.log(this.form)
 
-      const register = await this.register(this.form)
+      const register = await this.register(this.form);
+
+      console.log(register);
 
       if (register) {
 
@@ -182,7 +184,9 @@ export default {
           position: "topCenter"
         })
 
-        this.$router.push('/')
+        await localStorage.setItem('token', register.data[0]);
+        await localStorage.setItem('id', register.data[1]);
+        this.$router.push('/Follow');
 
       } else {
 

@@ -4,7 +4,7 @@
 
     <h1 class="alg-txt-c headline ma-4">Perfil</h1>
 
-    <!-- <v-container v-if="loading" style="height: 400px">
+    <v-container v-if="loading" style="height: 400px">
       <v-row class="fill-height" align-content="center" justify="center">
         <v-col class="subtitle-1 text-center" cols="12"> Loading... </v-col>
         <v-col cols="6">
@@ -16,9 +16,9 @@
           ></v-progress-linear>
         </v-col>
       </v-row>
-    </v-container> -->
+    </v-container>
 
-    <v-card flat class="mx-auto">
+    <v-card v-else flat class="mx-auto">
       <v-card max-width="600" class="d-flex flex-column">
         <v-card flat class="mx-auto d-flex flex-column" max-width="600">
           <v-list-item three-line>
@@ -40,9 +40,9 @@
             </v-avatar>
           </v-list-item>
 
-          <v-card-actions>
-            <!-- <v-btn text>Editar</v-btn> -->
-            <!-- <v-btn text></v-btn> -->
+          <v-card-actions class="ml-2">
+            <followsDialog :follow="0" :data="dataFollows" />
+            <followsDialog :follow="1" :data="dataFollows" class="ml-4" />
             <Dialog
               :user_data="user_data"
               :updateUser="updateUser"
@@ -79,13 +79,11 @@
           <EventCard class="mt-4 card" :cardData="event" />
         </div>
       </section>
-      <!-- <v-col class="text-center mt-7" cols="1" sm="12"> -->
       <div align="center">
         <v-btn class="ac mt-4 mb-6" color="red" @click="logOut()" dark
           >SAIR</v-btn
         >
       </div>
-      <!-- </v-col> -->
     </v-card>
   </div>
 </template>
@@ -95,6 +93,7 @@ import Toolbar from "@/components/cpmToolBar";
 import SetMap from "../../components/cpmSetMapPoints";
 import Dialog from "@/components/cpmDialogProfile";
 import EventCard from "@/components/cpmCard";
+import followsDialog from "@/components/cpmDialogFollows";
 
 import { mapActions } from "vuex";
 
@@ -104,12 +103,15 @@ export default {
     SetMap,
     Dialog,
     EventCard,
+    followsDialog,
   },
 
   data: () => ({
-    loading: null,
+    loading: false,
     src: "",
     imageData: "",
+
+    dataFollows: [],
 
     uploadUrl: process.env.VUE_APP_UPLOAD_URL,
 
@@ -131,12 +133,26 @@ export default {
       updateUser: "ProfileVuex/updateUser",
       getMyEvents: "ProfileVuex/getMyEvents",
       updateAvatar: "ProfileVuex/updateAvatar",
+      getFollowing: "ProfileVuex/getFollowing",
+      getFollowers: "ProfileVuex/getFollowers",
     }),
     logOut() {
       localStorage.removeItem("token");
       localStorage.removeItem("id");
 
       this.$router.push("/Home");
+    },
+    async index() {
+      this.loading = true;
+      await this.loadUser();
+      await this.loadEvents();
+      await this.getFollowing();
+      await this.getFollowers();
+      this.dataFollows.push(this.following);
+      this.dataFollows.push(this.followers);
+      console.log(this.dataFollows);
+
+      this.loading = false;
     },
     async loadUser() {
       const user = await this.getUser();
@@ -147,7 +163,6 @@ export default {
       this.user_data.password = user.password;
       this.user_data.whatsapp = user.whatsapp;
     },
-
     async loadEvents() {
       const events = await this.getMyEvents();
 
@@ -159,12 +174,20 @@ export default {
     },
   },
 
-  created() {
+  async created() {
     this.loading = true;
-    this.getEvents();
-    this.loadUser();
-    this.loadEvents();
+    await this.index();
+    // console.log(this.followers);
     this.loading = false;
+  },
+
+  computed: {
+    following() {
+      return this.$store.state.ProfileVuex.following;
+    },
+    followers() {
+      return this.$store.state.ProfileVuex.followers;
+    },
   },
 };
 </script>

@@ -12,9 +12,16 @@
       </v-list-item-content>
 
       <v-list-item-action v-if="userData.following == true">
-        <v-btn v-if="!loading" depressed small color="#00CA9D" @click="unfollow(userData)">
+        <v-btn
+          v-if="!loading"
+          depressed
+          small
+          color="#00CA9D"
+          @click="unfollow(userData)"
+        >
           Seguindo
         </v-btn>
+
         <v-btn v-else loading depressed small color="#00CA9D"> Seguindo </v-btn>
       </v-list-item-action>
       <v-list-item-action v-else>
@@ -27,6 +34,7 @@
         >
           Seguir
         </v-btn>
+
         <v-btn v-else loading depressed small color="#00CA9D"> Seguir </v-btn>
       </v-list-item-action>
     </v-list-item>
@@ -41,6 +49,7 @@ export default {
   data: () => ({
     following: false,
     loading: false,
+    disabled: false
   }),
 
   methods: {
@@ -51,20 +60,24 @@ export default {
 
     async follow(user) {
       this.loading = true;
+      this.disabled = true;
 
       const follow = await this.doFollow(user.id);
 
       this.loading = false;
+      this.disabled = false;
 
       user.following = true;
     },
 
-    async unfollow(user){
+    async unfollow(user) {
       this.loading = true;
+      this.disabled = true;
 
       const unfollow = await this.doUnFollow(user.id);
 
       this.loading = false;
+      this.disabled = false;
 
       user.following = false;
     },

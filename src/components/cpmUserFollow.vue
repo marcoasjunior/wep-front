@@ -13,8 +13,8 @@
 
       <v-list-item-action v-if="userData.following == true">
         <v-btn
-          v-if="!loading"
           depressed
+          :loading="apiLoading"
           small
           color="#00CA9D"
           @click="unfollow(userData)"
@@ -22,11 +22,11 @@
           Seguindo
         </v-btn>
 
-        <v-btn v-else loading depressed small color="#00CA9D"> Seguindo </v-btn>
+        <!-- <v-btn loading depressed small color="#00CA9D"> Seguindo </v-btn> -->
       </v-list-item-action>
       <v-list-item-action v-else>
         <v-btn
-          v-if="!loading"
+          :loading="apiLoading"
           depressed
           small
           color="#00CA9D"
@@ -35,7 +35,7 @@
           Seguir
         </v-btn>
 
-        <v-btn v-else loading depressed small color="#00CA9D"> Seguir </v-btn>
+        <!-- <v-btn loading depressed small color="#00CA9D"> Seguir </v-btn> -->
       </v-list-item-action>
     </v-list-item>
   </div>
@@ -49,8 +49,13 @@ export default {
   data: () => ({
     following: false,
     loading: false,
-    disabled: false
   }),
+
+    computed:{
+    ...mapGetters({
+      apiLoading: 'apiLoading'
+    })
+  },
 
   methods: {
     ...mapActions({
@@ -59,25 +64,21 @@ export default {
     }),
 
     async follow(user) {
-      this.loading = true;
-      this.disabled = true;
+      this.$store.commit('setApiLoading', true)
 
       const follow = await this.doFollow(user.id);
 
-      this.loading = false;
-      this.disabled = false;
+      this.$store.commit('setApiLoading', false)
 
       user.following = true;
     },
 
     async unfollow(user) {
-      this.loading = true;
-      this.disabled = true;
+      this.$store.commit('setApiLoading', true)
 
       const unfollow = await this.doUnFollow(user.id);
 
-      this.loading = false;
-      this.disabled = false;
+      this.$store.commit('setApiLoading', false)
 
       user.following = false;
     },
@@ -88,6 +89,9 @@ export default {
   },
 
   created() {
+    if(this.apiLoading == true){
+      this.apiLoading = false
+    }
     // this.teste();
     // this.index();
   },

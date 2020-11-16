@@ -155,9 +155,11 @@ export default {
 
     checkLike() {
 
+        if (!this.cardData.liked) return
+
         const setTocheck = new Set()
         
-        this.cardData.liked.forEach(user => setTocheck.add(user.id));
+        this.cardData.liked.forEach(like => setTocheck.add(like.user.id));
 
         if (setTocheck.has(this.getId)) return true 
         

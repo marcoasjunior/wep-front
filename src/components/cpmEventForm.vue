@@ -2,38 +2,45 @@
     <div class="d-flex flex-column">
             <h1 class="alg-txt-c mb-1 mt-7">Cadastro de evento</h1>
             <v-card flat class="p10 ac mt-10" max-width="90%" width="800px">
-                <div>
+                <div class="img-upload-box ac">
                     <div class="card-style-1">
 
                         <button class="ac drop-input" @click="onFileSelected" align="center">
-                            <img v-if="imageUrl" :src="imageUrl" alt="uploaded" width="500px">
-                            <v-icon v-else color="black" dark left>mdi-camera</v-icon>
-                            <p>Adicione uma imagem ao seu evento</p>
+                            <div v-if="imageUrl">
+                                <img :src="imageUrl" alt="uploaded" width="500px">
+                                <p>Clique para substiruir a imagem do evento</p>
+                            </div>
+                            <div v-else>
+                                <v-icon color="black" dark left>mdi-camera</v-icon>
+                                <p>Adicione uma imagem ao seu evento</p>
+                            </div>
                             <input @change="onFilePicked" type="file" class="hiden-input" ref="fileInput" accept="image/*">
                         </button>
-                        <span class="card-footer">
-                            <v-text-field class="mx-5" v-model="eventForm.name" label="Nome do evento" :rules="nameRules" :error="false" color="orange" :counter="40"></v-text-field>
-                        <v-textarea 
-                            color="orange" 
-                            class="mx-5" 
-                            v-model="eventForm.description" 
-                            name="input-7-4" 
-                            label="Informações do evento"></v-textarea>
-                         </span>
 
                     </div>
                 </div>
 
-                <v-card flat class="mt-7 mb-3 mr-auto ml-auto d-flex flex-column align-center p15" max-width="90%" width="800px" >
+                <v-card flat class="mt-7 mb-3 mr-auto ml-auto d-flex flex-column align-center p15 card-style-1" max-width="90%" width="800px" >
+                    <div class="card-style-1 p20">
+
+                    <v-text-field class="mx-5" v-model="eventForm.name" label="Nome do evento" :rules="nameRules" :error="false" color="orange" :counter="40"></v-text-field>
+                    
+                    <v-textarea 
+                        color="orange" 
+                        class="mx-5" 
+                        v-model="eventForm.description" 
+                        name="input-7-4" 
+                        label="Informações do evento">
+                    </v-textarea>
 
                     <div>
-                    <v-btn class="ml-2" rounded color="orange" :outlined="active == 1" dark @click="typeEvent(0)">
-                        Público
-                    </v-btn>
+                        <v-btn class="ml-2" rounded color="orange" :outlined="active == 1" dark @click="typeEvent(0)">
+                            Público
+                        </v-btn>
 
-                    <v-btn class="ml-2" rounded color="orange" :outlined="active == 0" dark @click="typeEvent(1)">
-                        Privado
-                    </v-btn>
+                        <v-btn class="ml-2" rounded color="orange" :outlined="active == 0" dark @click="typeEvent(1)">
+                            Privado
+                        </v-btn>
                     </div>
 
                     <v-divider class="mt-3"></v-divider>
@@ -121,6 +128,7 @@
                         >Criar evento</v-btn>
                     </div>
 
+                    </div>
                 </v-card>
             </v-card>
 
@@ -491,6 +499,12 @@ export default {
 </script>
 
 <style scoped>
+
+.img-upload-box{
+    display: block;
+    max-width: 100%;
+    width: 100%;
+}
 
 .map {
 

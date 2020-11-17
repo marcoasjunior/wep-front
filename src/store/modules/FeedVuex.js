@@ -28,6 +28,16 @@ export default {
   },
 
   actions: {
+    async getPublicEvents(context){
+
+      await axios.get(process.env.VUE_APP_BASE_URL+'/event/type?privated=false')
+      .then(resp => {
+          console.log(resp)
+          // context.commit('setFeedEventsData',resp.data)
+          return resp.data;
+      })
+
+    },
     async getEvents(context){
 
       await axios.get(process.env.VUE_APP_BASE_URL+'/event/list')

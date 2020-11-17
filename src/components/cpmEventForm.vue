@@ -26,7 +26,7 @@
                     <v-text-field class="mx-5" v-model="eventForm.name" label="Nome do evento" :rules="nameRules" :error="false" color="orange" :counter="40"></v-text-field>
                     
                     <v-textarea 
-                        color="orange" 
+                        color="orange"
                         class="mx-5" 
                         v-model="eventForm.description" 
                         name="input-7-4" 

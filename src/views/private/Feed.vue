@@ -16,11 +16,14 @@
         <section v-else>
             <h1 class="alg-txt-c headline mt-3">Feed</h1>
 
-
             <div class="p15 mt-10 ac" v-for="(item, i) in cardsEventData" :key="i">
 
 
                 <FeedCard :cardData="cardsEventData[i]"/>
+
+                    <!-- <div v-if="cardData.privated == true">
+        evento do seu amigo
+    </div> -->
 
             </div>
         </section>
@@ -116,8 +119,13 @@ export default {
 
     methods: {
         ...mapActions({
-            getEvents: 'FeedVuex/getEvents'
+            getEvents: 'FeedVuex/getEvents',
+            getPublicEvents: 'FeedVuex/getPublicEvents',
         }),
+
+        test(){
+            this.getPublicEvents()
+        }
     }
 }
 </script>

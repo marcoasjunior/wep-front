@@ -78,10 +78,10 @@ export default {
   methods: {
     async index() {
       if (this.follow == 0) {
-        // this.tab = 0;
+        this.tab = 0;
         this.title = "Seguindo";
       } else if (this.follow == 1) {
-        // this.tab = 1;
+        this.tab = 1;
         this.title = "Seguidores";
       }
     },

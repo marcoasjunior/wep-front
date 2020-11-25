@@ -40,9 +40,16 @@
             </v-avatar>
           </v-list-item>
 
-          <v-card-actions class="ml-2">
-            <followsDialog :follow="0" :data="dataFollows" />
-            <followsDialog :follow="1" :data="dataFollows" class="ml-4" />
+          <v-card-actions class="ml-6">
+            <v-row>
+              {{dataFollows[0].length}}
+              <followsDialog :follow="0" :data="dataFollows" />
+            </v-row>
+            <v-row class="ml-a">
+              {{dataFollows[1].length}}
+              <followsDialog :follow="1" :data="dataFollows" />
+            </v-row>
+
             <Dialog
               :user_data="user_data"
               :updateUser="updateUser"

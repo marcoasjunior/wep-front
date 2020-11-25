@@ -45,8 +45,13 @@
       <v-card-text class="d-flex justify-space-between">
         <p>
           <v-btn @click="thumbAction(cardData)" icon>
-            <v-icon v-if="!checkLike">mdi-thumb-up-outline</v-icon>
-            <v-icon v-else>mdi-thumb-up</v-icon>
+            <v-progress-circular v-if="apiLoading" indeterminate color="primary"></v-progress-circular>
+            
+            <span v-else>
+              <v-icon v-if="!checkLike" color="primary">mdi-thumb-up-outline</v-icon>
+              <v-icon v-else color="primary">mdi-thumb-up</v-icon>
+            </span>
+          
           </v-btn>
           <v-chip outlined>{{ cardData.liked.length }}</v-chip>
         </p>
@@ -304,17 +309,21 @@ export default {
 
     async thumbAction(cardData) {
       try {
+        this.$store.commit("setApiLoading", true);
         !this.checkLike
           ? await this.likeEvent({ eventId: cardData.id, userId: this.getId })
           : await this.unlikeEvent({
-              eventId: cardData.id,
+            eventId: cardData.id,
               userId: this.getId,
             });
 
         await this.getEvents();
+        this.$store.commit("setApiLoading", false);
+
       } catch (error) {
         console.log(error);
 
+        this.$store.commit("setApiLoading", false);
         this.$toast.error("Erro ao curtir", "Putz", { position: "topCenter" });
       }
     },

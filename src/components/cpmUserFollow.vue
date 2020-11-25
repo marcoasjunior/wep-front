@@ -51,10 +51,10 @@ export default {
     loading: false,
   }),
 
-    computed:{
+  computed: {
     ...mapGetters({
-      apiLoading: 'apiLoading'
-    })
+      apiLoading: "apiLoading",
+    }),
   },
 
   methods: {
@@ -64,21 +64,21 @@ export default {
     }),
 
     async follow(user) {
-      this.$store.commit('setApiLoading', true)
+      this.$store.commit("setApiLoading", true);
 
       const follow = await this.doFollow(user.id);
 
-      this.$store.commit('setApiLoading', false)
+      this.$store.commit("setApiLoading", false);
 
       user.following = true;
     },
 
     async unfollow(user) {
-      this.$store.commit('setApiLoading', true)
+      this.$store.commit("setApiLoading", true);
 
       const unfollow = await this.doUnFollow(user.id);
 
-      this.$store.commit('setApiLoading', false)
+      this.$store.commit("setApiLoading", false);
 
       user.following = false;
     },
@@ -89,8 +89,8 @@ export default {
   },
 
   created() {
-    if(this.apiLoading == true){
-      this.apiLoading = false
+    if (this.apiLoading == true) {
+      this.apiLoading = false;
     }
     // this.teste();
     // this.index();

@@ -55,6 +55,13 @@
             <v-list-item-title>Perfil</v-list-item-title>
           </v-list-item>
 
+          <v-list-item exact to="/Follow">
+            <v-list-item-icon>
+              <v-icon>mdi-account-group</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Amigos</v-list-item-title>
+          </v-list-item>
+
           <div>
             <v-col align="center" class="mt-10">
               <v-btn @click="logOff" color="red" dark>SAIR</v-btn>

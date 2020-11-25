@@ -40,11 +40,6 @@
 
               <v-divider></v-divider>
             </v-col>
-
-            <!--  -->
-            <v-btn class="button mt-5" color="warning" block to="/Feed"
-              >Próximo</v-btn
-            >
           </v-col>
         </v-col>
       </v-row>
@@ -113,11 +108,11 @@ export default {
 
       return users;
     },
-    filteredUsers: function(){
-      return this.usersData.filter(user => {
+    filteredUsers: function () {
+      return this.usersData.filter((user) => {
         return user.name.toLowerCase().match(this.search.toLowerCase());
-      })
-    }
+      });
+    },
   },
 };
 </script>

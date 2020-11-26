@@ -16,14 +16,13 @@
         <section v-else>
             <h1 class="alg-txt-c headline mt-3">Feed</h1>
 
+            
+
+
             <div class="p15 mt-10 ac" v-for="(item, i) in cardsEventData" :key="i">
 
 
                 <FeedCard :cardData="cardsEventData[i]" @deleted="deleted($event)"/>
-
-                    <!-- <div v-if="cardData.privated == true">
-        evento do seu amigo
-    </div> -->
 
             </div>
         </section>
@@ -49,6 +48,9 @@ export default {
     data: () => ({
         imageURL: './img-card-0.png',
         loading: null,
+
+        following: '',
+        followers: '',
 
         itens: [{
                 id: '1',
@@ -91,30 +93,31 @@ export default {
 
         ...mapGetters({
 
+            userData: 'FeedVuex/userData',
             cardsEventData: 'FeedVuex/cardsEventData',
-
         }),
 
     },
 
     async created() {
-
+        
         this.loading = true
 
         try {
-
+            
             await this.getEvents()
 
         } catch (error) {
-
+            
             console.log(error)
 
         } finally {
-
+            
             this.loading = false
 
         }
 
+        this.getAllFollowing();
 
     },
 
@@ -122,6 +125,8 @@ export default {
         ...mapActions({
             getEvents: 'FeedVuex/getEvents',
             getPublicEvents: 'FeedVuex/getPublicEvents',
+            getFollowing: "ProfileVuex/getFollowing",
+            getFollowers: "ProfileVuex/getFollowers",
         }),
 
         ...mapMutations({
@@ -132,8 +137,12 @@ export default {
             this.deleteEvent(event)
         },
 
-        test(){
-            this.getPublicEvents()
+        async getAllFollowing(){
+            let responseFollowing = await this.getFollowing();
+            let responseFollowers = await this.getFollowers();
+            this.following = responseFollowing
+            this.followers = responseFollowers
+
         }
     }
 }

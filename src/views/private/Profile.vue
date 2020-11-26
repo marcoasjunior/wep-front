@@ -45,12 +45,13 @@
               {{dataFollows[0].length}}
               <followsDialog :follow="0" :data="dataFollows" />
             </v-row>
+
             <v-row class="ml-a">
               {{dataFollows[1].length}}
               <followsDialog :follow="1" :data="dataFollows" />
             </v-row>
 
-            <Dialog
+            <EditDialog
               :user_data="user_data"
               :updateUser="updateUser"
               :updateAvatar="updateAvatar"
@@ -59,22 +60,16 @@
         </v-card>
 
         <div class="mt-5" v-if="events == false">
-          <h5 class="alg-txt-c">Você não tem eventos cadastrados</h5>
-          <v-row align="center">
-            <v-col class="text-center" cols="1" sm="12">
-              <router-link to="/Event">
+          <h5 class="alg-txt-c mb-2">Você não tem eventos cadastrados, deseja cadastrar um novo evento?</h5>
+              <div align="center" class="mb-5">
                 <v-btn
-                  align="center"
-                  class="ml-2"
                   rounded
                   color="orange"
                   outlined
                   dark
-                  >Cadastre um evento</v-btn
-                >
-              </router-link>
-            </v-col>
-          </v-row>
+                  to="/Event"
+                >Cadastre um evento</v-btn>
+              </div>
         </div>
 
         <div></div>
@@ -98,7 +93,7 @@
 <script>
 import Toolbar from "@/components/cpmToolBar";
 import SetMap from "../../components/cpmSetMapPoints";
-import Dialog from "@/components/cpmDialogProfile";
+import EditDialog from "@/components/cpmDialogProfile";
 import EventCard from "@/components/cpmCard";
 import followsDialog from "@/components/cpmDialogFollows";
 
@@ -108,7 +103,7 @@ export default {
   components: {
     Toolbar,
     SetMap,
-    Dialog,
+    EditDialog,
     EventCard,
     followsDialog,
   },

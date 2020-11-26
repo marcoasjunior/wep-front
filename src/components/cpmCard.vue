@@ -19,7 +19,7 @@
         <div class="ml-5">{{ cardData.eventDate }}</div>
 
         <div class="ml-5" v-if="cardData.user.id == getId">
-          <v-btn :loading="apiLoading" icon class="cp" @click="dodelete()">
+          <v-btn :loading="apiLoading" icon class="cp" @click="deleteComponentEvent()">
             <v-icon color="red">mdi-delete</v-icon>
           </v-btn>
         </div>
@@ -247,9 +247,10 @@ export default {
       likeEvent: "EventVuex/likeEvent",
       unlikeEvent: "EventVuex/unlikeEvent",
       deleteEvent: "FeedVuex/deleteEvent",
+      getMyEvents: "ProfileVuex/getMyEvents",
     }),
 
-    async dodelete() {
+    async deleteComponentEvent() {
       try {
         this.$store.commit("setApiLoading", true);
 
@@ -260,7 +261,9 @@ export default {
         this.$toast.success("Evento deletado com sucesso.", "Yeah!", {
           position: "topCenter",
         });
+
         this.$store.commit("setApiLoading", false);
+
       } catch (error) {
         this.$store.commit("setApiLoading", false);
         this.$toast.error("Tente novamente", "Ops!", {

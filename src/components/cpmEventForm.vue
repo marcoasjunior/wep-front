@@ -7,7 +7,7 @@
 
                         <button class="ac drop-input" @click="onFileSelected" align="center">
                             <div v-if="imageUrl">
-                                <img :src="imageUrl" alt="uploaded" width="500px">
+                                <img :src="imageUrl" alt="uploaded" class="img-uploaded">
                                 <p>Clique para substiruir a imagem do evento</p>
                             </div>
                             <div v-else>
@@ -582,6 +582,11 @@ export default {
         max-width: 100%;
         width: 100%;
     }
+}
+
+.img-uploaded{
+    max-width: 100%;
+    width: 100%;
 }
 
 .img-upload-box{

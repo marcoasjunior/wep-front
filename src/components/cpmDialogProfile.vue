@@ -3,7 +3,12 @@
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template class="d-flex align-center" v-slot:activator="{ on, attrs }">
         
-        <v-btn class="mr-auto ml-auto" v-bind="attrs" v-on="on">EDITAR</v-btn>
+        <v-btn 
+          class="mr-auto ml-auto" 
+          v-bind="attrs" 
+          color="orange" 
+          dark v-on="on"
+        >EDITAR</v-btn>
       
       </template>
       <v-card>

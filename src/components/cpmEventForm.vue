@@ -434,7 +434,7 @@ export default {
 
                 let body = {
                     title: this.eventForm.name,
-                    description: this.eventForm.description,
+                    description: this.repleaceDescription(),
                     address: this.eventAddress.streat,
                     img: this.eventForm.img,
                     privated: this.eventForm.private,
@@ -503,7 +503,13 @@ export default {
                this.eventErrorForm.eventDate = false 
                this.showAddresswarning = false
             }
-        }
+        },
+
+        repleaceDescription(){
+            // this.eventForm.description
+            let testConcole = this.eventForm.description.split("\n")
+            return testConcole.join(' </br> ')
+        },
     },
 
     watch: {

@@ -1,9 +1,9 @@
 <template>
     <div class="d-flex flex-column">
             <h1 class="alg-txt-c mb-1 mt-7">Cadastro de evento</h1>
-            <v-card flat class="p10 ac mt-10" max-width="90%" width="800px">
-                <div class="img-upload-box ac">
-                    <div class="card-style-1">
+            <v-card flat class="p10 ac mt-10 container-card-form">
+                <div class="img-upload-box ac ">
+                    <div class="card-style-1 container-card-fields ac">
 
                         <button class="ac drop-input" @click="onFileSelected" align="center">
                             <div v-if="imageUrl">
@@ -20,15 +20,24 @@
                     </div>
                 </div>
 
-                <v-card flat class="mt-7 mb-3 mr-auto ml-auto d-flex flex-column align-center p15 card-style-1" max-width="90%" width="800px" >
+                <v-card flat class="mt-7 mb-3 ac align-center p15 card-style-1 container-card-fields">
                     <div class="card-style-1 p20">
 
-                    <v-text-field class="mx-5" v-model="eventForm.name" label="Nome do evento" :rules="nameRules" :error="false" color="orange" :counter="40"></v-text-field>
+                    <v-text-field 
+                        class="mx-5" 
+                        v-model="eventForm.name" 
+                        label="Nome do evento" 
+                        :rules="nameRules" 
+                        :error="eventErrorForm.name"
+                        color="orange" 
+                        :counter="40"
+                    ></v-text-field>
                     
                     <v-textarea 
                         color="orange"
                         class="mx-5" 
                         v-model="eventForm.description" 
+                        :error="eventErrorForm.description"
                         name="input-7-4" 
                         label="Informações do evento">
                     </v-textarea>
@@ -71,9 +80,13 @@
 
                                 <strong>
                                     Endereço: <br/>
-                                    <v-icon v-if="addressClassState != ''" color="success">mdi-check-bold</v-icon>
+                                    <v-icon v-if="eventErrorForm.address" color="error">mdi-block-helper</v-icon>
+                                    <v-icon v-else color="success">mdi-check-bold</v-icon>
                                     <span :class="addressClassState">{{ possibleAddress }}</span>
                                  </strong>
+
+                                <br/>
+                                <strong class="clr-red mt-3 d-block" v-if="showAddresswarning"> *O endereço não foi salvo, caso tenha colocado o endereço correto, clique no botão verde abaixo escrito "correto". </strong>
 
                                 <div class="d-block mt-4" align="center">
                                     <span>o Endereço está correto?</span>
@@ -86,25 +99,34 @@
 
                         <v-tab-item>
                             <div class="container-fields">
-                            <v-text-field v-model="eventAddress.query" label="CEP" :rules="nameRules" :error="false" color="orange"></v-text-field>
+                            <v-text-field 
+                                class="mt-5"
+                                v-model="eventForm.address" 
+                                label="Endereço"
+                                :rules="nameRules"
+                                :error="eventErrorForm.address" 
+                                color="orange"
+                            ></v-text-field>
+                            <!-- <v-text-field v-model="eventAddress.query" label="CEP" :rules="nameRules" :error="false" color="orange"></v-text-field>
                             <v-text-field v-model="eventAddress.state" label="Estado" color="orange"></v-text-field>
                             <v-text-field v-model="eventAddress.city" label="Cidade" color="orange"></v-text-field>
                             <v-text-field v-model="eventAddress.district" label="Bairro" color="orange"></v-text-field>
                             <v-text-field v-model="eventAddress.streat" label="Rua" color="orange"></v-text-field>
                             <v-text-field v-model="eventAddress.moreInfo" label="Complemento" color="orange"></v-text-field>
-                            <v-text-field v-model="eventAddress.reference" label="Ponto de referência" color="orange"></v-text-field>
+                            <v-text-field v-model="eventAddress.reference" label="Ponto de referência" color="orange"></v-text-field> -->
                             </div>
                         </v-tab-item>
                     </v-tabs-items>
 
                     <div class="container-fields">
                         <v-text-field
+                            class="mt-8"
                             type="tel"
                             v-mask="'##/##/####'"
                             v-model="eventForm.eventDate" 
                             label="Data do evento" 
                             :rules="dateRules" 
-                            :error="false"
+                            :error="eventErrorForm.eventDate"
                             color="orange"
                             :counter="10" 
                         ></v-text-field>
@@ -200,6 +222,17 @@ export default {
             img: '',
         },
 
+        eventErrorForm: {
+            name: false,
+            description: false,
+            private: false,
+            latitude: false,
+            longitude: false,
+            address: false,
+            eventDate: false,
+            img: false,
+        },
+
         name: '',
         inputFile: '',
 
@@ -259,6 +292,9 @@ export default {
         uploadedValue: '',
         photo: '',
         possibleAddress: '',
+
+
+        showAddresswarning: false,
     }),
 
     created() {
@@ -361,8 +397,13 @@ export default {
         },
 
         correctAddress(){
-            this.eventAddress.streat = this.possibleAddress
 
+            if(this.eventErrorForm.address = true){
+                this.eventErrorForm.address = false
+                this.showAddresswarning = false
+            }
+
+            this.eventForm.address = this.possibleAddress
             this.$toast.success('Endereço preenchido', 'uhul!', {
                 position: "topCenter"
             })
@@ -371,8 +412,18 @@ export default {
         },
 
         async createEvent() {
-            this.overlay = true
+            
+            this.checkForm()
+            if(
+                !this.eventErrorForm.name  &&
+                !this.eventErrorForm.description &&
+                !this.eventErrorForm.address &&
+                !this.eventErrorForm.eventDate
+            ){
+                
+                
             try {
+                this.overlay = true
                 const fd = new FormData();
                 console.log(this.imageData)
                 fd.append('photo', this.imageData);
@@ -418,7 +469,40 @@ export default {
             } catch (e) {
                 throw e
             }
+            
+            } else{
+                this.$toast.error('Erro ao cadastrar evento', 'Putz', {
+                    position: "topCenter"
+                })
+            }
 
+        },
+
+        checkForm(){
+            if(this.eventForm.name == ''){
+                this.eventErrorForm.name = true
+            
+            }else this.eventErrorForm.name = false
+            
+            if(this.eventForm.description == ''){
+                this.eventErrorForm.description = true
+            
+            } else this.eventErrorForm.description = false
+
+            if(this.eventForm.address == ''){
+                this.eventErrorForm.address = true
+                this.addressClassState = 'clr-red'
+            
+            } else this.eventErrorForm.address = false
+
+            if(this.eventForm.eventDate == ''){
+                this.eventErrorForm.eventDate = true
+                this.showAddresswarning = true
+           
+           } else {
+               this.eventErrorForm.eventDate = false 
+               this.showAddresswarning = false
+            }
         }
     },
 
@@ -432,25 +516,6 @@ export default {
                     .then(result => {
                         
                         console.log(result)
-
-                        // if (result.suggestions && result.suggestions.length > 0) {
-                        //     if (result.suggestions[0].address.houseNumber && result.suggestions[0].address.street) {
-                        //         this.street = result.suggestions[0].address.street + ", " + result.suggestions[0].address.houseNumber
-                        //     } else {
-                        //         this.street = "";
-                        //     }
-                        //     this.city = result.suggestions[0].address.city ? result.suggestions[0].address.city : "";
-                        //     this.state = result.suggestions[0].address.state ? result.suggestions[0].address.state : "";
-                        //     this.postcode = result.suggestions[0].address.postalCode ? result.suggestions[0].address.postalCode : "";
-                        //     this.district = result.suggestions[0].address.district ? result.suggestions[0].address.district : "";
-                        //     this.country = result.suggestions[0].address.country ? result.suggestions[0].address.country : "";
-                        // } else {
-                        //     this.street = "";
-                        //     this.city = "";
-                        //     this.state = "";
-                        //     this.postalCode = "";
-                        //     this.country = "";
-                        // }
                     })
             },
 
@@ -498,7 +563,26 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+.container-card-form{
+    max-width: 100%;
+    width: 100%;
+
+    @media screen  and (max-width: 700px){
+        max-width: 100%;
+        width: 100%;
+    }
+}
+
+.container-card-fields{
+    max-width: 50%;
+    width: 100%;
+
+    @media screen  and (max-width: 850px){
+        max-width: 100%;
+        width: 100%;
+    }
+}
 
 .img-upload-box{
     display: block;

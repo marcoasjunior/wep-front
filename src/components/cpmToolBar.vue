@@ -48,6 +48,13 @@
             <v-list-item-title>Eventos</v-list-item-title>
           </v-list-item>
 
+          <v-list-item exact to="/Private/events">
+            <v-list-item-icon>
+              <v-icon>mdi-card-account-details-star-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Eventos Privados</v-list-item-title>
+          </v-list-item>
+
           <v-list-item exact to="/Profile">
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>

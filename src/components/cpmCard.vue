@@ -37,7 +37,8 @@
       </v-card-title>
 
       <v-card-text>
-        <p>{{ cardData.description }}</p>
+        <!-- <p>{{ cardData.description }}</p> -->
+        <span v-html="cardData.description"></span>
       </v-card-text>
 
       <v-divider></v-divider>

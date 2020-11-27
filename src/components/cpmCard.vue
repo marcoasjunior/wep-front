@@ -18,10 +18,40 @@
 
         <div class="ml-5">{{ cardData.eventDate }}</div>
 
-        <div class="ml-5" v-if="cardData.user.id == getId">
-          <v-btn :loading="apiLoading" icon class="cp" @click="deleteComponentEvent()">
+        <div class="ml-8" v-if="cardData.user.id == getId">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                :loading="apiLoading"
+                icon
+                class="cp"
+                @click="deleteComponentEvent()"
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon color="red">mdi-delete</v-icon>
+              </v-btn>
+            </template>
+            <span>Deletar</span>
+          </v-tooltip>
+          <!--  -->
+
+          <!-- <v-btn
+            :loading="apiLoading"
+            icon
+            class="cp"
+            @click="deleteComponentEvent()"
+          >
             <v-icon color="red">mdi-delete</v-icon>
-          </v-btn>
+          </v-btn> -->
+        </div>
+
+        <div class="ml-3">
+   
+      
+              <cpmEditEvent :data="cardData"/>
+          
+
         </div>
       </v-app-bar>
 
@@ -46,13 +76,18 @@
       <v-card-text class="d-flex justify-space-between">
         <p>
           <v-btn @click="thumbAction(cardData)" icon>
-            <v-progress-circular v-if="apiLoading" indeterminate color="primary"></v-progress-circular>
-            
+            <v-progress-circular
+              v-if="apiLoading"
+              indeterminate
+              color="primary"
+            ></v-progress-circular>
+
             <span v-else>
-              <v-icon v-if="!checkLike" color="primary">mdi-thumb-up-outline</v-icon>
+              <v-icon v-if="!checkLike" color="primary"
+                >mdi-thumb-up-outline</v-icon
+              >
               <v-icon v-else color="primary">mdi-thumb-up</v-icon>
             </span>
-          
           </v-btn>
           <v-chip outlined>{{ cardData.liked.length }}</v-chip>
         </p>
@@ -199,8 +234,11 @@
 <script>
 import axios from "axios";
 import { mapActions, mapGetters } from "vuex";
+
+import cpmEditEvent from "@/components/cpmEditEvent";
 export default {
   name: "Card",
+  components: { cpmEditEvent },
   props: ["cardData"],
   data: () => ({
     // cardDataArray: [],
@@ -266,7 +304,6 @@ export default {
         });
 
         this.$store.commit("setApiLoading", false);
-
       } catch (error) {
         this.$store.commit("setApiLoading", false);
         this.$toast.error("Tente novamente", "Ops!", {
@@ -319,13 +356,12 @@ export default {
         !this.checkLike
           ? await this.likeEvent({ eventId: cardData.id, userId: this.getId })
           : await this.unlikeEvent({
-            eventId: cardData.id,
+              eventId: cardData.id,
               userId: this.getId,
             });
 
         await this.getEvents();
         this.$store.commit("setApiLoading", false);
-
       } catch (error) {
         console.log(error);
 

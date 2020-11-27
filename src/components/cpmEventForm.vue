@@ -443,7 +443,7 @@ export default {
                 let body = {
                     title: this.eventForm.name,
                     description: this.repleaceDescription(),
-                    address: this.eventAddress.streat,
+                    address: this.eventAddress.address,
                     img: this.eventForm.img,
                     privated: this.eventForm.private,
                     eventDate: this.eventForm.eventDate,

@@ -16,7 +16,6 @@
 
         <div class="ml-5">{{ cardData.user.name }}</div>
 
-        <div class="ml-5">{{ cardData.eventDate }}</div>
 
         <div class="ml-8" v-if="cardData.user.id == getId">
           <v-tooltip bottom>
@@ -24,8 +23,9 @@
               <v-btn
                 :loading="apiLoading"
                 icon
+                rounded
                 class="cp"
-                @click="deleteComponentEvent()"
+                @click="confirmDeleteEvent = true"
                 v-bind="attrs"
                 v-on="on"
               >
@@ -64,6 +64,8 @@
 
       <v-card-title>
         <h2>{{ cardData.title }}</h2>
+
+        <p class="clr-red">{{ cardData.eventDate }}</p>
       </v-card-title>
 
       <v-card-text>
@@ -228,6 +230,47 @@
         </v-expansion-panel>
       </v-expansion-panels>
     </v-card>
+
+
+    <v-dialog
+      v-model="confirmDeleteEvent"
+      width="600"
+    >
+      <v-card>
+        <v-card-title class="headline orange">
+          <span class="clr-whi">Tem certeza que deseja deletar o evento ?</span>
+        </v-card-title>
+
+        <v-card-text>
+          <h2 class="alg-txt-c mt-4 mb-4">⚠ Ao deletetar o evento, os comentários e curtidas também irão ser apagados. ⚠</h2>
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          
+          <v-btn
+            color="primary"
+            outlined
+            @click="confirmDeleteEvent = false"
+          >
+            Cancelar
+          </v-btn>
+          
+          <v-btn
+            color="error"
+            outlined
+            @click="deleteComponentEvent"
+          >
+            Deletetar
+          </v-btn>
+
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+
   </div>
 </template>
 
@@ -251,6 +294,7 @@ export default {
       { name: "Editar", icon: "mdi-pencil", color: "orange" },
       { name: "Deletar", icon: "mdi-trash-can", color: "error" },
     ],
+    confirmDeleteEvent: false
   }),
 
   created() {

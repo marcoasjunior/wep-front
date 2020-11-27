@@ -42,12 +42,12 @@
 
           <v-card-actions class="ml-6">
             <v-row>
-              {{dataFollows[0].length}}
+              {{ dataFollows[0].length }}
               <followsDialog :follow="0" :data="dataFollows" />
             </v-row>
 
             <v-row class="ml-a">
-              {{dataFollows[1].length}}
+              {{ dataFollows[1].length }}
               <followsDialog :follow="1" :data="dataFollows" />
             </v-row>
 
@@ -59,26 +59,28 @@
           </v-card-actions>
         </v-card>
 
-        <div class="mt-5" v-if="events == false">
-          <h5 class="alg-txt-c mb-2">Você não tem eventos cadastrados, deseja cadastrar um novo evento?</h5>
-              <div align="center" class="mb-5">
-                <v-btn
-                  rounded
-                  color="orange"
-                  outlined
-                  dark
-                  to="/Event"
-                >Cadastre um evento</v-btn>
-              </div>
-        </div>
+        <v-divider></v-divider>
 
-        <div></div>
+        <div class="mt-5" v-if="events == ''">
+          <h5 class="alg-txt-c mb-2">
+            Você não tem eventos cadastrados, deseja cadastrar um novo evento?
+          </h5>
+          <div align="center" class="mb-5">
+            <v-btn rounded color="orange" outlined dark to="/Event"
+              >Cadastre um evento</v-btn
+            >
+          </div>
+        </div>
       </v-card>
 
-      <section v-if="events != false">
+      <section v-if="events != ''">
         <h2 class="alg-txt-c mt-5 headline mx-auto">Meus Eventos</h2>
         <div class="mb-6 p10" v-for="event in events" :key="event.id">
-          <EventCard class="mt-4 card" :cardData="event" />
+          <EventCard
+            class="mt-4 card"
+            :cardData="event"
+            @deleted="deleted($event)"
+          />
         </div>
       </section>
       <div align="center">
@@ -97,7 +99,7 @@ import EditDialog from "@/components/cpmDialogProfile";
 import EventCard from "@/components/cpmCard";
 import followsDialog from "@/components/cpmDialogFollows";
 
-import { mapActions } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 
 export default {
   components: {
@@ -124,8 +126,6 @@ export default {
       password: "",
       whatsapp: "",
     },
-
-    events: [],
   }),
 
   methods: {
@@ -138,6 +138,11 @@ export default {
       getFollowing: "ProfileVuex/getFollowing",
       getFollowers: "ProfileVuex/getFollowers",
     }),
+
+    ...mapMutations({
+      deleteEvent: "ProfileVuex/deleteEvent",
+    }),
+
     logOut() {
       localStorage.removeItem("token");
       localStorage.removeItem("id");
@@ -147,7 +152,7 @@ export default {
     async index() {
       this.loading = true;
       await this.loadUser();
-      await this.loadEvents();
+      await this.getMyEvents();
       await this.getFollowing();
       await this.getFollowers();
       this.dataFollows.push(this.following);
@@ -165,14 +170,9 @@ export default {
       this.user_data.password = user.password;
       this.user_data.whatsapp = user.whatsapp;
     },
-    async loadEvents() {
-      const events = await this.getMyEvents();
 
-      if (events.length < 1) {
-        this.events = false;
-      }
-
-      this.events = events;
+    deleted(event) {
+      this.deleteEvent(event)
     },
   },
 
@@ -184,6 +184,9 @@ export default {
   },
 
   computed: {
+    events() {
+      return this.$store.state.ProfileVuex.myEvents;
+    },
     following() {
       return this.$store.state.ProfileVuex.following;
     },

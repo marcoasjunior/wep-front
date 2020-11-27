@@ -133,6 +133,7 @@ export default {
             deleteEvent: "FeedVuex/deleteEvent"
         }),
 
+        //Delete o evento do vuex
         deleted(event){
             this.deleteEvent(event)
         },

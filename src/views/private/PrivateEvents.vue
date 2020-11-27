@@ -1,95 +1,116 @@
 <template>
-    <div>
-        <ToolBar/>
+  <div>
+    <ToolBar />
 
-            <div class="p15 mt-10 ac" v-for="(item, i) in filteredEventsByPrivacy" :key="i">
+    <v-container v-if="apiLoading" style="height: 400px">
+      <v-row class="fill-height" align-content="center" justify="center">
+        <v-col class="subtitle-1 text-center" cols="12">
+          Carregando eventos...
+        </v-col>
+        <v-col cols="6">
+          <v-progress-linear
+            color="deep-purple accent-4"
+            indeterminate
+            rounded
+            height="6"
+          ></v-progress-linear>
+        </v-col>
+      </v-row>
+    </v-container>
 
-                {{ item }}
-
-            </div>
+    <div
+      v-else
+      class="p15 mt-10 ac"
+      v-for="(item, i) in filteredEventsByPrivacy"
+      :key="i"
+    >
+      <cpmCard :cardData="item" />
     </div>
+  </div>
 </template>
 <script>
-import {
-    mapActions,
-    mapGetters,
-    mapMutations
-} from 'vuex';
-import ToolBar from '@/components/cpmToolBar'
-
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import ToolBar from "@/components/cpmToolBar";
+import cpmCard from "@/components/cpmCard";
 
 export default {
-        components:{
-            ToolBar
-        },
+  components: {
+    ToolBar,
+    cpmCard,
+  },
 
-       data: () => ({
-           
-        following: '',
-        followers: '',
-        followersArrayId: '',
-        filteredEventsByPrivacy: '',
+  data: () => ({
+    following: "",
+    followers: "",
+    followersArrayId: "",
+    filteredEventsByPrivacy: "",
+  }),
 
-       }),
+  async created() {
+    this.$store.commit("setApiLoading", true);
 
-        async created() {
-        
-            this.getAllFollowing();
-            this.getEvents();
-        },
+    await this.getEvents();
+    await this.getAllFollowing();
 
-           computed: {
+    this.$store.commit("setApiLoading", false);
+  },
 
-        ...mapGetters({
-                userData: 'FeedVuex/userData',
-                cardsEventData: 'FeedVuex/cardsEventData',
-            }),
+  computed: {
+    ...mapGetters({
+      userData: "FeedVuex/userData",
+      cardsEventData: "FeedVuex/cardsEventData",
+      apiLoading: "apiLoading",
+    }),
+  },
 
-        },
+  methods: {
+    ...mapActions({
+      getEvents: "FeedVuex/getEvents",
+      getFollowing: "ProfileVuex/getFollowing",
+      getFollowers: "ProfileVuex/getFollowers",
+    }),
 
-        methods: {
-            ...mapActions({
-                getEvents: 'FeedVuex/getEvents',
-                getFollowing: "ProfileVuex/getFollowing",
-                getFollowers: "ProfileVuex/getFollowers",
-            }),
+    async index() {
+      await this.getEvents();
+      await this.getAllFollowing();
+    },
 
-            async getAllFollowing(){
+    async getAllFollowing() {
+      let responseFollowing = await this.getFollowing();
+      let responseFollowers = await this.getFollowers();
 
-                
+      this.following = responseFollowing;
+      this.followers = responseFollowers;
+      this.getFollowersId();
+      this.filterEventsByFollowers();
+    },
 
-                let responseFollowing = await this.getFollowing();
-                let responseFollowers = await this.getFollowers();
+    getFollowersId() {
+      let result = this.followers.map((item) => {
+        return item.id;
+      });
+      this.followersArrayId = result;
+      // console.log(result)
+    },
 
-                this.following = responseFollowing
-                this.followers = responseFollowers
-                this.getFollowersId();
-                this.filterEventsByFollowers();
-            },
+    filterEventsByFollowers() {
+      // console.log("!@#$%¨&*()")
+      //   console.log(this.cardsEventData)
+      let filteredEventList = this.cardsEventData.filter((item) => {
+        return this.followersArrayId.includes(item.user.id);
+      });
+      // console.log(filteredEventList)
 
-            getFollowersId(){
-                let result = this.followers.map((item) => {return item.id})
-                this.followersArrayId = result
-                // console.log(result)
-            },
+      this.filteredEventsByPrivacy = filteredEventList;
+    },
+  },
 
-            filterEventsByFollowers(){
-                console.log("!@#$%¨&*()")
-                console.log(this.cardsEventData)
-                let filteredEventList = this.cardsEventData.filter((item) => { return this.followersArrayId.includes(item.user.id) })
-                console.log(filteredEventList)
-
-                this.filteredEventsByPrivacy = filteredEventList
-            }
-
-        },
-
-        watch:{
-            cardsEventData(){
-                if(this.cardsEventData != ''){
-                    this.filterEventsByFollowers()   
-                }
-            }
-        }
-}
+  watch: {
+    cardsEventData() {
+      if (this.cardsEventData != "") {
+        this.filterEventsByFollowers();
+      }
+    },
+  },
+};
 </script>

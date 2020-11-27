@@ -7,7 +7,8 @@ export default {
 
   state: {
     following: [],
-    followers: []
+    followers: [],
+    myEvents: []
   },
 
   getters: {
@@ -16,21 +17,28 @@ export default {
   },
 
   mutations: {
-    setFollowing(state, data){
-      for(let i = 0; i < data.length; i++){
+    deleteEvent(state, data) {
+      const index = state.myEvents.indexOf(data);
+      state.myEvents.splice(index, 1);
+    },
+    setFollowing(state, data) {
+      for (let i = 0; i < data.length; i++) {
         data[i].following = true;
       }
       state.following = data;
     },
-    setFollowers(state, data){
+    setFollowers(state, data) {
       const filtred = data.filter(user => {
         state.following.find(e => {
-          if(e.id == user.id){
+          if (e.id == user.id) {
             user.following = true;
           }
         })
       })
       state.followers = data;
+    },
+    setMyEvents(state, data) {
+      state.myEvents = data;
     }
   },
 
@@ -47,8 +55,10 @@ export default {
       return retorno.data;
     },
 
-    async getMyEvents(contex) {
+    async getMyEvents(context) {
       const events = await axios.get(process.env.VUE_APP_BASE_URL + '/event/user');
+
+      await context.commit('setMyEvents', events.data);
 
       return events.data;
     },

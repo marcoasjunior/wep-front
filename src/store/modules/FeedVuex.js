@@ -19,7 +19,6 @@ export default {
 
   mutations: {
     deleteEvent(state, data){
-      console.log(state.cardsEventData.indexOf(data));
       const index = state.cardsEventData.indexOf(data);
       state.cardsEventData.splice(index, 1);
     },

@@ -3,7 +3,7 @@
             <h1 class="alg-txt-c mb-1 mt-7">Cadastro de evento</h1>
             <v-card flat class="p10 ac mt-10 container-card-form">
                 <div class="img-upload-box ac ">
-                    <div class="card-style-1 container-card-fields ac">
+                    <div class="card-style-1 container-card-fields ac ">
 
                         <button class="ac drop-input" @click="onFileSelected" align="center">
                             <div v-if="imageUrl">

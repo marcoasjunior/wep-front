@@ -40,29 +40,35 @@
             </v-avatar>
           </v-list-item>
 
-          <v-card-actions class="ml-6">
-            <v-row>
-              {{ dataFollows[0].length }}
-              <followsDialog :follow="0" :data="dataFollows" />
-            </v-row>
-
-            <v-row class="ml-a">
-              {{ dataFollows[1].length }}
-              <followsDialog :follow="1" :data="dataFollows" />
-            </v-row>
-
             <EditDialog
               :user_data="user_data"
               :updateUser="updateUser"
               :updateAvatar="updateAvatar"
             />
+
+          <v-card-actions class="mt-6">
+            <div class="ac d-block">
+              <div class="number-follow">
+                <p class="mb-0 alg-txt-c custom-follow-font">{{ dataFollows[0].length }}</p>
+              </div>
+              
+              <followsDialog :follow="0" :data="dataFollows" />
+            </div>
+
+            <div class="d-block ac">
+              <div class="number-follow custom-follow-font">
+                <p class="mb-0 alg-txt-c">{{ dataFollows[1].length }}</p>
+              </div>
+              <followsDialog :follow="1" :data="dataFollows" />
+            </div>
+
           </v-card-actions>
         </v-card>
 
         <v-divider></v-divider>
 
         <div class="mt-5" v-if="events == ''">
-          <h5 class="alg-txt-c mb-2">
+          <h5 class="alg-txt-c mb-2 p20">
             Você não tem eventos cadastrados, deseja cadastrar um novo evento?
           </h5>
           <div align="center" class="mb-5">
@@ -197,7 +203,13 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss">
+.number-follow{
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .card {
   width: 500px;
   margin-left: auto;

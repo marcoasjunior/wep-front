@@ -30,15 +30,17 @@
                         :rules="nameRules" 
                         :error="eventErrorForm.name"
                         color="orange" 
-                        :counter="40"
+                        :counter="100"
                     ></v-text-field>
                     
                     <v-textarea 
                         color="orange"
                         class="mx-5" 
+                        :rules="textAreaRules"
                         v-model="eventForm.description" 
                         :error="eventErrorForm.description"
                         name="input-7-4" 
+                        :counter="500"
                         label="Informações do evento">
                     </v-textarea>
 
@@ -250,7 +252,12 @@ export default {
 
         nameRules: [
             value => !!value || 'Necessário.',
-            value => (value && value.length < 41) || 'Necessário preencher com um valor válido.',
+            value => (value && value.length < 100) || 'Necessário preencher com um valor válido.',
+        ],
+
+        textAreaRules: [
+            value => !!value || 'Necessário.',
+            value => (value && value.length < 500) || 'Necessário preencher com um valor válido.',
         ],
 
         dateRules: [
@@ -299,6 +306,7 @@ export default {
 
     created() {
         this.eventForm.private = false
+        console.log("privado? " + this.eventForm.private)
     },
 
     computed: {
@@ -335,8 +343,8 @@ export default {
 
                 this.active = 1
                 this.eventForm.private = true
-
             }
+            console.log("privado? " + this.eventForm.private)
         },
 
         onFileSelected() {
@@ -445,6 +453,7 @@ export default {
                         id: this.userId
                     },
                 }
+                console.log(body)
 
                 axios.post(this.url + '/event/create', body)
                     .then(resp => {
@@ -591,7 +600,7 @@ export default {
 }
 
 .img-uploaded{
-    max-width: 100%;
+    max-width: 70%;
     width: 100%;
 }
 

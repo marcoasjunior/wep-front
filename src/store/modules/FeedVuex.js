@@ -34,10 +34,11 @@ export default {
   actions: {
     async getPublicEvents(context) {
 
-      await axios.get(process.env.VUE_APP_BASE_URL + '/event/type?privated=false')
+      await axios.get(process.env.VUE_APP_BASE_URL + '/event/privated/false')
         .then(resp => {
           console.log(resp)
-          // context.commit('setFeedEventsData',resp.data)
+
+          context.commit('setFeedEventsData', resp.data)
           return resp.data;
         })
 

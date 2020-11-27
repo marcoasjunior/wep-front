@@ -17,7 +17,14 @@
             <h1 class="alg-txt-c headline mt-3">Feed</h1>
 
             
+            <div v-if="cardsEventData == '' && !apiLoading">
+                <h1 class="alg-txt-c mt-14">nenhum evento foi encontrado 😥</h1>
+                <img class="ac d-block mt-12" src="https://res.cloudinary.com/dvzbogxib/image/upload/v1574897432/gifs/giphy_oorqsn.gif" alt="">
 
+                <div class="container-not-found-message d-block ac mt-6">
+                <p>Mas não se preocupe, seja o primeiro a postar um evento e compartilhar com seus amigos.</p>
+                </div>
+            </div>
 
             <div class="p15 mt-10 ac" v-for="(item, i) in cardsEventData" :key="i">
 
@@ -105,7 +112,8 @@ export default {
 
         try {
             
-            await this.getEvents()
+            // await this.getEvents()
+            await this.getPublicEvents()
 
         } catch (error) {
             
@@ -149,13 +157,28 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+
+.container-not-found-message{
+    text-align: center;
+    max-width: 20%;
+    width: 100%;
+
+    p{
+        font-size: 19px;
+        font-weight: 600;
+    }
+
+    @media screen and (max-width: 700px){
+        max-width: 80%;
+        width: 100%;
+    }
+}
+
+
 
 .progress {
-
     width: 700px;
-
-
 }
 
 </style>

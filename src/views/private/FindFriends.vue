@@ -19,17 +19,27 @@
       <v-row v-else class="d-flex flex-column">
         <v-col>
           <v-col ref="form" class="d-flex flex-column">
-            <h2 class="ac">Encontre amigos</h2>
             <v-card-title>
-              <v-text-field
+              <h2 class="ac" v-if="filteredUsers != '' ">Encontre amigos</h2>
+              <!-- <v-text-field
                 v-model="search"
                 append-icon="mdi-magnify"
                 label="Search"
                 single-line
-              ></v-text-field>
+              ></v-text-field> -->
             </v-card-title>
 
-            <strong class="mb-5">Pessoas que talvez você conheça</strong>
+            
+            <div v-if="filteredUsers == '' ">
+                <h1 class="alg-txt-c mt-14">Não encontramos usuários 😥</h1>
+                <img class="ac d-block mt-12" src="https://res.cloudinary.com/dvzbogxib/image/upload/v1574897432/gifs/giphy_oorqsn.gif" alt="">
+
+                <div class="alg-txt-c d-block ac mt-6">
+                <strong>Mas não se preocupe, convide seus amigos para entrar na diversão, mande o link do wep para seus amigos, famila e conhecidos. 📤</strong>
+                </div>
+            </div>
+
+            <strong v-else class="mb-5">Pessoas que talvez você conheça</strong>
 
             <v-col max-width="500">
               <v-list subheader>

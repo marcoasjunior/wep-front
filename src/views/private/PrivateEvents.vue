@@ -18,6 +18,11 @@
       </v-row>
     </v-container>
 
+      <div v-if="filteredEventsByPrivacy == '' && !apiLoading">
+        <h1 class="alg-txt-c mt-14">nenhum evento foi encontrado 😥</h1>
+    </div>
+
+
     <div
       v-else
       class="p15 mt-10 ac"

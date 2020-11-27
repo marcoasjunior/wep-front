@@ -1,11 +1,23 @@
 <template>
   <v-row class="ac">
-    <v-dialog v-model="dialog" persistent max-width="600px">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn color="orange" dark v-bind="attrs" v-on="on" icon>
+
+    <div class="p10">
+        <v-btn 
+          color="orange" 
+          dark  
+          icon
+          :loading="apiLoading"
+          fab
+          rounded
+          small
+          outlined
+          @click="dialog = true"
+        >
           <v-icon>mdi-folder-edit</v-icon>
         </v-btn>
-      </template>
+    </div>
+
+    <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
           <span class="headline">Edite as informações do evento</span>

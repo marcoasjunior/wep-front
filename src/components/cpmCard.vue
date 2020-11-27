@@ -3,7 +3,6 @@
     <v-card
       v-if="cardData"
       class="rounded-xl ac mb-5"
-      max-height="900px"
       max-width="600px"
     >
       <v-app-bar color="white" class="d-flex align-center" dense>
@@ -14,26 +13,22 @@
 
         <v-divider vertical></v-divider>
 
-        <div class="ml-5">{{ cardData.user.name }}</div>
+        <div class="d-flex">
 
 
-        <div class="ml-8" v-if="cardData.user.id == getId">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                :loading="apiLoading"
-                icon
-                rounded
-                class="cp"
-                @click="confirmDeleteEvent = true"
-                v-bind="attrs"
-                v-on="on"
-              >
-                <v-icon color="red">mdi-delete</v-icon>
-              </v-btn>
-            </template>
-            <span>Deletar</span>
-          </v-tooltip>
+          <div class="ml-5 p20">{{ cardData.user.name }}</div>
+
+
+          <div class="d-flex custom-header-card-margin-left" v-if="cardData.user.id == getId">
+
+            <!-- <span class="d-block ml-a"></span> -->
+            <DeleteEvent :deleteCardData="cardData"/>
+
+            <div>
+              <EditEvent :data="cardData"/>
+            </div>
+            
+          </div>
           <!--  -->
 
           <!-- <v-btn
@@ -46,13 +41,6 @@
           </v-btn> -->
         </div>
 
-        <div class="ml-3">
-   
-      
-              <cpmEditEvent :data="cardData"/>
-          
-
-        </div>
       </v-app-bar>
 
       <v-img
@@ -231,46 +219,6 @@
       </v-expansion-panels>
     </v-card>
 
-
-    <v-dialog
-      v-model="confirmDeleteEvent"
-      width="600"
-    >
-      <v-card>
-        <v-card-title class="headline orange">
-          <span class="clr-whi">Tem certeza que deseja deletar o evento ?</span>
-        </v-card-title>
-
-        <v-card-text>
-          <h2 class="alg-txt-c mt-4 mb-4">⚠ Ao deletetar o evento, os comentários e curtidas também irão ser apagados. ⚠</h2>
-        </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          
-          <v-btn
-            color="primary"
-            outlined
-            @click="confirmDeleteEvent = false"
-          >
-            Cancelar
-          </v-btn>
-          
-          <v-btn
-            color="error"
-            outlined
-            @click="deleteComponentEvent"
-          >
-            Deletetar
-          </v-btn>
-
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-
   </div>
 </template>
 
@@ -278,10 +226,12 @@
 import axios from "axios";
 import { mapActions, mapGetters } from "vuex";
 
-import cpmEditEvent from "@/components/cpmEditEvent";
+import EditEvent from "@/components/cpmEditEvent";
+import DeleteEvent from "@/components/cpmDeleteEvent";
+
 export default {
   name: "Card",
-  components: { cpmEditEvent },
+  components: { EditEvent, DeleteEvent },
   props: ["cardData"],
   data: () => ({
     // cardDataArray: [],
@@ -329,32 +279,8 @@ export default {
       getEvents: "FeedVuex/getEvents",
       likeEvent: "EventVuex/likeEvent",
       unlikeEvent: "EventVuex/unlikeEvent",
-      deleteEvent: "FeedVuex/deleteEvent",
       getMyEvents: "ProfileVuex/getMyEvents",
     }),
-
-    async deleteComponentEvent() {
-      try {
-        this.$store.commit("setApiLoading", true);
-
-        //Delete o evento do DB
-        const response = await this.deleteEvent(this.cardData.id);
-
-        //Envia um evento personalizado para o componente pai avisando o delete do evento
-        this.$emit("deleted", this.cardData);
-
-        this.$toast.success("Evento deletado com sucesso.", "Yeah!", {
-          position: "topCenter",
-        });
-
-        this.$store.commit("setApiLoading", false);
-      } catch (error) {
-        this.$store.commit("setApiLoading", false);
-        this.$toast.error("Tente novamente", "Ops!", {
-          position: "topCenter",
-        });
-      }
-    },
 
     createComent(param) {
       this.$store.commit("setApiLoading", true);
@@ -476,6 +402,12 @@ export default {
 </script>
 
 <style lang="scss">
-.text-area-coment {
+.custom-header-card-margin-left {
+
+    margin-left: 290px !important;
+
+    @media screen and (max-width: 650px) {
+      margin-left: 100px !important;
+    }
 }
 </style>

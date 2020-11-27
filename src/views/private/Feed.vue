@@ -17,7 +17,7 @@
             <h1 class="alg-txt-c headline mt-3">Feed</h1>
 
             
-            <div v-if="cardsEventData == '' && !apiLoading">
+            <div v-if="cardsEventData == '' && !loading">
                 <h1 class="alg-txt-c mt-14">nenhum evento foi encontrado 😥</h1>
                 <img class="ac d-block mt-12" src="https://res.cloudinary.com/dvzbogxib/image/upload/v1574897432/gifs/giphy_oorqsn.gif" alt="">
 

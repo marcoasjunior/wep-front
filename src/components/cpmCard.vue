@@ -255,8 +255,10 @@ export default {
       try {
         this.$store.commit("setApiLoading", true);
 
+        //Delete o evento do DB
         const response = await this.deleteEvent(this.cardData.id);
 
+        //Envia um evento personalizado para o componente pai avisando o delete do evento
         this.$emit("deleted", this.cardData);
 
         this.$toast.success("Evento deletado com sucesso.", "Yeah!", {

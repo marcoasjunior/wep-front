@@ -6,7 +6,7 @@
 
     <v-container v-if="loading" style="height: 400px">
       <v-row class="fill-height" align-content="center" justify="center">
-        <v-col class="subtitle-1 text-center" cols="12"> Loading... </v-col>
+        <v-col class="subtitle-1 text-center" cols="12"> Carregando... </v-col>
         <v-col cols="6">
           <v-progress-linear
             color="deep-purple accent-4"
@@ -28,8 +28,8 @@
                 user_data.name
               }}</v-list-item-title>
               <hr />
-              <v-list-item-subtitle>{{ user_data.email }}</v-list-item-subtitle>
-              <v-list-item-subtitle>{{
+              <v-list-item-subtitle>E-mail: {{ user_data.email }}</v-list-item-subtitle>
+              <v-list-item-subtitle>Whatsapp: {{
                 user_data.whatsapp
               }}</v-list-item-subtitle>
             </v-list-item-content>
@@ -46,7 +46,9 @@
               :updateAvatar="updateAvatar"
             />
 
-          <v-card-actions class="mt-6">
+            <v-divider class="mt-4"></v-divider>
+
+          <v-card-actions class="">
             <div class="ac d-block">
               <div class="number-follow">
                 <p class="mb-0 alg-txt-c custom-follow-font">{{ dataFollows[0].length }}</p>
@@ -67,9 +69,9 @@
 
         <v-divider></v-divider>
 
-        <div class="mt-5" v-if="events == ''">
-          <h5 class="alg-txt-c mb-2 p20">
-            Você não tem eventos cadastrados, deseja cadastrar um novo evento?
+        <div class="" v-if="events == ''">
+          <h5 class="alg-txt-c p20">
+            Você não tem eventos cadastrados.
           </h5>
           <div align="center" class="mb-5">
             <v-btn rounded color="orange" outlined dark to="/Event"
@@ -90,7 +92,7 @@
         </div>
       </section>
       <div align="center">
-        <v-btn class="ac mt-4 mb-6" color="red" @click="logOut()" dark
+        <v-btn class="ac mt-4 mb-6" block color="red" @click="logOut()" dark
           >SAIR</v-btn
         >
       </div>

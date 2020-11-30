@@ -1,13 +1,13 @@
 <template>
   <v-row class="ac">
     <v-dialog v-model="dialog" persistent max-width="600px">
-      <template class="d-flex align-center" v-slot:activator="{ on, attrs }">
+      <template class="d-flex" v-slot:activator="{ on, attrs }">
         
-        <v-btn 
-          class="mr-auto ml-auto" 
+        <v-btn  
           v-bind="attrs" 
-          color="orange" 
+          color="blue" 
           dark v-on="on"
+          block
         >EDITAR</v-btn>
       
       </template>

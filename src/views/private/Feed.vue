@@ -14,11 +14,11 @@
         </v-container>
 
         <section v-else>
-            <h1 class="alg-txt-c headline mt-3">Feed</h1>
+            <h1 class="alg-txt-c headline mt-3"> <v-chip outlined class="title chip">Feed</v-chip>  </h1>
 
             
             <div v-if="cardsEventData == '' && !loading">
-                <h1 class="alg-txt-c mt-14">nenhum evento foi encontrado 😥</h1>
+                <h1 class="alg-txt-c mt-14">Nenhum evento foi encontrado 😥</h1>
                 <img class="ac d-block mt-12" src="https://res.cloudinary.com/dvzbogxib/image/upload/v1574897432/gifs/giphy_oorqsn.gif" alt="">
 
                 <div class="container-not-found-message d-block ac mt-6">
@@ -27,7 +27,6 @@
             </div>
 
             <div class="p15 mt-10 ac" v-for="(item, i) in cardsEventData" :key="i">
-
 
                 <FeedCard :cardData="cardsEventData[i]" @deleted="deleted($event)"/>
 

@@ -3,7 +3,7 @@
     <v-row class="d-flex flex-column">
       <v-icon size="100" color="green"> mdi-check </v-icon>
       <v-col class="alg-txt-c">
-        <p style="font-size: 25px">Bem vindo ao app, aproveite!</p>
+        <p style="font-size: 25px">Wep seu evento!</p>
       </v-col>
       <v-col>
         <v-btn block color="orange" to="/Follow">Entrar</v-btn>

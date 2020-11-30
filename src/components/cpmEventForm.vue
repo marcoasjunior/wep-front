@@ -1,14 +1,14 @@
 <template>
     <div class="d-flex flex-column">
-            <h1 class="alg-txt-c mb-1 mt-7">Cadastro de evento</h1>
+            <h1 class="alg-txt-c mt-7"><v-chip outlined class="title chip">Cadastro de evento</v-chip></h1>
             <v-card flat class="p10 ac mt-10 container-card-form">
-                <div class="img-upload-box ac ">
+                <div class="img-upload-box ac">
                     <div class="card-style-1 container-card-fields ac ">
 
                         <button class="ac drop-input" @click="onFileSelected" align="center">
                             <div v-if="imageUrl">
                                 <img :src="imageUrl" alt="uploaded" class="img-uploaded">
-                                <p>Clique para substiruir a imagem do evento</p>
+                                <p>Clique para substituir a imagem do evento</p>
                             </div>
                             <div v-else>
                                 <v-icon color="black" dark left>mdi-camera</v-icon>
@@ -54,18 +54,19 @@
                         </v-btn>
                     </div>
 
-                    <v-divider class="mt-3"></v-divider>
-
-                    <p class="p15" v-if="active == 0">
-                        Eventos públicos são visíveis para todos os usuários do wep app, é possível mudar as configurações do evento caso queira na seção de opções.
+                    <p class="p15 subtitle-2 mb-n4" v-if="active == 0">
+                        Eventos públicos são visíveis para todos os usuários, isso é possível ser modificado nas opções posteriormente.
                     </p>
 
-                    <p class="p15" v-if="active == 1">
-                        Eventos Privados aparecem no feed porem sua informações são reservadas para os convidados do evento, é possível mudar as configurações do evento caso queira.
+                     <p class="p15 subtitle-2 mb-n4" v-if="active == 1">
+                        Eventos privados aparecem no feed, porém sua informações são reservadas para os convidados do evento.
                     </p>
 
+
+                    <v-divider class="mt-3 mb-3"></v-divider>
+                   
                     <h2 class="p15 headline mt-n4">Local do evento:</h2>
-                    <p class="clr-red">*Caso não consiga selecionar seu endereço no mapa clique na opção "TEXTO"</p>
+                    <p class="clr-red">*Caso não consiga selecionar seu endereço no mapa clique na opção "texto"</p>
 
                     <v-tabs v-model="tab" fixed-tabs color="orange">
                         <v-tab v-for="(item, i) in tabItems" :key="i" class="orange--text">
@@ -78,7 +79,7 @@
                             <p class="alg-txt-c mt-4">*Selecione no mapa o local do evento</p>
                             <div class="p15 map">
 
-                                <SetMap @callEmit="mapsParams" />
+                                <SetMap @callEmit="mapsParams" v-if='!overlay' />
 
                                 <strong>
                                     Endereço: <br/>
@@ -149,7 +150,7 @@
                             outlined rounded 
                             @click="createEvent()" 
                             dark
-                        >Criar evento</v-btn>
+                        >Criar Evento</v-btn>
                     </div>
 
                     </div>
@@ -422,6 +423,7 @@ export default {
         async createEvent() {
             
             this.checkForm()
+
             if(
                 !this.eventErrorForm.name  &&
                 !this.eventErrorForm.description &&

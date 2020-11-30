@@ -29,7 +29,7 @@
         </v-card-title>
 
         <v-card-text>
-          <h2 class="alg-txt-c mt-4 mb-4">⚠ Ao deletetar o evento, os comentários e curtidas também irão ser apagados. ⚠</h2>
+          <h2 class="alg-txt-c mt-4 mb-4">⚠ Ao deletar o evento, os comentários e curtidas também serão apagados. ⚠</h2>
         </v-card-text>
 
         <v-divider></v-divider>
@@ -52,7 +52,7 @@
             :loading="apiLoading"
             @click="deleteComponentEvent"
           >
-            Deletetar
+            Deletar
           </v-btn>
 
         </v-card-actions>

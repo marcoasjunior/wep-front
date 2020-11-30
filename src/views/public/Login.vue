@@ -5,9 +5,9 @@
       <v-icon>mdi-arrow-left</v-icon>
     </v-btn>
 
-    <v-container class="d-flex flex-column justify-center align-center mt-14">
+    <v-container class="d-flex flex-column justify-center align-center">
 
-      <p class="display-1">Entrar</p>
+    <img src="../../../public/img/icons/android-icon-192x192.png" alt="">
 
       <v-text-field class="input" prepend-icon="mdi-email" v-model="email" label="E-mail" required></v-text-field>
 

@@ -2,9 +2,7 @@
   <div class="mx-auto d-flex flex-column">
     <Toolbar />
 
-    <h1 class="alg-txt-c headline ma-4">
-      <v-chip outlined class="title chip">Perfil</v-chip>
-    </h1>
+    <h1 class="alg-txt-c headline ma-4">Perfil</h1>
 
     <v-container v-if="loading" style="height: 400px">
       <v-row class="fill-height" align-content="center" justify="center">
@@ -87,7 +85,7 @@
         <h2 class="alg-txt-c mt-5 headline mx-auto">Meus Eventos</h2>
         <div class="mb-6 p10" v-for="event in events" :key="event.id">
           <EventCard
-            class="mt-4"
+            class="mt-4 card"
             :cardData="event"
             @deleted="deleted($event)"
           />

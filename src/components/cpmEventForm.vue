@@ -125,13 +125,13 @@
                         <v-text-field
                             class="mt-8"
                             type="tel"
-                            v-mask="'##/##/#### - ##:##'"
+                            v-mask="'##/##/####'"
                             v-model="eventForm.eventDate" 
-                            label="Data e hora do evento" 
+                            label="Data do evento" 
                             :rules="dateRules" 
                             :error="eventErrorForm.eventDate"
                             color="orange"
-                            :counter="18" 
+                            :counter="10" 
                         ></v-text-field>
                     </div>
 
@@ -263,7 +263,7 @@ export default {
 
         dateRules: [
             value => !!value || 'Necessário.',
-            value => (value && value.length <= 18) || 'Necessário preencher com um valor válido.',
+            value => (value && value.length <= 10) || 'Necessário preencher com um valor válido.',
         ],
 
         items: [{
@@ -312,7 +312,7 @@ export default {
 
     computed: {
         ...mapGetters({
-            userData: 'FeedVuex/userData'
+            test: 'test',
         })
     },
 

@@ -16,7 +16,7 @@
         <div class="d-flex">
 
 
-          <!-- <div class="ml-5 p20">{{ cardData.user.name }}</div> -->
+          <div class="ml-5 p20">{{ cardData.user.name }}</div>
 
 
           <div class="d-flex custom-header-card-margin-left" v-if="cardData.user.id == getId">
@@ -25,7 +25,7 @@
             <DeleteEvent :deleteCardData="cardData"/>
 
             <div>
-              <EditEvent :eventFields="cardData"/>
+              <EditEvent :data="cardData"/>
             </div>
             
           </div>
@@ -53,17 +53,8 @@
       <v-card-title>
         <h2>{{ cardData.title }}</h2>
 
-     
+        <p class="clr-red">{{ cardData.eventDate }}</p>
       </v-card-title>
-        <p class="clr-red pl-5">{{ cardData.eventDate }}</p>  
-
-        
-        <div v-if="cardData.adress != '' && cardData.adress != null" class="pl-5">
-          <button @click="sendPropsPoints(cardData)" class=" d-flex">
-            <v-icon class="clr-blk mt-1">mdi-map-marker</v-icon>
-            <h2 class="clr-blk">{{ cardData.adress }}</h2>
-          </button>
-        </div>
 
       <v-card-text>
         <!-- <p>{{ cardData.description }}</p> -->
@@ -219,7 +210,7 @@
                   :loading="apiLoading"
                   @click="createComent(cardData)"
                 >
-                  Enviar <v-icon class="ml-1">mdi-send-circle-outline</v-icon>
+                  Enviar
                 </v-btn>
               </div>
             </div>
@@ -227,38 +218,6 @@
         </v-expansion-panel>
       </v-expansion-panels>
     </v-card>
-
-
-     <v-dialog
-            v-model="mapsDialog"
-            max-width="400"
-          >
-            <v-card>
-
-                <v-toolbar dark color="orange">
-                    
-                    <v-toolbar-title>Local do evento</v-toolbar-title>
-                    
-                    <div class="ml-a">
-                        <v-btn icon dark @click="mapsDialog = false">
-                            <v-icon>mdi-close</v-icon>
-                        </v-btn>
-                    </div>
-
-                </v-toolbar>
-             
-              <div class="p15">
-
-              </div>
-   
-              <v-card-text class="mt-2">
-                <div>
-                  <MapPoints :propsCoordinates="cardData" />
-                </div>
-              </v-card-text>
-
-            </v-card>
-          </v-dialog>
 
   </div>
 </template>
@@ -269,23 +228,18 @@ import { mapActions, mapGetters } from "vuex";
 
 import EditEvent from "@/components/cpmEditEvent";
 import DeleteEvent from "@/components/cpmDeleteEvent";
-import MapPoints from '@/components/cpmShowMapPoints'
 
 export default {
   name: "Card",
-  components: { EditEvent, DeleteEvent, MapPoints },
+  components: { EditEvent, DeleteEvent },
   props: ["cardData"],
   data: () => ({
     // cardDataArray: [],
-    mapsDialog: false,
     newComent: "",
     updateInputComment: "",
     selectedCommentId: "",
     setUpdateinput: false,
     url: process.env.VUE_APP_BASE_URL,
-
-    eventMapPoints:'',
-
     commentOptions: [
       { name: "Editar", icon: "mdi-pencil", color: "orange" },
       { name: "Deletar", icon: "mdi-trash-can", color: "error" },
@@ -327,11 +281,6 @@ export default {
       unlikeEvent: "EventVuex/unlikeEvent",
       getMyEvents: "ProfileVuex/getMyEvents",
     }),
-
-    sendPropsPoints(param){
-      this.mapsDialog = true
-      console.log(param)
-    },
 
     createComent(param) {
       this.$store.commit("setApiLoading", true);
@@ -455,7 +404,7 @@ export default {
 <style lang="scss">
 .custom-header-card-margin-left {
 
-    margin-left: 20px !important;
+    margin-left: 290px !important;
 
     @media screen and (max-width: 650px) {
       margin-left: 100px !important;

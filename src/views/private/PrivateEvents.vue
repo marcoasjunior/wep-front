@@ -2,10 +2,6 @@
   <div>
     <ToolBar />
 
-    <h1 class="alg-txt-c headline ma-4">
-      <v-chip outlined class="title chip">Evento dos seus amigos.</v-chip>
-    </h1>
-
     <v-container v-if="apiLoading" style="height: 400px">
       <v-row class="fill-height" align-content="center" justify="center">
         <v-col class="subtitle-1 text-center" cols="12">

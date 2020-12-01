@@ -24,7 +24,6 @@ import {
 
 
 export default {
-  props:["propsCoordinates"],
   components: {
     LMap,
     LTileLayer,
@@ -44,7 +43,7 @@ export default {
     };
   },
   created() {
-    this.centerUpdated(this.center)
+      this.centerUpdated(this.center)
   },
       computed: {
 
@@ -109,30 +108,18 @@ export default {
         // console.log(position.coords.latitude)
         // console.log(position.coords.longitude)
         // console.log("Passou para o marcador")
-    },
+    }
 
     // dropMarker(position){
     //     let marker = new H.map.Marker({ lat: position.Latitude, lng: position.Longitude });
     //     console.log(marker)
     // }
-
-    checkParam(){
-      if(this.propsCoordinates != ''){
-        // console.log("@#$%¨&*(IO)P_+")
-        // console.log(this.propsCoordinates.latitude)
-        // console.log(this.propsCoordinates.longitude)
-        this.center = L.latLng(this.propsCoordinates.latitude, this.propsCoordinates.longitude)
-        this.marker = L.latLng(this.propsCoordinates.latitude, this.propsCoordinates.longitude)
-      }
-    }
   },
 
     watch: {
         marker(){
             this.$store.commit("setCoordinateSelected", this.marker);
-        },
-
-
+        }
     },
 }
 </script>

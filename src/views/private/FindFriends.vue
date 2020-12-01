@@ -19,16 +19,14 @@
       <v-row v-else class="d-flex flex-column">
         <v-col>
           <v-col ref="form" class="d-flex flex-column">
-              <h2 class="ac d-block" v-if="filteredUsers != '' ">
-                <v-chip outlined class="title chip">Encontre amigos</v-chip>
-              </h2>
             <v-card-title>
-              <v-text-field
+              <h2 class="ac" v-if="filteredUsers != '' ">Encontre amigos</h2>
+              <!-- <v-text-field
                 v-model="search"
                 append-icon="mdi-magnify"
                 label="Search"
                 single-line
-              ></v-text-field>
+              ></v-text-field> -->
             </v-card-title>
 
             
@@ -73,16 +71,16 @@ export default {
       search: "",
     };
   },
-  watch: {
-    search: function(val){
-      console.log(this.usersData);
-      let filtred = this.usersData.filter(user => {
+  // watch: {
+  //   search: function(val){
+  //     console.log(this.usersData);
+  //     let filtred = this.usersData.filter(user => {
 
-      })
-      // this.usersData
-      console.log(console.log(filtred));
-    }
-  },
+  //     })
+  //     // this.usersData
+  //     console.log(console.log(filtred));
+  //   }
+  // },
   methods: {
     ...mapActions({
       getUsers: "FollowVuex/getUsers",

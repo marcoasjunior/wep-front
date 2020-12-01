@@ -7,7 +7,7 @@
 
     <v-container class="d-flex flex-column justify-center align-center">
 
-    <img src="../../../public/img/icons/android-icon-192x192.png" alt="">
+    <img src="../../assets/logo.png" alt="">
 
       <v-text-field class="input" prepend-icon="mdi-email" v-model="email" label="E-mail" required></v-text-field>
 

@@ -58,65 +58,6 @@
             </v-card>
           </v-dialog>
 
-
-
-<!-- 
-    <v-dialog v-model="FollowDialog1" persistent max-width="600px">
-      <template class="d-flex align-center" v-slot:activator="{ on, attrs }">
-        <a
-          class="mr-auto ml-auto this"
-          v-bind="attrs"
-          v-on="on"
-          small
-          depressed
-          color="#00CA9D"
-          >{{ title }}</a
-        >
-      </template>
-      <v-btn @click="dialog = false" class text fab small>
-        <v-icon dark>mdi-close</v-icon>
-      </v-btn>
-
-        <v-card>
-          <div v-for="user in data[1]" :key="user.id">
-            <cpmUserFollow :userData="user" />
-          </div>
-        </v-card>
-
-      <v-tabs v-model="tab" fixed-tabs color="orange">
-        <v-tab v-for="(item, i) in tabItems" :key="i" class="orange--text">
-          {{ item }}
-        </v-tab>
-      </v-tabs>
-
-      <v-tabs-items v-model="tab">
-        <v-tab-item>
-          <v-col max-width="500">
-            <v-list subheader>
-              <div v-for="user in data[0]" :key="user.id">
-                <cpmUserFollow :userData="user" />
-              </div>
-            </v-list>
-
-            <v-divider></v-divider>
-          </v-col>
-        </v-tab-item>
-
-        <v-tab-item>
-          <v-col max-width="500">
-            <v-list subheader>
-              <div v-for="user in data[1]" :key="user.id">
-                <cpmUserFollow :userData="user" />
-              </div>
-            </v-list>
-
-            <v-divider></v-divider>
-          </v-col>
-        </v-tab-item>
-      </v-tabs-items>
-    </v-dialog> -->
-
-
   </div>
 </template>
 
@@ -157,13 +98,7 @@ export default {
       this.FollowDialog = true;
       console.log(typeof(param))
       let convertedVariable = param
-
-      if( param == "Seguindo"){
-        console.log("@$#%¨&*)_")
-      }else{
-        console.log(param)
-      }
-
+      
       this.modalTitle = param
       // console.log(this.data)
     }

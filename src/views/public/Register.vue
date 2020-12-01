@@ -102,14 +102,11 @@
           ></v-switch>
 
           <div class="d-flex justify-center align-center">
-            <v-btn v-if="!loading" block color="orange" @click="sendForm"
-              >Cadastrar</v-btn
-            >
-            <v-progress-circular
-              v-else
-              indeterminate
-              color="primary"
-            ></v-progress-circular>
+
+            <div align="center">
+              <v-btn :loading="apiLoading" class="ac mt-4" color="orange" dark @click="sendForm">Criar Evento</v-btn>
+            </div>                    
+
           </div>
         </v-form>
       </v-col>
@@ -118,13 +115,20 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 import cpmRegisterSuccess from "@/components/cpmRegisterSuccess";
 
 export default {
   name: "Register",
   components: { cpmRegisterSuccess },
+
+  computed:{
+    ...mapGetters({
+      apiLoading: 'apiLoading'
+    })
+  },
+
   data() {
     return {
       switch1: false,
@@ -182,6 +186,7 @@ export default {
     },
 
     async sendForm() {
+      this.$store.commit("setApiLoading", true);
       this.loading = true;
 
       if (this.form.avatar !== null) {
@@ -209,14 +214,16 @@ export default {
         await localStorage.setItem("id", register.data[1]);
         this.registred = true;
         // this.$router.push('/Follow');
+        this.$store.commit("setApiLoading", false);
+
       } else {
         this.$toast.error("Erro no registro!", "Putz", {
           position: "topCenter",
         });
+        this.$store.commit("setApiLoading", false);
       }
 
-      this.loading = false;
-
+      this.$store.commit("setApiLoading", true);
       this.clearData();
     },
 

@@ -13,7 +13,11 @@
 
       <v-text-field class="input" prepend-icon="mdi-lock" v-model="password" label="Senha" required></v-text-field>
 
-      <v-btn :loading="apiLoading" color="warning" @click="login" class="mt-14 button"> Entrar </v-btn>
+      <!-- <v-btn :loading="apiLoading" color="warning" @click="login" class="mt-14 button"> Entrar </v-btn> -->
+
+      <div align="center">
+        <v-btn :loading="apiLoading" class="ac mt-4" color="orange" @click="login" dark>Entrar</v-btn>
+      </div>     
 
     </v-container>
 

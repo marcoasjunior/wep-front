@@ -109,7 +109,6 @@
 
               <v-col cols="12"> 
                 
-                Endereço: {{ newEventFormFields.adress }}
                 <v-text-field 
                     class="mt-5"
                     clearable

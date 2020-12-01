@@ -19,8 +19,10 @@
       <v-row v-else class="d-flex flex-column">
         <v-col>
           <v-col ref="form" class="d-flex flex-column">
+              <h2 class="ac d-block" v-if="filteredUsers != '' ">
+                <v-chip outlined class="title chip">Encontre amigos</v-chip>
+              </h2>
             <v-card-title>
-              <h2 class="ac" v-if="filteredUsers != '' ">Encontre amigos</h2>
               <v-text-field
                 v-model="search"
                 append-icon="mdi-magnify"

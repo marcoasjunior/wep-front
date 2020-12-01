@@ -1,13 +1,15 @@
 <template>
 
   <div style="height: 350px;">
+    {{ propsCoordinates.longitude }}
+    {{ propsCoordinates.latitude }}
     <div class="info" style="height: 0%">
     </div>
+      <!-- @update:center="centerUpdated" -->
     <l-map
       style="height: 80%; width: 100%"
       :zoom="zoom"
       :center="center"
-      @update:center="centerUpdated"
     >
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
       <l-marker :lat-lng="marker"></l-marker>
@@ -44,7 +46,11 @@ export default {
     };
   },
   created() {
-    this.centerUpdated(this.center)
+    if(this.propsCoordinates != ''){
+      this.checkParam()
+      }else{
+        this.centerUpdated(this.center)
+      }
   },
       computed: {
 

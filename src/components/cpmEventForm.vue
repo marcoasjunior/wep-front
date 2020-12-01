@@ -125,13 +125,13 @@
                         <v-text-field
                             class="mt-8"
                             type="tel"
-                            v-mask="'##/##/####'"
+                            v-mask="'##/##/#### - ##:##'"
                             v-model="eventForm.eventDate" 
-                            label="Data do evento" 
+                            label="Data e hora do evento" 
                             :rules="dateRules" 
                             :error="eventErrorForm.eventDate"
                             color="orange"
-                            :counter="10" 
+                            :counter="18" 
                         ></v-text-field>
                     </div>
 
@@ -263,7 +263,7 @@ export default {
 
         dateRules: [
             value => !!value || 'Necessário.',
-            value => (value && value.length <= 10) || 'Necessário preencher com um valor válido.',
+            value => (value && value.length <= 18) || 'Necessário preencher com um valor válido.',
         ],
 
         items: [{

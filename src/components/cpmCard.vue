@@ -16,7 +16,7 @@
         <div class="d-flex">
 
 
-          <div class="ml-5 p20">{{ cardData.user.name }}</div>
+          <!-- <div class="ml-5 p20">{{ cardData.user.name }}</div> -->
 
 
           <div class="d-flex custom-header-card-margin-left" v-if="cardData.user.id == getId">
@@ -25,7 +25,7 @@
             <DeleteEvent :deleteCardData="cardData"/>
 
             <div>
-              <EditEvent :data="cardData"/>
+              <EditEvent :eventFields="cardData"/>
             </div>
             
           </div>
@@ -404,7 +404,7 @@ export default {
 <style lang="scss">
 .custom-header-card-margin-left {
 
-    margin-left: 290px !important;
+    margin-left: 20px !important;
 
     @media screen and (max-width: 650px) {
       margin-left: 100px !important;

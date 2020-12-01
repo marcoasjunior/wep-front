@@ -219,7 +219,7 @@
                   :loading="apiLoading"
                   @click="createComent(cardData)"
                 >
-                  Enviar
+                  Enviar <v-icon class="ml-1">mdi-send-circle-outline</v-icon>
                 </v-btn>
               </div>
             </div>

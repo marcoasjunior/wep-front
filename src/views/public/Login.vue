@@ -11,7 +11,9 @@
 
       <v-text-field class="input" prepend-icon="mdi-email" v-model="email" label="E-mail" required></v-text-field>
 
-      <v-text-field class="input" prepend-icon="mdi-lock" v-model="password" label="Senha" required></v-text-field>
+      <v-text-field required prepend-icon="mdi-lock" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+      :type="show2 ? 'text' : 'password'" name="input-10-2" label="Senha" v-model="password"
+      class="input-group--focused input" @click:append="show1 = !show1"></v-text-field>
 
       <!-- <v-btn :loading="apiLoading" color="warning" @click="login" class="mt-14 button"> Entrar </v-btn> -->
 
@@ -37,7 +39,8 @@ export default {
   data() {
     return {
       password: null,
-      email: null
+      email: null,
+      show1: false
     }
   },
 

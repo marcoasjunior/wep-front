@@ -66,6 +66,7 @@
       <v-card-text class="d-flex justify-space-between">
         <p>
           <v-btn @click="thumbAction(cardData)" icon>
+
             <v-progress-circular
               v-if="apiLoading"
               indeterminate
@@ -249,6 +250,10 @@ export default {
 
   created() {
     console.log(this.cardData.user.id);
+
+    // setTimeout(() => {
+    //   this.checkLoading()
+    // }, 10000)
   },
 
   computed: {
@@ -338,6 +343,7 @@ export default {
         this.$store.commit("setApiLoading", false);
         this.$toast.error("Erro ao curtir", "Putz", { position: "topCenter" });
       }
+      this.$store.commit("setApiLoading", false);
     },
 
     sendUpdateComment(comentData) {
@@ -397,7 +403,20 @@ export default {
           });
         });
     },
+
+    checkLoading(){
+      alert("foi foi foi")
+      if(this.apiLoading){
+        this.$store.commit("setApiLoading", false);
+      }else{
+        this.$store.commit("setApiLoading", true);
+      }
+    }
   },
+
+  watch:{
+    
+  }
 };
 </script>
 

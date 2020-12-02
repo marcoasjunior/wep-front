@@ -74,21 +74,25 @@
             required
           ></v-text-field>
 
-          <v-text-field
-            prepend-icon="mdi-lock"
-            v-model="password2"
-            label="Senha"
-            required
-          ></v-text-field>
+          <v-text-field 
+            prepend-icon="mdi-lock" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" 
+            :rules="[rules.required, rules.min]"
+            :type="show2 ? 'text' : 'password'" 
+            name="input-10-2" label="Senha" 
+            v-model="form.password" class="input-group--focused" 
+            @click:append="show1 = !show1"></v-text-field>
+
+          <v-text-field 
+            prepend-icon="mdi-lock" :error="confirmPassError" 
+            @change="validatePassMatch" :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" 
+            :rules="[rules.required, rules.min]" :type="show2 ? 'text' : 'password'" 
+            name="input-10-2" label="Confirmar senha" 
+            v-model="password2" class="input-group--focused" 
+            @click:append="show2 = !show2"></v-text-field>
 
           <v-text-field
-            prepend-icon="mdi-lock"
-            v-model="form.password"
-            label="Confirmar senha"
-            required
-          ></v-text-field>
-
-          <v-text-field
+            type="tel"
+            v-mask="'(##) #####-####'"
             prepend-icon="mdi-whatsapp"
             v-model="form.whatsapp"
             label="Whatsapp"
@@ -104,7 +108,7 @@
           <div class="d-flex justify-center align-center">
 
             <div align="center">
-              <v-btn :loading="apiLoading" class="ac mt-4" color="orange" dark @click="sendForm">Criar Evento</v-btn>
+              <v-btn :loading="apiLoading" class="ac mt-4" color="orange" dark @click="sendForm">Cadastrar</v-btn>
             </div>                    
 
           </div>
@@ -133,6 +137,9 @@ export default {
     return {
       switch1: false,
 
+      show1: false,
+      show2: false,
+
       uploadUrl: process.env.VUE_APP_UPLOAD_URL,
 
       form: {
@@ -145,10 +152,19 @@ export default {
 
       registred: false,
 
+      confirmPassError: false,
+
       src: null,
       targetFile: null,
       loading: null,
       password2: null,
+
+      rules: {
+        required: value => !!value || 'Required.',
+        min: v => v.length >= 8 || 'Min 8 characters',
+        emailMatch: () => ('The email and password you entered don\'t match'),
+        passMatch: () => ('senhas são diferentes'),
+      },
     };
   },
 
@@ -225,6 +241,16 @@ export default {
 
       this.$store.commit("setApiLoading", true);
       this.clearData();
+    },
+
+    validatePassMatch(){
+      if(this.password2 !== this.form.password){
+        this.confirmPassError = true
+      }else{
+        this.confirmPassError = false
+
+      }
+
     },
 
     validation() {

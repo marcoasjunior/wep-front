@@ -25,10 +25,10 @@
 
                     <v-text-field 
                         class="mx-5" 
-                        v-model="eventForm.name" 
+                        v-model="eventForm.title" 
                         label="Nome do evento" 
                         :rules="nameRules" 
-                        :error="eventErrorForm.name"
+                        :error="eventErrorForm.title"
                         color="orange" 
                         :counter="100"
                     ></v-text-field>
@@ -125,13 +125,13 @@
                         <v-text-field
                             class="mt-8"
                             type="tel"
-                            v-mask="'##/##/####'"
+                            v-mask="'##/##/#### - ##:##'"
                             v-model="eventForm.eventDate" 
-                            label="Data do evento" 
+                            label="Data e hora do evento" 
                             :rules="dateRules" 
                             :error="eventErrorForm.eventDate"
                             color="orange"
-                            :counter="10" 
+                            :counter="18" 
                         ></v-text-field>
                     </div>
 
@@ -215,7 +215,7 @@ export default {
         },
 
         eventForm: {
-            name: '',
+            title: '',
             description: '',
             private: '',
             latitude: '',
@@ -226,7 +226,7 @@ export default {
         },
 
         eventErrorForm: {
-            name: false,
+            title: false,
             description: false,
             private: false,
             latitude: false,
@@ -263,7 +263,7 @@ export default {
 
         dateRules: [
             value => !!value || 'Necessário.',
-            value => (value && value.length <= 10) || 'Necessário preencher com um valor válido.',
+            value => (value && value.length <= 19) || 'Necessário preencher com um valor válido.',
         ],
 
         items: [{
@@ -307,7 +307,7 @@ export default {
 
     created() {
         this.eventForm.private = false
-        console.log("privado? " + this.eventForm.private)
+        // console.log("privado? " + this.eventForm.private)
     },
 
     computed: {
@@ -345,7 +345,7 @@ export default {
                 this.active = 1
                 this.eventForm.private = true
             }
-            console.log("privado? " + this.eventForm.private)
+            // console.log("privado? " + this.eventForm.private)
         },
 
         onFileSelected() {
@@ -425,7 +425,7 @@ export default {
             this.checkForm()
 
             if(
-                !this.eventErrorForm.name  &&
+                !this.eventErrorForm.title  &&
                 !this.eventErrorForm.description &&
                 !this.eventErrorForm.address &&
                 !this.eventErrorForm.eventDate
@@ -433,56 +433,70 @@ export default {
                 
                 
             try {
-                this.overlay = true
-                const fd = new FormData();
-                console.log(this.imageData)
-                fd.append('photo', this.imageData);
-                await axios.post(this.uploadUrl + '/upload/image', fd).then(resp => {
-                    this.eventForm.img = resp.data
-                })
 
+                if(this.imageData == '' ||   this.imageData == null){
 
-                let body = {
-                    title: this.eventForm.name,
-                    description: this.repleaceDescription(),
-                    address: this.eventAddress.address,
-                    img: this.eventForm.img,
-                    privated: this.eventForm.private,
-                    eventDate: this.eventForm.eventDate,
-                    latitude: this.eventForm.latitude,
-                    longitude: this.eventForm.longitude,
-                    user: {
-                        id: this.userId
-                    },
-                }
-                console.log(body)
+                    this.$toast.error('Obrigátorio colocar imagem ao evnto', '😕', {
+                        dismissible: false,
+                        position: "topCenter"
+                    })
 
-                axios.post(this.url + '/event/create', body)
-                    .then(resp => {
-                        this.overlay = false
-                        if (resp.status == 200) {
-                            this.$toast.success('Registro efetuado!', 'Hey', {
+                }else{
+   
+                    const fd = new FormData();
+                    console.log(this.imageData)
+                    fd.append('photo', this.imageData);
+                    await axios.post(this.uploadUrl + '/upload/image', fd).then(resp => {
+                        this.eventForm.img = resp.data
+                    })
+                
+
+                    this.overlay = true
+
+                    let body = {
+                        title: this.eventForm.title,
+                        description: this.repleaceDescription(),
+                        address: this.eventAddress.address,
+                        img: this.eventForm.img,
+                        privated: this.eventForm.private,
+                        eventDate: this.eventForm.eventDate,
+                        latitude: this.eventForm.latitude,
+                        longitude: this.eventForm.longitude,
+                        user: {
+                            id: this.userId
+                        },
+                    }
+                    // console.log(body)
+
+                    axios.post(this.url + '/event/create', body)
+                        .then(resp => {
+                            this.overlay = false
+                            if (resp.status == 200) {
+                                this.$toast.success('Registro efetuado!', 'Hey', {
+                                    position: "topCenter"
+                                })
+                                this.$router.push('/Feed')
+                                this.eventForm = ''
+
+                            }
+                        })
+                        .catch(err => {
+                            this.overlay = false
+                            this.$toast.error('Erro no registro!', '😕', {
                                 position: "topCenter"
                             })
-                            this.$router.push('/Feed')
-                            this.eventForm = ''
 
-                        }
-                    })
-                    .catch(err => {
-                        this.overlay = false
-                        this.$toast.error('Erro no registro!', 'Putz', {
-                            position: "topCenter"
                         })
 
-                    })
+                }
 
             } catch (e) {
                 throw e
             }
             
             } else{
-                this.$toast.error('Erro ao cadastrar evento', 'Putz', {
+                // console.log(this.eventForm)
+                this.$toast.error('Erro ao cadastrar evento', '😕', {
                     position: "topCenter"
                 })
             }
@@ -490,10 +504,10 @@ export default {
         },
 
         checkForm(){
-            if(this.eventForm.name == ''){
-                this.eventErrorForm.name = true
+            if(this.eventForm.title == ''){
+                this.eventErrorForm.title = true
             
-            }else this.eventErrorForm.name = false
+            }else this.eventErrorForm.title = false
             
             if(this.eventForm.description == ''){
                 this.eventErrorForm.description = true
@@ -514,6 +528,13 @@ export default {
                this.eventErrorForm.eventDate = false 
                this.showAddresswarning = false
             }
+         
+            if(this.eventForm.eventDate == ''){
+                this.eventErrorForm.eventDate = true
+
+            } else {
+               this.eventErrorForm.eventDate = false 
+            }
         },
 
         repleaceDescription(){
@@ -526,24 +547,24 @@ export default {
     watch: {
 
             eventAddress(value){
-                console.log(value)
+                // console.log(value)
 
                 fetch(`https://autocomplete.geocoder.api.here.com/6.2/suggest.json?app_id=g4qzn6OUOLYfn2OFO6Z8&app_code=pAi1rwxOkCnBaQHm4CbURg&maxresults=1&language=pt&query=${value}&country=BRA`)
                     .then(result => result.json())
                     .then(result => {
                         
-                        console.log(result)
+                        // console.log(result)
                     })
             },
 
             eventAddress:{
                 deep:true,
                 handler: function(value) {
-                    console.log(value.query)
+                    // console.log(value.query)
                     fetch(`https://autocomplete.geocoder.api.here.com/6.2/suggest.json?app_id=g4qzn6OUOLYfn2OFO6Z8&app_code=pAi1rwxOkCnBaQHm4CbURg&maxresults=1&language=pt&query=${value.query}&country=BRA`)
                     .then(result => result.json())
                     .then(result => {
-                        console.log(result.suggestions[0].address)
+                        // console.log(result.suggestions[0].address)
                         this.eventAddress.country = result.suggestions[0].address.country
                         this.eventAddress.state = result.suggestions[0].address.state
                         this.eventAddress.city = result.suggestions[0].address.city

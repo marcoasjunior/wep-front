@@ -85,7 +85,7 @@
         <h2 class="alg-txt-c mt-5 headline mx-auto">Meus Eventos</h2>
         <div class="mb-6 p10" v-for="event in events" :key="event.id">
           <EventCard
-            class="mt-4 card"
+            class="mt-4"
             :cardData="event"
             @deleted="deleted($event)"
           />

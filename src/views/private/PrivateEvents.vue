@@ -20,6 +20,10 @@
 
       <div v-if="filteredEventsByPrivacy == '' && !apiLoading">
         <h1 class="alg-txt-c mt-14">nenhum evento foi encontrado 😥</h1>
+        <p>Não se preocupe, os eventos privados aparecem para os seus seguidores, tente seguir alguns amigos 😎</p>
+        <v-btn to="/Follow" color="orange">
+          Encontrar amigos
+        </v-btn>
     </div>
 
 

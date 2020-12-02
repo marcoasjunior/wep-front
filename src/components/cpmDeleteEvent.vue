@@ -105,6 +105,7 @@ export default {
                 });
 
                 this.$store.commit("setApiLoading", false);
+                this.confirmDeleteEvent = false
                 
             } catch (error) {
                 this.$store.commit("setApiLoading", false);

@@ -50,16 +50,12 @@
         :src="cardData.img"
       ></v-img>
 
-      <v-card-title>
-        <h2>{{ cardData.title }}</h2>
-
-        <p class="clr-red">{{ cardData.eventDate }}</p>
-      </v-card-title>
-
-      <v-card-text>
+      <div class="p15">
+        <h1>{{ cardData.title }}</h1>
         <!-- <p>{{ cardData.description }}</p> -->
+        <h3 class="clr-red mb-2">{{ cardData.eventDate }}</h3>
         <span v-html="cardData.description"></span>
-      </v-card-text>
+      </div>
 
       <v-divider></v-divider>
 

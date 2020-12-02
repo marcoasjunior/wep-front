@@ -36,14 +36,14 @@
             <v-list-item-icon>
               <v-icon>mdi-card-account-details-star-outline</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Eventos Privados</v-list-item-title>
+            <v-list-item-title>Feed Privado</v-list-item-title>
           </v-list-item>
 
           <v-list-item exact to="/Event">
             <v-list-item-icon>
               <v-icon>mdi-book-plus</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Novo Evento</v-list-item-title>
+            <v-list-item-title>Criar Evento</v-list-item-title>
           </v-list-item>
 
           <v-list-item exact to="/Profile">
@@ -60,13 +60,14 @@
             <v-list-item-title>Amigos</v-list-item-title>
           </v-list-item>
 
-          <div>
-            <v-col align="center" class="mt-10">
+          
+        </v-list-item-group>
+      </v-list>
+      <div>
+            <v-col align="center" class="mt-10" block>
               <v-btn @click="logOff" color="red" dark>SAIR</v-btn>
             </v-col>
           </div>
-        </v-list-item-group>
-      </v-list>
     </v-navigation-drawer>
     <!-- </v-card> -->
   </div>

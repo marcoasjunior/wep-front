@@ -92,7 +92,7 @@
 
           <v-text-field
             type="tel"
-            v-mask="'(##) #####-####'"
+            v-mask="'(##)#####-####'"
             prepend-icon="mdi-whatsapp"
             v-model="form.whatsapp"
             label="Whatsapp"
@@ -204,6 +204,9 @@ export default {
     },
 
     async sendForm() {
+
+      this.checkPhone()
+
       this.localLoading = true
       this.loading = true;
 
@@ -217,7 +220,6 @@ export default {
         position: "topCenter",
       });
 
-      console.log(this.form);
 
       const register = await this.register(this.form);
 
@@ -241,7 +243,7 @@ export default {
         // this.$router.push('/Follow');
         this.localLoading = false
         this.clearData();
-        
+
       } else {
         this.$toast.error("Erro no registro!", "Putz", {
           position: "topCenter",
@@ -251,6 +253,11 @@ export default {
 
       this.localLoading = false
       
+    },
+
+    checkPhone(){
+      let transformedPhone = this.form.whatsapp.replace(/[^a-zA-Z0-9 ]/g, "")
+      this.form.whatsapp = transformedPhone
     },
 
     validatePassMatch(){

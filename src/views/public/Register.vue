@@ -240,7 +240,8 @@ export default {
         this.registred = true;
         // this.$router.push('/Follow');
         this.localLoading = false
-
+        this.clearData();
+        
       } else {
         this.$toast.error("Erro no registro!", "Putz", {
           position: "topCenter",
@@ -249,7 +250,7 @@ export default {
       }
 
       this.localLoading = false
-      this.clearData();
+      
     },
 
     validatePassMatch(){

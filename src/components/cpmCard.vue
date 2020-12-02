@@ -281,13 +281,12 @@ export default {
 
   methods: {
     ...mapActions({
-      getEvents: "FeedVuex/getEvents",
       likeEvent: "EventVuex/likeEvent",
       unlikeEvent: "EventVuex/unlikeEvent",
       getMyEvents: "ProfileVuex/getMyEvents",
     }),
 
-    createComent(param) {
+    async createComent(param) {
       this.$store.commit("setApiLoading", true);
       if (!this.newComent) {
         this.$toast.error("Verifique se existe algum campo vazio", "Atenção!", {
@@ -303,17 +302,19 @@ export default {
         //     console.log(resp)
         // })
 
-        axios
+        await axios
           .post(this.url + `/comment/${eventId}`, body)
           .then((resp) => {
             this.$store.commit("setApiLoading", false);
             if (resp.data != "") {
-              this.getEvents();
+              this.cardData.comments.push(resp.data)
               this.newComent = "";
 
               this.$toast.success("evento comentado!", "💥", {
                 position: "topCenter",
               });
+
+              
             }
           })
           .catch((err) => {
@@ -346,17 +347,16 @@ export default {
       this.$store.commit("setApiLoading", false);
     },
 
-    sendUpdateComment(comentData) {
+    async sendUpdateComment(comentData) {
       let comentId = comentData.id;
       let body = {
         comment: this.updateInputComment,
       };
-      axios
+      await axios
         .put(this.url + `/comment/${comentId}`, body)
         .then((resp) => {
           console.log(resp);
           if (resp.data != "") {
-            this.getEvents();
             this.setUpdateinput = false;
             this.$toast.success("Comentário alterado", "💥", {
               position: "topCenter",
@@ -370,12 +370,12 @@ export default {
         });
     },
 
-    commentAction(param, comentID) {
+    async commentAction(param, comentID) {
       console.log(param);
       if (param.name == "Editar") {
-        this.updateComment(comentID);
+        await this.updateComment(comentID);
       } else if (param.name == "Deletar") {
-        this.deleteComment(comentID);
+        await this.deleteComment(comentID);
       }
     },
     updateComment(comentParam) {
@@ -383,18 +383,19 @@ export default {
       this.selectedCommentId = comentParam.id;
       this.setUpdateinput = true;
     },
-    deleteComment(comentParam) {
+    async deleteComment(comentParam) {
       let comentId = comentParam.id;
-      axios
+      await axios
         .delete(this.url + `/comment/${comentId}`)
         .then((resp) => {
-          console.log(resp);
-          if (resp.data != "") {
-            this.getEvents();
+          console.log(resp.status);
+          if (resp.status == 200) {
 
             this.$toast.success("Comentário deletado", "💥", {
               position: "topCenter",
             });
+
+            return;
           }
         })
         .catch((err) => {

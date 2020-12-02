@@ -28,7 +28,8 @@
                 />
 
                 <v-avatar @click="pickAvatar" class="mt-1 mb-5 cp" size="80">
-                  <img :src="user_data.avatar" alt="avatar" />
+                  <v-icon v-if="user_data.avatar == null || user_data.avatar == '' || user_data.avatar == undefined" color="orange" size="80">mdi-account-circle</v-icon>
+                  <img v-else :src="user_data.avatar" alt="avatar" />
                 </v-avatar>
               </div>
               <v-col cols="12">
@@ -100,6 +101,10 @@ export default {
       passwordConfirm: "",
     },
   }),
+
+  created(){
+    console.log(this.user_data)
+  },
 
   computed:{
     ...mapGetters({

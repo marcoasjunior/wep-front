@@ -54,7 +54,7 @@ export default {
   async created() {
     this.$store.commit("setApiLoading", true);
 
-    await this.getEvents();
+    await this.getPrivatedEvents();
     await this.getAllFollowing();
 
     this.$store.commit("setApiLoading", false);
@@ -63,20 +63,20 @@ export default {
   computed: {
     ...mapGetters({
       userData: "FeedVuex/userData",
-      cardsEventData: "FeedVuex/cardsEventData",
+      cardsEventDataPrivated: "FeedVuex/cardsEventDataPrivated",
       apiLoading: "apiLoading",
     }),
   },
 
   methods: {
     ...mapActions({
-      getEvents: "FeedVuex/getEvents",
+      getPrivatedEvents: "FeedVuex/getPrivatedEvents",
       getFollowing: "ProfileVuex/getFollowing",
       getFollowers: "ProfileVuex/getFollowers",
     }),
 
     async index() {
-      await this.getEvents();
+      await this.getPrivatedEvents();
       await this.getAllFollowing();
     },
 
@@ -101,7 +101,7 @@ export default {
     filterEventsByFollowers() {
       // console.log("!@#$%¨&*()")
       //   console.log(this.cardsEventData)
-      let filteredEventList = this.cardsEventData.filter((item) => {
+      let filteredEventList = this.cardsEventDataPrivated.filter((item) => {
         return this.followersArrayId.includes(item.user.id);
       });
       // console.log(filteredEventList)
@@ -111,8 +111,8 @@ export default {
   },
 
   watch: {
-    cardsEventData() {
-      if (this.cardsEventData != "") {
+    cardsEventDataPrivated() {
+      if (this.cardsEventDataPrivated != "") {
         this.filterEventsByFollowers();
       }
     },

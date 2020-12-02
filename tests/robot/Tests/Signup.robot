@@ -50,9 +50,14 @@ try signup user
     Wait Until Element Is Enabled   xpath=//*[@id="app_p"]/div/div/div[2]/form/div[7]/button
     Click Element   xpath=//*[@id="app_p"]/div/div/div[2]/form/div[7]/button
 
-    # Run Keyword     Signup okay?
+    Run Keyword     Signup okay?
 
 Signup okay?
-    Wait Until Element Is visible   xpath=//*[@id="app_p"]/div/div
+    Wait Until Element Is visible   xpath=//*[@id="app_p"]/div/div/div/div/div[1]/p
+    Element Should Contain  xpath=//*[@id="app_p"]/div/div/div/div/div[1]/p     Wep seu evento!
 
+    Wait Until Element Is visible   xpath=//*[@id="app_p"]/div/div/div/div/div[2]/a
+    Click Element   xpath=//*[@id="app_p"]/div/div/div/div/div[2]/a
     
+    Wait Until Element Is visible   xpath=//*[@id="app_p"]/div/div[1]
+    Element Should be Visible   xpath=//*[@id="app_p"]/div/div[1]

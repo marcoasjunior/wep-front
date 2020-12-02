@@ -6,7 +6,11 @@
         <p style="font-size: 25px">Wep seu evento!</p>
       </v-col>
       <v-col>
-        <v-btn block color="orange" to="/Follow">Entrar</v-btn>
+
+        <div align="center">
+          <v-btn :loading="apiLoading" class="ac mt-4" color="orange" to="/Follow" dark>Entrar</v-btn>
+        </div>     
+
       </v-col>
     </v-row>
   </v-container>

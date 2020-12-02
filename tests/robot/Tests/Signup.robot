@@ -23,7 +23,7 @@ try signup user
 
     
     sleep   3s  
-    Choose File     xpath=//*[@id="app_p"]/div/div/div[1]/input      C:/works-pedro/wep-front/tests/robot/resources/08.jpg
+    Choose File     xpath=//*[@id="app_p"]/div/div/div[1]/input      D:/works-pedro/wep-front/tests/robot/resources/08.jpg
     
     Element Should be Visible   xpath=//*[@id="input-22"]
     Click Element   xpath=//*[@id="input-22"]

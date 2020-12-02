@@ -196,12 +196,16 @@ export default {
   },
 
   created(){
-    this.newEventForm.privated = false
     this.convertTextArea()
     this.setLocalVariables()
   },
 
   methods:{
+    checkPrivatedStatus(){
+      if(this.newEventForm.privated)this.active = 1
+      else this.active = 0
+    },
+
     convertTextArea(){
       // console.log(this.editEventData.description)
 
@@ -211,14 +215,14 @@ export default {
     
     setLocalVariables(){
       this.newEventForm.title = this.editEventData.title
-      this.newEventForm.private = this.editEventData.private
+      this.newEventForm.privated = this.editEventData.privated
       this.newEventForm.latitude = this.editEventData.latitude
       this.newEventForm.longitude = this.editEventData.longitude
       this.newEventForm.adress = this.editEventData.adress
       this.newEventForm.eventDate = this.editEventData.eventDate
       this.newEventForm.img = this.editEventData.img
 
-      
+      this.checkPrivatedStatus()    
     },
 
     onFileSelected() { this.$refs.fileInput.click() },
@@ -282,12 +286,12 @@ export default {
         if (param == 0) {
 
             this.active = 0
-            this.newEventForm.private = false
+            this.newEventForm.privated = false
 
         } else {
 
             this.active = 1
-            this.newEventForm.private = true
+            this.newEventForm.privated = true
         }
         // console.log("privado? " + this.eventForm.private)
     },
@@ -304,11 +308,13 @@ export default {
     },
 
     async editEvent(){
-        this.checkFields()
+      
+      this.checkFields()
 
         if(this.imageChange){
-
-            this.uploadImage()
+          this.$store.commit("setApiLoading", true);
+          
+          this.uploadImage()
 
           }else{
 

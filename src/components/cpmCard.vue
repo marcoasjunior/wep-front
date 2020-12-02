@@ -15,10 +15,6 @@
 
         <div class="d-flex">
 
-
-          <div class="ml-5 p20">{{ cardData.user.name }}</div>
-
-
           <div class="d-flex custom-header-card-margin-left" v-if="cardData.user.id == getId">
 
             <!-- <span class="d-block ml-a"></span> -->

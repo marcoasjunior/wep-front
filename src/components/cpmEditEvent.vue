@@ -36,7 +36,6 @@
             <v-row>
               
               <v-col cols="12">
-                {{ newEventForm.img }}
                 <v-card @click="onFileSelected">
                   <img :src="newEventForm.img" alt="Imagem do evento" class="ac d-block p15 img-uploaded">
                   <input @change="onFilePicked" type="file" class="hiden-input" ref="fileInput" accept="image/*">
@@ -204,7 +203,7 @@ export default {
 
   methods:{
     convertTextArea(){
-      console.log(this.editEventData.description)
+      // console.log(this.editEventData.description)
 
       let convertedDescription = this.editEventData.description.replaceAll('</br>', '\n')
       this.newEventForm.description = convertedDescription 
@@ -296,7 +295,7 @@ export default {
     async uploadImage(){
       this.$store.commit("setApiLoading", true);
       const fd = new FormData();
-      console.log(this.imageData)
+      // console.log(this.imageData)
       fd.append('photo', this.imageData);
       await axios.post(this.uploadUrl + '/upload/image', fd).then(resp => {
           this.newEventForm.img = resp.data
@@ -336,25 +335,46 @@ export default {
                 },
               }
 
-              console.log(body)
+              // console.log(body)
+              let eventId = this.editEventData.id
+              axios.put(this.url + `/event/${eventId}`, body)
+                  .then(resp => {
+                      this.$store.commit("setApiLoading", false);
+                      this.dialog = false
 
+                      this.setNewVariablesValues(resp.data)
+                      if (resp.status == 200) {
+                          this.$toast.success('Registro efetuado!', 'Hey', {
+                              position: "topCenter"
+                          })
 
+                      }
+                  })
+                  .catch(err => {
+                      this.$store.commit("setApiLoading", false);
 
+                      this.$toast.error('Erro no registro!', '😕', {
+                          position: "topCenter"
+                      })
+
+                  })
               }
-
-
-
-
             }
+    },
 
-
+    setNewVariablesValues(param){
+      this.editEventData.title = param.title
+      this.editEventData.private = param.private
+      this.editEventData.latitude = param.latitude
+      this.editEventData.longitude = param.longitude
+      this.editEventData.adress = param.adress
+      this.editEventData.eventDate = param.eventDate
+      this.editEventData.img = param.img
     }
   },
 
   watch:{
-    currentImage(){
-      console.log("valor da imagem mudou")
-    }
+
   }
 };
 </script>

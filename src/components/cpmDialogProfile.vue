@@ -1,9 +1,14 @@
 <template>
   <v-row class="ac">
     <v-dialog v-model="dialog" persistent max-width="600px">
-      <template class="d-flex align-center" v-slot:activator="{ on, attrs }">
+      <template class="d-flex" v-slot:activator="{ on, attrs }">
         
-        <v-btn class="mr-auto ml-auto" v-bind="attrs" v-on="on">EDITAR</v-btn>
+        <v-btn  
+          v-bind="attrs" 
+          color="blue" 
+          dark v-on="on"
+          block
+        >EDITAR</v-btn>
       
       </template>
       <v-card>
@@ -23,7 +28,8 @@
                 />
 
                 <v-avatar @click="pickAvatar" class="mt-1 mb-5 cp" size="80">
-                  <img :src="user_data.avatar" alt="avatar" />
+                  <v-icon v-if="user_data.avatar == null || user_data.avatar == '' || user_data.avatar == undefined" color="orange" size="80">mdi-account-circle</v-icon>
+                  <img v-else :src="user_data.avatar" alt="avatar" />
                 </v-avatar>
               </div>
               <v-col cols="12">
@@ -95,6 +101,10 @@ export default {
       passwordConfirm: "",
     },
   }),
+
+  created(){
+    console.log(this.user_data)
+  },
 
   computed:{
     ...mapGetters({

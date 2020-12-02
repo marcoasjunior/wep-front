@@ -61,6 +61,11 @@ const routes = [
         path: '/Follow',
         name: 'FollowIndex',
         component: () => import('../views/private/FindFriends.vue')
+      },
+      {
+        path: '/Private/events',
+        name: 'PrivateEvents',
+        component: () => import('../views/private/PrivateEvents.vue')
       }
 
     ]

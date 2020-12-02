@@ -1,6 +1,9 @@
 <template>
   <v-container class="box">
-    <v-row class="d-flex flex-column">
+    <v-row v-if="registred" class="mt-20">
+      <cpmRegisterSuccess />
+    </v-row>
+    <v-row v-else class="d-flex flex-column">
       <v-btn to="/" class text fab small>
         <v-icon dark>mdi-arrow-left</v-icon>
       </v-btn>
@@ -17,7 +20,7 @@
           />
         </v-avatar>
       </v-col>-->
-      
+
       <div class="d-flex ac justify-center">
         <input
           @change="onFilePicked"
@@ -26,12 +29,12 @@
           ref="fileInput"
           accept="image/*"
         />
-          
-        <v-avatar @click="pickAvatar" class="mt-1 mb-5 cp" size="80"> 
+
+        <v-avatar @click="pickAvatar" class="mt-1 mb-5 cp" size="80">
           <!-- <v-icon class="cp" v-if="!form.avatar" dark>mdi-account-circle</v-icon> -->
           <!-- <v-icon v-if="!form.avatar" dark>mdi-account-circle</v-icon> -->
-          
-          <img v-if="form.avatar" :src="form.avatar" alt="avatar"/>
+
+          <img v-if="form.avatar" :src="form.avatar" alt="avatar" />
         </v-avatar>
 
         <v-tooltip bottom>
@@ -50,7 +53,6 @@
           </template>
           <span>Clique para escolher a foto de perfil</span>
         </v-tooltip>
-
       </div>
 
       <v-col>
@@ -65,18 +67,32 @@
             required
           ></v-text-field>
 
-          <v-text-field prepend-icon="mdi-email" v-model="form.email" label="E-mail" required></v-text-field>
-
-          <v-text-field prepend-icon="mdi-lock" v-model="password2" label="Senha" required></v-text-field>
-
           <v-text-field
-            prepend-icon="mdi-lock"
-            v-model="form.password"
-            label="Confirmar senha"
+            prepend-icon="mdi-email"
+            v-model="form.email"
+            label="E-mail"
             required
           ></v-text-field>
 
+          <v-text-field 
+            prepend-icon="mdi-lock" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" 
+            :rules="[rules.required, rules.min]"
+            :type="show2 ? 'text' : 'password'" 
+            name="input-10-2" label="Senha" 
+            v-model="form.password" class="input-group--focused" 
+            @click:append="show1 = !show1"></v-text-field>
+
+          <v-text-field 
+            prepend-icon="mdi-lock" :error="confirmPassError" 
+            @change="validatePassMatch" :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" 
+            :rules="[rules.required, rules.min]" :type="show2 ? 'text' : 'password'" 
+            name="input-10-2" label="Confirmar senha" 
+            v-model="password2" class="input-group--focused" 
+            @click:append="show2 = !show2"></v-text-field>
+
           <v-text-field
+            type="tel"
+            v-mask="'(##) #####-####'"
             prepend-icon="mdi-whatsapp"
             v-model="form.whatsapp"
             label="Whatsapp"
@@ -90,8 +106,11 @@
           ></v-switch>
 
           <div class="d-flex justify-center align-center">
-            <v-btn v-if="!loading" block color="orange" @click="sendForm">Cadastrar</v-btn>
-            <v-progress-circular v-else indeterminate color="primary"></v-progress-circular>
+
+            <div align="center">
+              <v-btn :loading="apiLoading" class="ac mt-4" color="orange" dark @click="sendForm">Cadastrar</v-btn>
+            </div>                    
+
           </div>
         </v-form>
       </v-col>
@@ -100,14 +119,26 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
+
+import cpmRegisterSuccess from "@/components/cpmRegisterSuccess";
 
 export default {
   name: "Register",
+  components: { cpmRegisterSuccess },
+
+  computed:{
+    ...mapGetters({
+      apiLoading: 'apiLoading'
+    })
+  },
 
   data() {
     return {
       switch1: false,
+
+      show1: false,
+      show2: false,
 
       uploadUrl: process.env.VUE_APP_UPLOAD_URL,
 
@@ -119,10 +150,21 @@ export default {
         avatar: null,
       },
 
+      registred: false,
+
+      confirmPassError: false,
+
       src: null,
       targetFile: null,
       loading: null,
       password2: null,
+
+      rules: {
+        required: value => !!value || 'Required.',
+        min: v => v.length >= 8 || 'Min 8 characters',
+        emailMatch: () => ('The email and password you entered don\'t match'),
+        passMatch: () => ('senhas são diferentes'),
+      },
     };
   },
 
@@ -160,40 +202,55 @@ export default {
     },
 
     async sendForm() {
-      this.loading = true
+      this.$store.commit("setApiLoading", true);
+      this.loading = true;
 
-      if(this.form.avatar !== null){
+      if (this.form.avatar !== null) {
         const url = await this.uploadPhoto();
-        console.log('a')
+        console.log("a");
         this.form.avatar = url;
       }
 
-      this.$toast.info('Estamos fazendo seu registo.', 'Hey', {
-        position: "topCenter"
-      })
+      this.$toast.info("Estamos fazendo seu registo.", "Hey", {
+        position: "topCenter",
+      });
 
-      console.log(this.form)
+      console.log(this.form);
 
-      const register = await this.register(this.form)
+      const register = await this.register(this.form);
+
+      console.log(register);
 
       if (register) {
+        this.$toast.success("Registro efetuado!", "Hey", {
+          position: "topCenter",
+        });
 
-        this.$toast.success('Registro efetuado!', 'Hey', {
-          position: "topCenter"
-        })
-
-        this.$router.push('/')
+        await localStorage.setItem("token", register.data[0]);
+        await localStorage.setItem("id", register.data[1]);
+        this.registred = true;
+        // this.$router.push('/Follow');
+        this.$store.commit("setApiLoading", false);
 
       } else {
-
-        this.$toast.error('Erro no registro!', 'Putz', {
-          position: "topCenter"
-        })
+        this.$toast.error("Erro no registro!", "Putz", {
+          position: "topCenter",
+        });
+        this.$store.commit("setApiLoading", false);
       }
 
-      this.loading = false
+      this.$store.commit("setApiLoading", true);
+      this.clearData();
+    },
 
-      this.clearData()
+    validatePassMatch(){
+      if(this.password2 !== this.form.password){
+        this.confirmPassError = true
+      }else{
+        this.confirmPassError = false
+
+      }
+
     },
 
     validation() {

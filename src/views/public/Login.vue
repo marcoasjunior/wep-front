@@ -5,15 +5,21 @@
       <v-icon>mdi-arrow-left</v-icon>
     </v-btn>
 
-    <v-container class="d-flex flex-column justify-center align-center mt-14">
+    <v-container class="d-flex flex-column justify-center align-center">
 
-      <p class="display-1">Entrar</p>
+    <img src="../../../public/img/icons/android-icon-192x192.png" alt="">
 
       <v-text-field class="input" prepend-icon="mdi-email" v-model="email" label="E-mail" required></v-text-field>
 
-      <v-text-field class="input" prepend-icon="mdi-lock" v-model="password" label="Senha" required></v-text-field>
+      <v-text-field required prepend-icon="mdi-lock" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+      :type="show1 ? 'text' : 'password'" name="input-10-2" label="Senha" v-model="password"
+      class="input-group--focused input" @click:append="show1 = !show1"></v-text-field>
 
-      <v-btn color="warning" @click="login" class="mt-14 button"> Entrar </v-btn>
+      <!-- <v-btn :loading="apiLoading" color="warning" @click="login" class="mt-14 button"> Entrar </v-btn> -->
+
+      <div align="center">
+        <v-btn :loading="apiLoading" class="ac mt-4" color="orange" @click="login" dark>Entrar</v-btn>
+      </div>     
 
     </v-container>
 
@@ -23,7 +29,7 @@
 <script>
 
 import {
-  mapActions
+  mapActions, mapGetters
 } from 'vuex'
 
 export default {
@@ -33,7 +39,8 @@ export default {
   data() {
     return {
       password: null,
-      email: null
+      email: null,
+      show1: false
     }
   },
 
@@ -41,6 +48,12 @@ export default {
     // if (localStorage.token) {
     //   this.checkToken();
     // }
+  },
+
+  computed:{
+    ...mapGetters({
+      apiLoading: 'apiLoading'
+    })
   },
 
   methods: {
@@ -53,6 +66,8 @@ export default {
     }),
 
     async login() {
+      this.$store.commit("setApiLoading", true);
+
       if (this.password === null || this.email === null) return alert('Preencha os campos e-mail e senha.')
 
       const isAuth = await this.authLogin({
@@ -60,14 +75,18 @@ export default {
         password: this.password,
         email: this.email
 
-      }).catch(() => this.$toast.error('Problema com usuário e/ou senha', 'Putz', {
-        position: "topCenter"
-      }))
+      }).catch(() => {
+          this.$toast.error('Problema com usuário e/ou senha', 'Putz', {
+            position: "topCenter"
+          })
+          this.$store.commit("setApiLoading", false);
+      })
 
       if (isAuth) {
         this.$toast.success('Logado!', 'Hey', {
           position: "topCenter"
         })
+
 
         // localStorage.token = isAuth.data[0]
 
@@ -75,7 +94,9 @@ export default {
 
         localStorage.token = isAuth.data[0];
 
-        this.$router.push('/Feed')
+        this.$router.push('/Feed');
+
+        this.$store.commit("setApiLoading", false);
       }
     },
 

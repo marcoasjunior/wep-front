@@ -13,23 +13,23 @@ export default new Vuex.Store({
 
   state: {
     apiLoading: false,
-    coordinateSelected:'',
-    uploadedFile:'',
-    
+    coordinateSelected: '',
+    uploadedFile: '',
+
   },
-  getters:{
+  getters: {
     coordinateSelected: state => state.coordinateSelected,
     uploadedFile: state => state.uploadedFile,
     apiLoading: state => state.apiLoading,
   },
   mutations: {
-    setCoordinateSelected(state, newSate){
+    setCoordinateSelected(state, newSate) {
       state.coordinateSelected = newSate
     },
-    setUploadedFile(state, newSate){
+    setUploadedFile(state, newSate) {
       state.uploadedFile = newSate
     },
-    setApiLoading(state, newSate){
+    setApiLoading(state, newSate) {
       state.apiLoading = newSate
     },
   },

@@ -634,11 +634,6 @@ export default {
     }
 }
 
-.img-uploaded{
-    max-width: 70%;
-    width: 100%;
-}
-
 .img-upload-box{
     display: block;
     max-width: 100%;

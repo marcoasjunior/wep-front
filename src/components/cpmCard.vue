@@ -25,7 +25,7 @@
             <DeleteEvent :deleteCardData="cardData"/>
 
             <div>
-              <EditEvent :data="cardData"/>
+              <EditEvent :editEventData="cardData"/>
             </div>
             
           </div>

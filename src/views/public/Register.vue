@@ -108,7 +108,7 @@
           <div class="d-flex justify-center align-center">
 
             <div align="center">
-              <v-btn :loading="apiLoading" class="ac mt-4" color="orange" dark @click="sendForm">Cadastrar</v-btn>
+              <v-btn :loading="localLoading" class="ac mt-4" color="orange" dark @click="sendForm">Cadastrar</v-btn>
             </div>                    
 
           </div>
@@ -139,6 +139,8 @@ export default {
 
       show1: false,
       show2: false,
+
+      localLoading: false,
 
       uploadUrl: process.env.VUE_APP_UPLOAD_URL,
 
@@ -202,7 +204,7 @@ export default {
     },
 
     async sendForm() {
-      this.$store.commit("setApiLoading", true);
+      this.localLoading = true
       this.loading = true;
 
       if (this.form.avatar !== null) {
@@ -219,9 +221,16 @@ export default {
 
       const register = await this.register(this.form);
 
-      console.log(register);
+      if(register.data == "O user already exists"){
+        this.localLoading = false
+        this.$toast.error("Usuário já está cadastrado, tente fazer login", "🤨", {
+          position: "topCenter",
+        });
+        
 
-      if (register) {
+      }
+
+      else if (register.data != "O user already exists") {
         this.$toast.success("Registro efetuado!", "Hey", {
           position: "topCenter",
         });
@@ -230,16 +239,16 @@ export default {
         await localStorage.setItem("id", register.data[1]);
         this.registred = true;
         // this.$router.push('/Follow');
-        this.$store.commit("setApiLoading", false);
+        this.localLoading = false
 
       } else {
         this.$toast.error("Erro no registro!", "Putz", {
           position: "topCenter",
         });
-        this.$store.commit("setApiLoading", false);
+        this.localLoading = false
       }
 
-      this.$store.commit("setApiLoading", true);
+      this.localLoading = false
       this.clearData();
     },
 

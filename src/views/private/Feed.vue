@@ -113,7 +113,7 @@ export default {
     this.loading = true;
 
     try {
-      // await this.getEvents()
+      // await this.getPublicEvents()
       await this.getPublicEvents();
     //   await this.getAllFollowing();
     } catch (error) {

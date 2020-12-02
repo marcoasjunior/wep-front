@@ -285,6 +285,7 @@ export default {
       likeEvent: "EventVuex/likeEvent",
       unlikeEvent: "EventVuex/unlikeEvent",
       getMyEvents: "ProfileVuex/getMyEvents",
+      getPublicEvents: 'FeedVuex/getPublicEvents'
     }),
 
     async createComent(param) {
@@ -337,7 +338,7 @@ export default {
               userId: this.getId,
             });
 
-        await this.getEvents();
+        await this.getPublicEvents();
         this.$store.commit("setApiLoading", false);
       } catch (error) {
         console.log(error);

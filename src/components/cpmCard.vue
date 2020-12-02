@@ -54,6 +54,11 @@
         <h1>{{ cardData.title }}</h1>
         <!-- <p>{{ cardData.description }}</p> -->
         <h3 class="clr-red mb-2">{{ cardData.eventDate }}</h3>
+
+        <div class="d-flex">
+          <h3 class="clr-black"> <v-icon>mdi-map-marker-radius</v-icon> {{ cardData.adress }}</h3>
+        </div>
+        
         <span v-html="cardData.description"></span>
       </div>
 

@@ -85,16 +85,16 @@
                                     Endereço: <br/>
                                     <v-icon v-if="eventErrorForm.address" color="error">mdi-block-helper</v-icon>
                                     <v-icon v-else color="success">mdi-check-bold</v-icon>
-                                    <span :class="addressClassState">{{ possibleAddress }}</span>
+                                    <span :class="addressClassState">{{ eventForm.address }}</span>
                                  </strong>
 
                                 <br/>
                                 <strong class="clr-red mt-3 d-block" v-if="showAddresswarning"> *O endereço não foi salvo, caso tenha colocado o endereço correto, clique no botão verde abaixo escrito "correto". </strong>
-
+<!-- 
                                 <div class="d-block mt-4" align="center">
                                     <span>o Endereço está correto?</span>
                                     <v-btn color="success" class="ml-2" @click="correctAddress">correto</v-btn>
-                                </div>
+                                </div> -->
 
 
                             </div>
@@ -127,7 +127,8 @@
                             type="tel"
                             v-mask="'##/##/#### - ##:##'"
                             v-model="eventForm.eventDate" 
-                            label="Data e hora do evento" 
+                            label="Data e hora do evento"
+                            placeholder="exemplo: 24/12/2020 - 23:59"
                             :rules="dateRules" 
                             :error="eventErrorForm.eventDate"
                             color="orange"
@@ -147,7 +148,7 @@
                         <v-btn 
                             class="ac mt-4" 
                             color="orange" 
-                            outlined rounded 
+                            :loading="apiLoading"
                             @click="createEvent()" 
                             dark
                         >Criar Evento</v-btn>
@@ -312,7 +313,7 @@ export default {
 
     computed: {
         ...mapGetters({
-            test: 'test',
+            apiLoading: 'apiLoading',
         })
     },
 
@@ -401,7 +402,7 @@ export default {
                     .then(result => {
                         console.log(result.items[0].address)
 
-                        this.possibleAddress = result.items[0].address.label
+                        this.eventForm.address = result.items[0].address.label
                     })
         },
 
@@ -442,13 +443,14 @@ export default {
                     })
 
                 }else{
-   
+                    this.$store.commit("setApiLoading", true);
                     const fd = new FormData();
                     console.log(this.imageData)
                     fd.append('photo', this.imageData);
                     await axios.post(this.uploadUrl + '/upload/image', fd).then(resp => {
                         this.eventForm.img = resp.data
                     })
+                    this.$store.commit("setApiLoading", false);
                 
 
                     this.overlay = true
@@ -456,7 +458,7 @@ export default {
                     let body = {
                         title: this.eventForm.title,
                         description: this.repleaceDescription(),
-                        address: this.eventAddress.address,
+                        adress: this.eventAddress.address,
                         img: this.eventForm.img,
                         privated: this.eventForm.private,
                         eventDate: this.eventForm.eventDate,
@@ -471,6 +473,8 @@ export default {
                     axios.post(this.url + '/event/create', body)
                         .then(resp => {
                             this.overlay = false
+                            this.$store.commit("setApiLoading", false);
+
                             if (resp.status == 200) {
                                 this.$toast.success('Registro efetuado!', 'Hey', {
                                     position: "topCenter"
@@ -482,6 +486,8 @@ export default {
                         })
                         .catch(err => {
                             this.overlay = false
+                            this.$store.commit("setApiLoading", false);
+
                             this.$toast.error('Erro no registro!', '😕', {
                                 position: "topCenter"
                             })
@@ -491,11 +497,17 @@ export default {
                 }
 
             } catch (e) {
+                this.overlay = false
+                this.$store.commit("setApiLoading", false);
+
                 throw e
             }
             
             } else{
                 // console.log(this.eventForm)
+                this.overlay = false
+                this.$store.commit("setApiLoading", false);
+
                 this.$toast.error('Erro ao cadastrar evento', '😕', {
                     position: "topCenter"
                 })

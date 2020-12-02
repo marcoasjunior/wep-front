@@ -32,8 +32,8 @@ try login user
     Click Element   xpath=//*[@id="input-21"]
     Input Text  xpath=//*[@id="input-21"]   ${USER_PASSWORD}
 
-    Wait Until Element Is Enabled   xpath=//*[@id="app_p"]/div/div/button
-    Click Element   xpath=//*[@id="app_p"]/div/div/button
+    Wait Until Element Is Enabled   xpath=//*[@id="app_p"]/div/div/div[3]/button
+    Click Element   xpath=//*[@id="app_p"]/div/div/div[3]/button
     Run Keyword     login okay?
 
 Reset Test
@@ -52,8 +52,8 @@ try login wrong credentials
     Click Element   xpath=//*[@id="input-21"]
     Input Text  xpath=//*[@id="input-21"]   123456789
 
-    Wait Until Element Is Enabled   xpath=//*[@id="app_p"]/div/div/button
-    Click Element   xpath=//*[@id="app_p"]/div/div/button
+    Wait Until Element Is Enabled   xpath=//*[@id="app_p"]/div/div/div[3]/button
+    Click Element   xpath=//*[@id="app_p"]/div/div/div[3]/button
     Run Keyword     login okay?
 
 login okay?

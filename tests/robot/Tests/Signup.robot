@@ -22,7 +22,8 @@ try signup user
     Click Element   xpath=//*[@id="app_p"]/div/div/div/a[2]
 
     
-    Choose File     xpath=//*[@id="app_p"]/div/div/div[1]/input      D:/works-pedro/wep-front/tests/robot/resources/08.jpg
+    sleep   3s  
+    Choose File     xpath=//*[@id="app_p"]/div/div/div[1]/input      C:/works-pedro/wep-front/tests/robot/resources/08.jpg
     
     Element Should be Visible   xpath=//*[@id="input-22"]
     Click Element   xpath=//*[@id="input-22"]
@@ -36,19 +37,19 @@ try signup user
     Click Element   xpath=//*[@id="input-30"]
     Input Text  xpath=//*[@id="input-30"]   ${NEW_USER_PASSWORD}
 
-    Element Should be Visible   xpath=//*[@id="input-34"]
-    Click Element   xpath=//*[@id="input-34"]
-    Input Text  xpath=//*[@id="input-34"]   ${NEW_USER_PASSWORD}
+    Element Should be Visible   xpath=//*[@id="input-35"]
+    Click Element   xpath=//*[@id="input-35"]
+    Input Text  xpath=//*[@id="input-35"]   ${NEW_USER_PASSWORD}
 
-    Element Should be Visible   xpath=//*[@id="input-38"]
-    Click Element   xpath=//*[@id="input-38"]
-    Input Text  xpath=//*[@id="input-38"]   ${NEW_USER_PHONE}
+    Element Should be Visible   xpath=//*[@id="input-40"]
+    Click Element   xpath=//*[@id="input-40"]
+    Input Text  xpath=//*[@id="input-40"]   ${NEW_USER_PHONE}
 
     Element Should be Visible   xpath=//*[@id="app_p"]/div/div/div[2]/form/div[6]/div/div[1]/div/div[1]
     Click Element   xpath=//*[@id="app_p"]/div/div/div[2]/form/div[6]/div/div[1]/div/div[1]
 
-    Wait Until Element Is Enabled   xpath=//*[@id="app_p"]/div/div/div[2]/form/div[7]/button
-    Click Element   xpath=//*[@id="app_p"]/div/div/div[2]/form/div[7]/button
+    Wait Until Element Is Enabled   xpath=//*[@id="app_p"]/div/div/div[2]/form/div[7]/div/button
+    Click Element   xpath=//*[@id="app_p"]/div/div/div[2]/form/div[7]/div/button
 
     Run Keyword     Signup okay?
 

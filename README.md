@@ -1,4 +1,4 @@
-# wep-front
+# wep-app
 
 ## Project setup
 ```

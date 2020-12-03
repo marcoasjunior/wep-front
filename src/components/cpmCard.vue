@@ -97,16 +97,16 @@
                 v-for="comment in cardData.comments"
                 :key="comment.id"
               >
-                <v-avatar size="33" color="orange" class="mr-4">
+                <v-avatar size="33" color="orange" class="mr-2">
                   <v-icon v-if="!comment.user.avatar" dark
                     >mdi-account-circle</v-icon
                   >
                   <img v-else :src="comment.user.avatar" alt="avatar" />
                 </v-avatar>
 
-                {{ comment.user.name }} -
+               <strong class="custom-font-size"> {{ comment.user.name }} - </strong>
 
-                <span class="ml-2" v-if="selectedCommentId != comment.id">
+                <span class="ml-2 custom-font-size" v-if="selectedCommentId != comment.id">
                   {{ comment.comment }}
                 </span>
 
@@ -392,7 +392,7 @@ export default {
             this.$toast.success("Comentário deletado", "💥", {
               position: "topCenter",
             });
-
+            this.getPublicEvents();
             return;
           }
         })
@@ -426,6 +426,13 @@ export default {
 
     @media screen and (max-width: 650px) {
       margin-left: 100px !important;
+    }
+}
+
+.custom-font-size{
+  font-size: 15px;
+    @media screen and (max-width: 650px) {
+      font-size: 13px;
     }
 }
 </style>

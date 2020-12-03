@@ -81,6 +81,8 @@ export default {
 
         ...mapActions({
             deleteEvent: "FeedVuex/deleteEvent",
+            getMyEvents: "ProfileVuex/getMyEvents",
+
         }),
 
         ...mapMutations({
@@ -101,16 +103,18 @@ export default {
                 
 
                 this.$toast.success("Evento deletado com sucesso.", "Yeah!", {
-                position: "topCenter",
+                  position: "topCenter",
                 });
 
                 this.$store.commit("setApiLoading", false);
+                
+                await this.getMyEvents();
                 this.confirmDeleteEvent = false
                 
             } catch (error) {
-                this.$store.commit("setApiLoading", false);
-                this.$toast.error("Tente novamente", "Ops!", {
-                position: "topCenter",
+                  this.$store.commit("setApiLoading", false);
+                  this.$toast.error("Tente novamente", "Ops!", {
+                  position: "topCenter",
                 });
             }
         },

@@ -85,7 +85,7 @@
                                     Endereço: <br/>
                                     <v-icon v-if="eventErrorForm.address" color="error">mdi-block-helper</v-icon>
                                     <v-icon v-else color="success">mdi-check-bold</v-icon>
-                                    <span :class="addressClassState">{{ eventForm.address }}</span>
+                                    <span :class="addressClassState">{{ eventForm.adress }}</span>
                                  </strong>
 
                                 <br/>
@@ -221,7 +221,7 @@ export default {
             private: '',
             latitude: '',
             longitude: '',
-            address: '',
+            adress: '',
             eventDate: '',
             img: '',
         },
@@ -402,7 +402,7 @@ export default {
                     .then(result => {
                         console.log(result.items[0].address)
 
-                        this.eventForm.address = result.items[0].address.label
+                        this.eventForm.adress = result.items[0].address.label
                     })
         },
 
@@ -458,7 +458,7 @@ export default {
                     let body = {
                         title: this.eventForm.title,
                         description: this.repleaceDescription(),
-                        adress: this.eventAddress.address,
+                        adress: this.eventForm.adress,
                         img: this.eventForm.img,
                         privated: this.eventForm.private,
                         eventDate: this.eventForm.eventDate,

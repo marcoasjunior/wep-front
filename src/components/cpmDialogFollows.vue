@@ -34,7 +34,9 @@
 
                 <div v-if="modalTitle == 'Seguindo' ">
                   
-                  <h3 class="mb-4">Amigos que você segue</h3>
+                  <h3 class="mb-4" v-if="data[0] != ''">Amigos que você segue</h3>
+                  <h3 class="mb-4 alg-txt-c" v-else> Encontre amigos e conecte-se </h3>
+                  
 
                   <div v-for="user in data[0]" :key="user.id">
                     <cpmUserFollow :userData="user" />
@@ -44,7 +46,8 @@
 
                 <div v-else>
 
-                  <h3 class="mb-4">Amigos que te seguem</h3>
+                  <h3 class="mb-4" v-if="data[1] != ''">Amigos que te seguem</h3>
+                  <h3 class="mb-4 alg-txt-c" v-else> Encontre amigos e conecte-se  </h3>
                  
                   <div v-for="user in data[1]" :key="user.id">
                     <cpmUserFollow :userData="user" />
